@@ -1,0 +1,843 @@
+<!DOCTYPE html><html lang="en">
+<head>
+
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UGHAM INNOVATION AWARDS 2026 &mdash; Ugham</title>
+<meta name="description" content="National Awards for Student Innovation — Empowering the Next Generation of Innovators.">
+<link rel="stylesheet" href="assets/css/style.css?v=344">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+</head>
+
+
+<body>
+<div id="page-transition" class="page-transition-overlay"></div>
+<canvas id="realStars"></canvas>
+<canvas id="starField" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" style="display:flex;align-items:center;text-decoration:none;">
+      <img src="assets/img/logo.png" alt="Ugham" style="height:90px;object-fit:contain;transform:scale(1.1);">
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="what-we-do.html">What We Do</a></li>
+      <li><a href="collaboration.html">Collaboration</a></li>
+      <li><a href="awards.html">UGHAM INNOVATION AWARDS</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="#" class="nav-login">Login</a></li>
+    </ul>
+    <button class="menu-toggle" id="menuToggle" aria-label="Menu">&#9776;</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero" style="text-align:center;min-height:60vh;">
+  <div class="hero-glow glow-1"></div>
+  <div class="hero-glow glow-2"></div>
+  <div class="container page-hero-content">
+    <h1 class="huge-text hero-evolution anim-el scale-up" style="margin-bottom:24px;">UGHAM INNOVATION<br>AWARDS 2026</h1>
+    <p class="anim-el slide-up-fade del-1" style="font-size:clamp(18px,3vw,26px);font-weight:800;font-family:'Outfit',sans-serif;background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:0 auto;">Empowering the Next Generation of Innovators</p>
+  </div>
+</section>
+
+<!-- CATEGORIES (Pricing Cards) -->
+<section style="padding:120px 0; position:relative; overflow:hidden;">
+  <!-- Animated Background Orbs -->
+  <div style="position:absolute; top:20%; left:-10%; width:400px; height:400px; background:rgba(124,58,237,0.08); filter:blur(80px); border-radius:50%; animation:floatCard 10s infinite alternate;"></div>
+  <div style="position:absolute; bottom:10%; right:-10%; width:300px; height:300px; background:rgba(192,38,211,0.08); filter:blur(60px); border-radius:50%; animation:floatCard 8s infinite alternate-reverse;"></div>
+  <div class="container">
+    <h2 class="section-title anim-el fade-up" style="margin-bottom:48px;text-align:center;">CATEGORIES</h2>
+    <div class="pricing-grid anim-el blur-in del-1">
+      <div class="price-card">
+        <div class="pc-header"><h3>Idea Pitch</h3><p>Idea Stage</p></div>
+        <div class="pc-price">&#8377;249<span>/member</span></div>
+        <div class="pc-features">
+          <div class="pc-feat"><i class="fa-solid fa-check-circle"></i> Present your innovative concept</div>
+          <div class="pc-feat"><i class="fa-solid fa-check-circle"></i> No prototype needed</div>
+          <div class="pc-feat"><i class="fa-solid fa-check-circle"></i> Expert judge feedback</div>
+          <div class="pc-feat"><i class="fa-solid fa-check-circle"></i> Certificate of participation</div>
+          <div class="pc-feat"><i class="fa-solid fa-check-circle"></i> Team size: 2-5 members</div>
+        </div>
+        <div class="pc-action"><a href="contact.html">Register Now &#8250;</a></div>
+      </div>
+      <div class="price-card">
+        <div class="pc-header"><h3>Prototype Pitch</h3><p>Prototype / Working Model</p></div>
+        <div class="pc-price">&#8377;299<span>/member</span></div>
+        <div class="pc-features">
+          <div class="pc-feat"><i class="fa-solid fa-check-circle"></i> Demo your built solution live</div>
+          <div class="pc-feat"><i class="fa-solid fa-check-circle"></i> Working prototype required</div>
+          <div class="pc-feat"><i class="fa-solid fa-check-circle"></i> Investor exposure</div>
+          <div class="pc-feat"><i class="fa-solid fa-check-circle"></i> Incubation opportunity</div>
+          <div class="pc-feat"><i class="fa-solid fa-check-circle"></i> Team size: 2-5 members</div>
+        </div>
+        <div class="pc-action"><a href="contact.html">Register Now &#8250;</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RULES (Interactive Flip Cards) -->
+<section style="padding:80px 0;background:var(--surface);">
+  <div class="container">
+    <h2 class="section-title anim-el fade-up" style="margin-bottom:16px;text-align:center;">RULES</h2>
+    <p class="anim-el fade-up" style="text-align:center;color:var(--muted);margin-bottom:40px;font-size:16px;">Hover each card to reveal the rule</p>
+    <div class="rules-grid anim-el blur-in del-1">
+      <div class="rule-flip"><div class="rule-flip-inner"><div class="rule-flip-front">01</div><div class="rule-flip-back">Team participation (2 to 5 members)</div></div></div>
+      <div class="rule-flip"><div class="rule-flip-inner"><div class="rule-flip-front">02</div><div class="rule-flip-back">One idea / project per team</div></div></div>
+      <div class="rule-flip"><div class="rule-flip-inner"><div class="rule-flip-front">03</div><div class="rule-flip-back">Original ideas only — no copies</div></div></div>
+      <div class="rule-flip"><div class="rule-flip-inner"><div class="rule-flip-front">04</div><div class="rule-flip-back">PPT submission is mandatory</div></div></div>
+      <div class="rule-flip"><div class="rule-flip-inner"><div class="rule-flip-front">05</div><div class="rule-flip-back">Demo mandatory for prototype pitch</div></div></div>
+      <div class="rule-flip"><div class="rule-flip-inner"><div class="rule-flip-front">06</div><div class="rule-flip-back">Pitch time: 3 to 5 minutes + Q&amp;A</div></div></div>
+      <div class="rule-flip"><div class="rule-flip-inner"><div class="rule-flip-front">07</div><div class="rule-flip-back">Judges' decision is final</div></div></div>
+    </div>
+    <!-- Prize Pool Display -->
+    <div class="anim-el scale-up del-2" style="text-align:center;margin-top:48px;">
+      <p style="font-size:56px;line-height:1;">&#127942;</p>
+      <p style="font-size:48px;font-weight:900;background:var(--grad-text);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-top:12px;">&#8377;1,00,000</p>
+      <p style="font-size:18px;font-weight:700;color:var(--muted);margin-top:8px;">Total Prize Pool</p>
+    </div>
+  </div>
+</section>
+
+  <!-- PARTICIPANT BENEFITS (Marquee) -->
+  <section style="padding:80px 0;">
+    <div class="container">
+      <h2 class="section-title anim-el fade-up" style="margin-bottom:32px;text-align:center;">PARTICIPANT BENEFITS</h2>
+    </div>
+    <div class="marquee-wrap anim-el blur-in del-1">
+      <div class="marquee-track">
+        <div class="marquee-item"><div class="mi-icon">&#127942;</div><span>&#8377;1,00,000 Prize Pool</span></div>
+        <div class="marquee-item"><div class="mi-icon">&#128220;</div><span>Participation Certificate</span></div>
+        <div class="marquee-item"><div class="mi-icon">&#128188;</div><span>Internship Opportunities</span></div>
+        <div class="marquee-item"><div class="mi-icon">&#129504;</div><span>Expert Mentorship</span></div>
+        <div class="marquee-item"><div class="mi-icon">&#128196;</div><span>Patent Filing Support</span></div>
+        <div class="marquee-item"><div class="mi-icon">&#127941;</div><span>Trophy of Excellence</span></div>
+        <div class="marquee-item"><div class="mi-icon">&#128176;</div><span>Investor Pitching</span></div>
+        <div class="marquee-item"><div class="mi-icon">&#127969;</div><span>Incubation Support</span></div>
+        <div class="marquee-item"><div class="mi-icon">&#127942;</div><span>&#8377;1,00,000 Prize Pool</span></div>
+        <div class="marquee-item"><div class="mi-icon">&#128220;</div><span>Participation Certificate</span></div>
+        <div class="marquee-item"><div class="mi-icon">&#128188;</div><span>Internship Opportunities</span></div>
+        <div class="marquee-item"><div class="mi-icon">&#129504;</div><span>Expert Mentorship</span></div>
+        <div class="marquee-item"><div class="mi-icon">&#128196;</div><span>Patent Filing Support</span></div>
+        <div class="marquee-item"><div class="mi-icon">&#127941;</div><span>Trophy of Excellence</span></div>
+        <div class="marquee-item"><div class="mi-icon">&#128176;</div><span>Investor Pitching</span></div>
+        <div class="marquee-item"><div class="mi-icon">&#127969;</div><span>Incubation Support</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENT STRUCTURE (Sine Wave River) -->
+  <section style="padding:80px 0;background:var(--surface);overflow:hidden;">
+    <div class="container">
+      <h2 class="section-title anim-el fade-up" style="margin-bottom:20px;text-align:center;">EVENT STRUCTURE</h2>
+      <div class="wave-timeline anim-el blur-in del-1" id="waveTimeline">
+        <svg class="wave-svg" id="waveSvg" preserveAspectRatio="none">
+          <defs><linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="rgba(124,58,237,0.3)"/><stop offset="50%" stop-color="rgba(192,38,211,0.5)"/><stop offset="100%" stop-color="rgba(124,58,237,0.3)"/></linearGradient></defs>
+          <path id="wavePath"/>
+        </svg>
+        <div class="wave-row"><div class="wave-node"><h4>Online Rounds</h4><p>Conducted on alternate weekends online</p></div></div>
+        <div class="wave-row"><div class="wave-node"><h4>College Auditions</h4><p>Offline audition rounds in colleges across India</p></div></div>
+        <div class="wave-row"><div class="wave-node"><h4>Limited Slots</h4><p>Only first 25 teams pitch in each category</p></div></div>
+        <div class="wave-row"><div class="wave-node"><h4>Program Duration</h4><p>Runs through second week of September</p></div></div>
+        <div class="wave-row"><div class="wave-node"><h4>Grand Final</h4><p>19th September 2026 — The Ultimate Showdown</p></div></div>
+        <div class="wave-row"><div class="wave-node"><h4>Pan India</h4><p>Cross-college and Pan-India teams welcome</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY ATTEND (Expanding Strips — Unique) -->
+  <section style="padding:80px 0;">
+    <div class="container" style="max-width:800px;">
+      <h2 class="section-title anim-el fade-up" style="margin-bottom:48px;text-align:center;">WHY ATTEND</h2>
+      <div class="expand-strips anim-el blur-in del-1">
+        <div class="ex-strip">
+          <div class="ex-num">01</div>
+          <div class="ex-icon"><i class="fa-solid fa-rocket"></i></div>
+          <div class="ex-body">
+            <div class="ex-title">Pitch to Investors</div>
+            <div class="ex-desc">Present your startup ideas directly to active investors and secure funding opportunities for your venture.</div>
+          </div>
+          <div class="ex-arrow">&#8250;</div>
+        </div>
+        <div class="ex-strip">
+          <div class="ex-num">02</div>
+          <div class="ex-icon"><i class="fa-solid fa-eye"></i></div>
+          <div class="ex-body">
+            <div class="ex-title">Showcase Your Work</div>
+            <div class="ex-desc">Display your innovations, ideas and products to a national audience of industry leaders and peers.</div>
+          </div>
+          <div class="ex-arrow">&#8250;</div>
+        </div>
+        <div class="ex-strip">
+          <div class="ex-num">03</div>
+          <div class="ex-icon"><i class="fa-solid fa-handshake"></i></div>
+          <div class="ex-body">
+            <div class="ex-title">Build Connections</div>
+            <div class="ex-desc">Network with founders, mentors, investors and industry leaders who can accelerate your journey.</div>
+          </div>
+          <div class="ex-arrow">&#8250;</div>
+        </div>
+        <div class="ex-strip">
+          <div class="ex-num">04</div>
+          <div class="ex-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+          <div class="ex-body">
+            <div class="ex-title">Learn from Experts</div>
+            <div class="ex-desc">Gain actionable insights from seasoned entrepreneurs, innovators and domain specialists.</div>
+          </div>
+          <div class="ex-arrow">&#8250;</div>
+        </div>
+        <div class="ex-strip">
+          <div class="ex-num">05</div>
+          <div class="ex-icon"><i class="fa-solid fa-globe"></i></div>
+          <div class="ex-body">
+            <div class="ex-title">Global Opportunities</div>
+            <div class="ex-desc">Explore international startup pathways, global accelerator programs and cross-border partnerships.</div>
+          </div>
+          <div class="ex-arrow">&#8250;</div>
+        </div>
+        <div class="ex-strip">
+          <div class="ex-num">06</div>
+          <div class="ex-icon"><i class="fa-solid fa-trophy"></i></div>
+          <div class="ex-body">
+            <div class="ex-title">Win Big</div>
+            <div class="ex-desc">Compete for cash prizes, trophies, certificates, mentorship slots and incubation opportunities.</div>
+          </div>
+          <div class="ex-arrow">&#8250;</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL EVENT HIGHLIGHTS (Floating Tag Cloud) -->
+  <section style="padding:80px 0;background:var(--surface);">
+    <div class="container">
+      <h2 class="section-title anim-el fade-up" style="margin-bottom:48px;text-align:center;">FINAL EVENT HIGHLIGHTS</h2>
+      <div class="tag-cloud anim-el blur-in del-1">
+        <div class="tag-float lg" style="--dur:3.5s;--del:0s;"><i class="fa-solid fa-microphone-lines"></i> Final Pitching Competition</div>
+        <div class="tag-float outline" style="--dur:4.2s;--del:0.3s;"><i class="fa-solid fa-sack-dollar"></i> Investor Panel</div>
+        <div class="tag-float" style="--dur:3.8s;--del:0.6s;"><i class="fa-solid fa-user-astronaut"></i> Student Founder Panel</div>
+        <div class="tag-float outline lg" style="--dur:4.5s;--del:0.2s;"><i class="fa-solid fa-venus"></i> Women Entrepreneur Panel</div>
+        <div class="tag-float sm" style="--dur:3.2s;--del:0.8s;"><i class="fa-solid fa-rocket"></i> Startup Opportunities</div>
+        <div class="tag-float" style="--dur:4s;--del:0.4s;"><i class="fa-solid fa-people-arrows"></i> Networking Hall</div>
+        <div class="tag-float outline sm" style="--dur:3.6s;--del:0.7s;"><i class="fa-solid fa-chalkboard-user"></i> Mentorship Sessions</div>
+        <div class="tag-float lg" style="--dur:4.3s;--del:0.1s;"><i class="fa-solid fa-shop"></i> Startup Expo</div>
+        <div class="tag-float outline" style="--dur:3.4s;--del:0.5s;"><i class="fa-solid fa-award"></i> Prize Distribution</div>
+        <div class="tag-float" style="--dur:4.1s;--del:0.9s;"><i class="fa-solid fa-users"></i> Ugham Community Launch</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO SHOULD ATTEND (Network Graph Bubbles) -->
+  <section style="padding:80px 0;">
+    <div class="container">
+      <h2 class="section-title anim-el fade-up" style="margin-bottom:48px;text-align:center;">WHO SHOULD ATTEND</h2>
+      <div class="network-wrap anim-el scale-up del-1">
+        <div class="network-node"><div class="network-bubble"><i class="fa-solid fa-rocket"></i></div><h4>Startups &amp;<br>Entrepreneurs</h4></div>
+        <div class="network-node"><div class="network-bubble"><i class="fa-solid fa-user-graduate"></i></div><h4>Students &amp;<br>Innovators</h4></div>
+        <div class="network-node"><div class="network-bubble"><i class="fa-solid fa-sack-dollar"></i></div><h4>Investors</h4></div>
+        <div class="network-node"><div class="network-bubble"><i class="fa-solid fa-building"></i></div><h4>Corporates</h4></div>
+        <div class="network-node"><div class="network-bubble"><i class="fa-solid fa-cubes"></i></div><h4>Incubators</h4></div>
+        <div class="network-node"><div class="network-bubble"><i class="fa-solid fa-landmark"></i></div><h4>Government<br>&amp; Policy</h4></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTNER ECOSYSTEM SECTION -->
+  <div class="ecosystem-section" style="padding: 80px 0 0;">
+    <div class="container">
+      <div class="ecosystem-header">
+        <h2 class="section-title partner-title-glow" style="font-size: clamp(32px, 5vw, 48px); margin-bottom: 20px;">OUR PARTNERS</h2>
+        <p style="color:var(--muted);font-size:18px;max-width:600px;margin:0 auto 50px;">Powered by a network of visionary industry leaders, mentors, and media partners driving the next generation of innovators.</p>
+      </div>
+    </div>
+    
+    <div class="ecosystem-track-container" style="mask-image:none;-webkit-mask-image:none;">
+      <!-- Track 1: Industry -->
+      <div class="ecosystem-track-wrapper">
+        <div class="ecosystem-track-title"><i class="fa-solid fa-building-columns"></i> Industry Collaborators</div>
+        <div class="ecosystem-track-3 pan-left">
+          <div class="partner-ghost"><i class="fa-solid fa-building"></i></div>
+          <div class="partner-ghost"><i class="fa-solid fa-industry"></i></div>
+          <div class="partner-ghost"><i class="fa-solid fa-network-wired"></i></div>
+        </div>
+      </div>
+
+      <!-- Track 2: Mentors -->
+      <div class="ecosystem-track-wrapper">
+        <div class="ecosystem-track-title" style="right: auto; left: 20px;"><i class="fa-solid fa-user-tie"></i> Mentor Partners</div>
+        <div class="ecosystem-track-3 pan-right">
+          <div class="partner-ghost"><i class="fa-solid fa-chalkboard-user"></i></div>
+          <div class="partner-ghost"><i class="fa-solid fa-handshake-angle"></i></div>
+          <div class="partner-ghost"><i class="fa-solid fa-lightbulb"></i></div>
+        </div>
+      </div>
+
+      <!-- Track 3: Media -->
+      <div class="ecosystem-track-wrapper">
+        <div class="ecosystem-track-title"><i class="fa-solid fa-bullhorn"></i> Media Partners</div>
+        <div class="ecosystem-track-3 pan-left" style="animation-duration: 15s;">
+          <div class="partner-ghost"><i class="fa-solid fa-newspaper"></i></div>
+          <div class="partner-ghost"><i class="fa-solid fa-podcast"></i></div>
+          <div class="partner-ghost"><i class="fa-solid fa-video"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!-- FLOATING REGISTER BTN -->
+  <a href="#registration-form" id="floatingRegisterBtn" class="floating-btn">
+    Register Now <i class="fa-solid fa-arrow-down fa-bounce"></i>
+  </a>
+
+  <!-- REGISTRATION FORM SECTION -->
+		<div id="successOverlay" class="fixed inset-0 z-[100] hidden flex flex-col items-center justify-center bg-white/90 backdrop-blur-2xl p-4 overflow-hidden">
+			<div class="absolute inset-0 opacity-40 pointer-events-none" style="background-image: radial-gradient(#e2e2e7 1px, transparent 1px); background-size: 40px 40px;"></div>
+
+			<div id="paymentLoader" class="relative flex flex-col items-center transition-all duration-500">
+				<div class="relative h-24 w-24">
+					<svg class="absolute inset-0 h-full w-full opacity-20 text-zinc-300" viewBox="0 0 100 100">
+						<circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="8" />
+					</svg>
+					<svg class="absolute inset-0 h-full w-full text-zinc-900 animate-spin" viewBox="0 0 100 100" style="animation-duration: 1.5s;">
+						<circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-dasharray="70 200" />
+					</svg>
+				</div>
+				<p id="statusMessage" class="mt-6 text-sm font-bold uppercase tracking-[0.3em] text-zinc-800 animate-pulse">
+					Processing Payment
+				</p>
+			</div>
+
+			<div id="successCard" class="relative hidden w-full max-w-md rounded-[2.5rem] border border-zinc-200 bg-gradient-to-br from-white to-zinc-50 p-10 text-center shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)] transition-all duration-700 ease-out scale-95 opacity-0">
+				
+				<div class="absolute inset-0 rounded-[2.5rem] pointer-events-none overflow-hidden">
+					<div class="absolute inset-0 opacity-30 animate-[shimmer_4s_infinite]" style="background: linear-gradient(110deg, transparent 0%, transparent 40%, #ffffff 50%, transparent 60%, transparent 100%); background-size: 200% 100%;"></div>
+				</div>
+
+				<div class="relative mx-auto mb-8 flex h-24 w-24 items-center justify-center">
+					<div class="absolute inset-0 animate-ping rounded-full bg-zinc-200 duration-[2000ms]"></div>
+					<div class="relative flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-b from-zinc-800 to-black shadow-[0_10px_20px_rgba(0,0,0,0.2)]">
+						<svg class="h-10 w-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="4">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+						</svg>
+					</div>
+				</div>
+
+				<h2 class="text-4xl font-[900] text-transparent bg-clip-text bg-gradient-to-b from-zinc-900 to-zinc-600 uppercase tracking-tight">
+					Success
+				</h2>
+				<p class="mt-2 text-zinc-500 font-medium tracking-wide">Hackathon entry authorized.</p>
+
+				<div class="mt-8 relative group text-left">
+					<div class="absolute -inset-0.5 bg-gradient-to-r from-zinc-200 to-zinc-400 rounded-2xl blur opacity-30"></div>
+					<div class="relative space-y-4 bg-white/80 backdrop-blur-md p-6 rounded-2xl border border-zinc-200/50">
+						<div class="flex justify-between items-center">
+							<p class="text-xs uppercase tracking-[0.2em] text-zinc-400">Amount Paid</p>
+							<p id="successAmount" class="text-xl font-bold text-zinc-900 font-mono">₹0</p>
+						</div>
+						<div class="h-[1px] w-full bg-zinc-100"></div>
+						<div class="flex justify-between items-center">
+							<p class="text-xs uppercase tracking-[0.2em] text-zinc-400">Reg Id</p>
+							<p id="successID" class="text-[10px] font-mono text-zinc-600 bg-zinc-100 px-2 py-1 rounded">#---</p>
+						</div>
+					</div>
+				</div>
+
+				<button onclick="location.reload()" class="group relative mt-10 w-full overflow-hidden rounded-xl bg-zinc-900 py-4 font-black uppercase tracking-widest text-white transition-all hover:shadow-[0_10px_30px_rgba(0,0,0,0.2)] active:scale-95">
+					<span class="relative z-10">Return to Page</span>
+				</button>
+			</div>
+		</div>
+
+		<style>
+			#successOverlay:not(.hidden) #successCard {
+				transform: scale(1);
+				opacity: 1;
+			}
+
+			@keyframes shimmer {
+				0% { background-position: -200% 0; }
+				100% { background-position: 200% 0; }
+			}
+
+			@keyframes checkBounce {
+				0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+				70% { transform: scale(1.2) rotate(5deg); }
+				100% { transform: scale(1) rotate(0); opacity: 1; }
+			}
+		</style>
+
+    <section id="register" class="relative px-4 py-24 sm:px-6 lg:py-32 overflow-hidden bg-slate-950 text-white">
+      <div class="absolute -left-20 top-0 h-96 w-96 rounded-full bg-blue-700 opacity-20 blur-[140px]"></div>
+      <div class="absolute -right-20 bottom-0 h-96 w-96 rounded-full bg-magenta-600 opacity-20 blur-[140px]" style="background-color: #D600A4;"></div>
+
+      <div class="relative z-10 mx-auto max-w-7xl">
+        <div class="mb-16 border-l-8 pl-8" style="border-image: linear-gradient(to bottom, #0000FF, #7B00FF, #D600A4) 1;">
+          <h2 class="mt-4 text-4xl sm:text-7xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 uppercase">
+            Registration.
+          </h2>
+          <p class="mt-4 text-slate-400 font-medium tracking-wide">Idea & Prototype Pitch Entry Form</p>
+        </div>
+
+        <div class="mb-12 grid gap-6 md:grid-cols-2">
+          <div class="group relative overflow-hidden rounded-3xl border border-slate-800 bg-slate-900/50 backdrop-blur-md p-8 transition-all duration-300 hover:border-purple-500 hover:shadow-[0_0_30px_rgba(123,0,255,0.2)]">
+            <div class="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-purple-600/5 transition-colors group-hover:bg-purple-600/10"></div>
+            <div class="relative z-10">
+              <span class="inline-block rounded-full bg-gradient-to-r from-blue-600 to-purple-600 px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-white">
+                Category 01
+              </span>
+              <h3 class="mt-4 text-2xl font-black uppercase tracking-tighter text-white">Idea Pitch</h3>
+              <div class="mt-6 flex items-baseline gap-1">
+                <span class="text-4xl font-black text-white">₹249</span>
+                <span class="text-xs font-bold uppercase tracking-widest text-slate-400">/ Per Member</span>
+              </div>
+              <p class="mt-2 text-xs font-medium text-slate-400 italic">For early-stage conceptual innovations</p>
+            </div>
+          </div>
+
+          <div class="group relative overflow-hidden rounded-3xl border border-purple-500/3xl bg-gradient-to-br from-slate-900 via-purple-950 to-slate-900 p-8 transition-all duration-300 hover:shadow-[0_0_35px_rgba(214,0,164,0.25)]">
+            <div class="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-white/5 transition-colors group-hover:bg-white/10"></div>
+            <div class="relative z-10">
+              <span class="inline-block rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-white">
+                Category 02
+              </span>
+              <h3 class="mt-4 text-2xl font-black uppercase tracking-tighter text-white">Prototype Pitch</h3>
+              <div class="mt-6 flex items-baseline gap-1">
+                <span class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">₹299</span>
+                <span class="text-xs font-bold uppercase tracking-widest text-slate-300">/ Per Member</span>
+              </div>
+              <p class="mt-2 text-xs font-medium text-slate-300 italic">For working models & MVP presentations</p>
+            </div>
+          </div>
+        </div>
+
+        <form id="registrationForm" class="rounded-[2rem] border border-slate-800 bg-slate-900/40 p-8 shadow-2xl backdrop-blur-xl sm:p-12">
+          <div class="grid gap-16 lg:grid-cols-2">
+            
+            <div class="space-y-12">
+              <section class="space-y-10">
+                <h3 class="text-sm font-black uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 border-b border-slate-800 pb-4">
+                  01. Team Identity
+                </h3>
+                
+                <div class="grid gap-8 sm:grid-cols-2">
+                  <div class="relative group sm:col-span-2">
+                    <input type="text" id="college" name="college" required class="peer w-full bg-transparent border-b-2 border-slate-700 py-3 outline-none focus:border-purple-500 transition-all placeholder-transparent text-white" placeholder="College">
+                    <label for="college" class="absolute left-0 -top-3.5 text-[10px] font-black uppercase tracking-widest text-slate-400 transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-purple-400">College / Institution Name</label>
+                  </div>
+
+                  <div class="relative group sm:col-span-2">
+                    <input type="text" id="teamName" name="teamName" required class="peer w-full bg-transparent border-b-2 border-slate-700 py-3 outline-none focus:border-purple-500 transition-all placeholder-transparent text-white font-bold" placeholder="Team Name">
+                    <label for="teamName" class="absolute left-0 -top-3.5 text-[10px] font-black uppercase tracking-widest text-slate-400 transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-purple-400">Team Name</label>
+                  </div>
+
+                  <div class="relative group">
+                    <input type="text" id="leaderName" name="leaderName" required class="peer w-full bg-transparent border-b-2 border-slate-700 py-3 outline-none focus:border-purple-500 transition-all placeholder-transparent text-white" placeholder="Full Name">
+                    <label for="leaderName" class="absolute left-0 -top-3.5 text-[10px] font-black uppercase tracking-widest text-slate-400 transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-purple-400">Leader Full Name</label>
+                  </div>
+
+                  <div class="relative group">
+                    <input type="tel" id="phone" name="phone" required class="peer w-full bg-transparent border-b-2 border-slate-700 py-3 outline-none focus:border-purple-500 transition-all placeholder-transparent text-white" placeholder="WhatsApp">
+                    <label for="phone" class="absolute left-0 -top-3.5 text-[10px] font-black uppercase tracking-widest text-slate-400 transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-purple-400">WhatsApp Number</label>
+                  </div>
+
+                  <div class="relative group sm:col-span-2">
+                    <input type="email" id="email" name="email" required class="peer w-full bg-transparent border-b-2 border-slate-700 py-3 outline-none focus:border-purple-500 transition-all placeholder-transparent text-white" placeholder="Email">
+                    <label for="email" class="absolute left-0 -top-3.5 text-[10px] font-black uppercase tracking-widest text-slate-400 transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-purple-400">Email Address</label>
+                  </div>
+
+                  <div class="relative group">
+                    <input type="text" id="dept" name="dept" required class="peer w-full bg-transparent border-b-2 border-slate-700 py-3 outline-none focus:border-purple-500 transition-all placeholder-transparent text-white" placeholder="Dept">
+                    <label for="dept" class="absolute left-0 -top-3.5 text-[10px] font-black uppercase tracking-widest text-slate-400 transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-purple-400">Department / Course</label>
+                  </div>
+
+                  <div class="relative group">
+                    <select id="yearOfStudy" name="yearOfStudy" class="w-full bg-transparent border-b-2 border-slate-700 py-3 outline-none focus:border-purple-500 transition-all text-sm font-bold appearance-none cursor-pointer text-white">
+                      <option value="" disabled selected class="bg-slate-900 text-slate-400">Year of Study</option>
+                      <option class="bg-slate-900 text-white">1st Year</option>
+                      <option class="bg-slate-900 text-white">2nd Year</option>
+                      <option class="bg-slate-900 text-white">3rd Year</option>
+                      <option class="bg-slate-900 text-white">Final Year</option>
+                    </select>
+                  </div>
+
+                  <div class="relative group">
+                    <input type="text" id="city" name="city" required class="peer w-full bg-transparent border-b-2 border-slate-700 py-3 outline-none focus:border-purple-500 transition-all placeholder-transparent text-white" placeholder="City">
+                    <label for="city" class="absolute left-0 -top-3.5 text-[10px] font-black uppercase tracking-widest text-slate-400 transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-purple-400">City</label>
+                  </div>
+
+                  <div class="relative group">
+                    <select id="teamSize" name="teamSize" onchange="toggleMemberFields(this.value)" class="w-full bg-transparent border-b-2 border-slate-700 py-3 outline-none focus:border-purple-500 transition-all text-sm font-black appearance-none cursor-pointer text-white">
+                      <option value="2" selected class="bg-slate-900 text-white">2 Members</option>
+                      <option value="3" class="bg-slate-900 text-white">3 Members</option>
+                      <option value="4" class="bg-slate-900 text-white">4 Members</option>
+                      <option value="5" class="bg-slate-900 text-white">5 Members</option>
+                    </select>
+                  </div>
+                </div>
+              </section>
+
+              <section id="dynamicMembersContainer" class="space-y-6"></section>
+            </div>
+
+            <div class="space-y-12">
+              <section class="space-y-8">
+                <h3 class="text-sm font-black uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 border-b border-slate-800 pb-4">
+                  02. Project Details
+                </h3>
+                
+                <div class="grid gap-8">
+                  <div class="flex gap-4">
+                    <label class="flex-1 cursor-pointer">
+                      <input type="radio" name="category" value="Ideathon" class="peer sr-only" required>
+                      <div class="p-4 border-2 border-slate-800 rounded-xl peer-checked:border-blue-600 peer-checked:bg-gradient-to-r peer-checked:from-blue-600 peer-checked:to-purple-600 peer-checked:text-white transition-all text-center font-black uppercase text-xs text-slate-400">
+                        Ideathon
+                      </div>
+                    </label>
+                    <label class="flex-1 cursor-pointer">
+                      <input type="radio" name="category" value="Project Pitch" class="peer sr-only">
+                      <div class="p-4 border-2 border-slate-800 rounded-xl peer-checked:border-pink-600 peer-checked:bg-gradient-to-r peer-checked:from-purple-600 peer-checked:to-pink-600 peer-checked:text-white transition-all text-center font-black uppercase text-xs text-slate-400">
+                        Project Pitch
+                      </div>
+                    </label>
+                  </div>
+
+                  <div class="relative group">
+                    <input type="text" id="projectTitle" name="projectTitle" required class="peer w-full bg-transparent border-b-2 border-slate-700 py-3 outline-none focus:border-purple-500 transition-all placeholder-transparent text-white" placeholder="Title">
+                    <label for="projectTitle" class="absolute left-0 -top-3.5 text-[10px] font-black uppercase tracking-widest text-slate-400 transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-purple-400">Title of Idea / Project</label>
+                  </div>
+
+                  <div class="relative">
+                    <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-2">Select Presentation Date</label>
+                    <div class="flex items-center border-b-2 border-slate-700 focus-within:border-purple-500 py-2">
+                      <input type="text" id="eventDate" name="eventDate" readonly class="w-full bg-transparent outline-none text-sm font-bold cursor-pointer text-white" placeholder="Choose Date">
+                      <button type="button" onclick="document.getElementById('calOverlay').classList.toggle('hidden')" class="hover:bg-slate-800 p-2 rounded-full transition-colors text-slate-400 hover:text-white">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-width="2"/></svg>
+                      </button>
+                    </div>
+                    <div id="calOverlay" class="hidden absolute z-50 mt-2 w-full bg-slate-900 border border-slate-800 shadow-2xl rounded-2xl p-4 grid grid-cols-2 gap-2 animate-in fade-in slide-in-from-top-2 overflow-y-auto max-h-64 custom-scrollbar">
+                      <button type="button" onclick="pickDate('May 09')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase">May 09</button>
+                      <button type="button" onclick="pickDate('May 10')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase">May 10</button>
+                      <button type="button" onclick="pickDate('May 23')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase">May 23</button>
+                      <button type="button" onclick="pickDate('May 24')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase">May 24</button>
+                      
+                      <button type="button" onclick="pickDate('June 06')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase">June 06</button>
+                      <button type="button" onclick="pickDate('June 07')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase">June 07</button>
+                      <button type="button" onclick="pickDate('June 20')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase">June 20</button>
+                      <button type="button" onclick="pickDate('June 21')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase">June 21</button>
+                      
+                      <button type="button" onclick="pickDate('July 04')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase">July 04</button>
+                      <button type="button" onclick="pickDate('July 05')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase">July 05</button>
+                      <button type="button" onclick="pickDate('July 18')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase">July 18</button>
+                      <button type="button" onclick="pickDate('July 19')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase">July 19</button>
+                      
+                      <button type="button" onclick="pickDate('Aug 01')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase">Aug 01</button>
+                      <button type="button" onclick="pickDate('Aug 02')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase">Aug 02</button>
+                      <button type="button" onclick="pickDate('Aug 15')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase">Aug 15</button>
+                      <button type="button" onclick="pickDate('Aug 16')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase">Aug 16</button>
+                      <button type="button" onclick="pickDate('Aug 29')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase">Aug 29</button>
+                      <button type="button" onclick="pickDate('Aug 30')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase">Aug 30</button>
+                      
+                      <button type="button" onclick="pickDate('Sept 12')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase">Sept 12</button>
+                      <button type="button" onclick="pickDate('Sept 13')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase">Sept 13</button>
+                    </div>
+                  </div>
+
+                  <div class="relative group">
+                    <input type="text" id="referralCode" name="referralCode" class="peer w-full bg-transparent border-b-2 border-slate-700 py-3 outline-none focus:border-purple-500 transition-all placeholder-transparent text-white" placeholder="Referral Code">
+                    <label for="referralCode" class="absolute left-0 -top-3.5 text-[10px] font-black uppercase tracking-widest text-slate-400 transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-purple-400">
+                      Referral Code (Optional)
+                    </label>
+                  </div>
+                </div>
+              </section>
+
+              <div class="relative overflow-hidden bg-gradient-to-br from-blue-950 via-slate-900 to-purple-950 p-8 rounded-[1.5rem] border border-purple-500/3xl shadow-2xl text-white">
+                <div class="flex justify-between items-center border-b border-white/10 pb-6">
+                  <div>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Checkout</p>
+                    <p id="calcBreakdown" class="text-xs text-slate-300 mt-1 italic">₹0 x 0 members</p>
+                  </div>
+                  <p id="totalAmount" class="text-4xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">₹0</p>
+                </div>
+                
+                <button type="button" id="payBtn" class="mt-8 w-full bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white py-5 rounded-xl font-black uppercase tracking-widest hover:opacity-90 active:scale-[0.98] transition-all shadow-[0_4px_20px_rgba(123,0,255,0.3)]">
+                  Pay & Register
+                </button>
+              </div>
+            </div>
+            
+          </div>
+        </form>
+      </div>
+    </section>
+
+		<script>
+			// Logic for Dynamic Member Input Fields
+			function toggleMemberFields(size) {
+
+				const container =
+					document.getElementById('dynamicMembersContainer');
+
+				container.innerHTML = "";
+
+				size = parseInt(size);
+
+				// Start from Member 2 (Leader is Member 1)
+
+				for (let i = 2; i <= size; i++) {
+
+					const memberDiv =
+						document.createElement('div');
+
+            memberDiv.className =
+                "p-6 border border-slate-800 rounded-2xl bg-slate-900/40 backdrop-blur-md animate-in fade-in slide-in-from-left duration-500";
+
+            memberDiv.innerHTML = `
+                <p class="text-[10px] font-black uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 mb-4">
+                    Member ${i}
+                </p>
+
+                <div class="grid gap-4 sm:grid-cols-2">
+
+                    <input
+                        type="text"
+                        id="memberName${i}"
+                        placeholder="Name"
+                        class="w-full bg-slate-950/60 border border-slate-800 p-3 rounded-lg text-xs text-white outline-none focus:border-purple-500 transition-all placeholder-slate-500"
+                    >
+
+                    <input
+                        type="tel"
+                        id="memberPhone${i}"
+                        placeholder="Phone"
+                        class="w-full bg-slate-950/60 border border-slate-800 p-3 rounded-lg text-xs text-white outline-none focus:border-purple-500 transition-all placeholder-slate-500"
+                    >
+
+                    <input
+                        type="email"
+                        id="memberEmail${i}"
+                        placeholder="Email"
+                        class="w-full bg-slate-950/60 border border-slate-800 p-3 rounded-lg text-xs text-white outline-none focus:border-purple-500 transition-all placeholder-slate-500 sm:col-span-2"
+                    >
+
+                    <input
+                        type="text"
+                        id="memberDept${i}"
+                        placeholder="Department"
+                        class="w-full bg-slate-950/60 border border-slate-800 p-3 rounded-lg text-xs text-white outline-none focus:border-purple-500 transition-all placeholder-slate-500 sm:col-span-2"
+                    >
+
+                </div>
+            `;
+
+					container.appendChild(memberDiv);
+
+				}
+
+				updatePricing();
+
+			}
+
+			// Date Picker Logic
+			function pickDate(val) {
+				document.getElementById('eventDate').value = val;
+				document.getElementById('calOverlay').classList.add('hidden');
+			}
+
+			// Real-time Pricing Logic
+			function updatePricing() {
+				const size = parseInt(document.getElementById('teamSize').value) || 0;
+				const category = document.querySelector('input[name="category"]:checked')?.value;
+				const rate = category === "Ideathon" ? 150 : 200;
+				const total = size * rate;
+				
+				document.getElementById('totalAmount').innerText = `₹${total}`;
+				document.getElementById('calcBreakdown').innerText = size > 0 && category ? `${category}: ₹${rate} x ${size}` : "Select category & size";
+			}
+
+			// Attach listeners
+			document.getElementsByName('category').forEach(el => el.addEventListener('change', updatePricing));
+
+
+			// Run default team size on page load
+			window.addEventListener("DOMContentLoaded", () => {
+
+				const teamSizeSelect =
+					document.getElementById("teamSize");
+
+				const defaultSize =
+					parseInt(teamSizeSelect.value);
+
+				toggleMemberFields(defaultSize);
+
+			});
+
+		</script>
+
+    <script src="assets/js/registration.js"></script>
+
+
+
+
+
+  <!-- CONTACT CTA STRIP -->
+  <div class="cta-contact-strip" style="background:var(--grad);padding:60px 0;text-align:center;position:relative;overflow:hidden;">
+    <div class="cta-glow-orb" style="position:absolute;top:-50px;left:20%;width:200px;height:200px;background:rgba(255,255,255,0.08);border-radius:50%;"></div>
+    <div class="cta-glow-orb" style="position:absolute;bottom:-50px;right:15%;width:150px;height:150px;background:rgba(255,255,255,0.06);border-radius:50%;"></div>
+    <div class="container" style="position:relative;z-index:1;">
+      <h3 style="color:white;font-size:clamp(24px,4vw,36px);font-weight:900;margin-bottom:16px;font-family:'Outfit',sans-serif;">Any Queries? Contact Us!</h3>
+      <p style="color:rgba(255,255,255,0.85);font-size:18px;margin-bottom:30px;">We are here to help. Get in touch with our team today.</p>
+      <a href="contact.html" class="btn-primary" style="background:white;color:var(--primary);font-weight:800;padding:18px 40px;font-size:16px;box-shadow:0 10px 30px rgba(0,0,0,0.2);">Contact Us &#8250;</a>
+    </div>
+  </div>
+
+  <footer style="background:var(--bg);padding:20px 0 30px;border-top:1px solid var(--border);position:relative;">
+    <div class="container" style="position:relative;z-index:1;">
+      <div class="grid-4" style="margin-bottom:40px;">
+        <div><a href="index.html" style="display:inline-block;text-decoration:none;"><img src="assets/img/logo.png" alt="Ugham" style="height:80px;margin-bottom:16px;object-fit:contain;"></a><p style="color:var(--muted);font-size:14px;">Where Evolution Starts.<br>Learn. Build. Grow.</p></div>
+        <div><h4 style="text-transform:uppercase;letter-spacing:1px;font-size:13px;color:var(--muted);margin-bottom:20px;">Explore</h4><ul style="list-style:none;display:flex;flex-direction:column;gap:14px;"><li><a href="about.html" style="color:var(--text);text-decoration:none;font-size:15px;font-weight:500;">About Us</a></li><li><a href="what-we-do.html" style="color:var(--text);text-decoration:none;font-size:15px;font-weight:500;">What We Do</a></li><li><a href="collaboration.html" style="color:var(--text);text-decoration:none;font-size:15px;font-weight:500;">Collaboration</a></li><li><a href="awards.html" style="color:var(--text);text-decoration:none;font-size:15px;font-weight:500;">UGHAM INNOVATION AWARDS</a></li></ul></div>
+        <div><h4 style="text-transform:uppercase;letter-spacing:1px;font-size:13px;color:var(--muted);margin-bottom:20px;">Contact</h4><ul style="list-style:none;display:flex;flex-direction:column;gap:14px;color:var(--muted);font-size:15px;"><li>info@ugham.com</li><li>+91 86678 39838</li><li>www.ugham.com</li></ul></div>
+        <div><h4 style="text-transform:uppercase;letter-spacing:1px;font-size:13px;color:var(--muted);margin-bottom:20px;">Get Started</h4><a href="contact.html" class="btn-primary" style="padding:14px 28px;font-size:14px;">Connect With Us</a></div>
+      </div>
+      <div style="border-top:1px solid var(--border);padding-top:20px;text-align:center;color:var(--muted);font-size:13px;"><p>&copy; 2026 Ugham Innovation Studio. All rights reserved.</p></div>
+    </div>
+  </footer>
+
+
+  <script src="assets/js/main.js?v=344"></script>
+
+
+
+  <script>
+  // Spotlight mouse tracking
+  function moveSpot(e, el) {
+    const r = el.getBoundingClientRect();
+    el.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+    el.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+  }
+
+  // Sine Wave SVG path generator
+  function drawWaveSvg() {
+    const tl = document.getElementById('waveTimeline');
+    const svg = document.getElementById('waveSvg');
+    const path = document.getElementById('wavePath');
+    if (!tl || !svg || !path) return;
+    const rows = tl.querySelectorAll('.wave-row');
+    if (rows.length < 2) return;
+    svg.setAttribute('width', tl.offsetWidth);
+    svg.setAttribute('height', tl.offsetHeight);
+    let d = '';
+    rows.forEach((row, i) => {
+      const node = row.querySelector('.wave-node');
+      const rect = node.getBoundingClientRect();
+      const tlRect = tl.getBoundingClientRect();
+      const cx = rect.left - tlRect.left + rect.width / 2;
+      const cy = rect.top - tlRect.top + rect.height / 2;
+      if (i === 0) d += `M ${cx} ${cy}`;
+      else { 
+        const prev = rows[i-1].querySelector('.wave-node');
+        const pr = prev.getBoundingClientRect();
+        const px = pr.left - tlRect.left + pr.width / 2;
+        const py = pr.top - tlRect.top + pr.height / 2;
+        const mx = (px + cx) / 2;
+        d += ` C ${mx} ${py}, ${mx} ${cy}, ${cx} ${cy}`;
+      }
+    });
+    path.setAttribute('d', d);
+  }
+  setTimeout(drawWaveSvg, 500);
+  window.addEventListener('resize', drawWaveSvg);
+
+  // StarField — Purple + Golden falling stars
+  const sfCanvas = document.getElementById('starField');
+  if (sfCanvas) {
+    const ctx = sfCanvas.getContext('2d');
+    let w, h;
+    const stars = [];
+    
+    function resizeSF() {
+      w = sfCanvas.width = window.innerWidth;
+      h = sfCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeSF);
+    resizeSF();
+
+    // Create mixed purple + golden falling stars
+    for (let i = 0; i < 100; i++) {
+      const isGolden = Math.random() > 0.6;
+      stars.push({
+        x: Math.random() * w, y: Math.random() * h,
+        vy: Math.random() * 0.8 + 0.2,
+        vx: (Math.random() - 0.5) * 0.2,
+        size: Math.random() * 2.5 + 0.5,
+        alpha: Math.random() * 0.5 + 0.1,
+        pulse: Math.random() * Math.PI * 2,
+        color: isGolden ? [245,158,11] : (Math.random() > 0.5 ? [124,58,237] : [192,38,211])
+      });
+    }
+
+    function drawStars() {
+      ctx.clearRect(0, 0, w, h);
+      const t = Date.now() * 0.001;
+
+      stars.forEach(s => {
+        s.y += s.vy;
+        s.x += s.vx + Math.sin(t + s.pulse) * 0.1;
+        if (s.y > h + 10) { s.y = -10; s.x = Math.random() * w; }
+        if (s.x < 0) s.x = w;
+        if (s.x > w) s.x = 0;
+        
+        const twinkle = (Math.sin(t * 2.5 + s.pulse) * 0.4 + 0.6) * s.alpha;
+        
+        // Star core
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${s.color[0]},${s.color[1]},${s.color[2]},${twinkle})`;
+        ctx.fill();
+        
+        // Glow
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size * 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${s.color[0]},${s.color[1]},${s.color[2]},${twinkle * 0.12})`;
+        ctx.fill();
+        
+        // Tiny trail
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y);
+        ctx.lineTo(s.x - s.vx * 3, s.y - s.vy * 6);
+        ctx.strokeStyle = `rgba(${s.color[0]},${s.color[1]},${s.color[2]},${twinkle * 0.3})`;
+        ctx.lineWidth = s.size * 0.5;
+        ctx.stroke();
+      });
+
+      requestAnimationFrame(drawStars);
+    }
+    drawStars();
+  }
+  </script>
+
+
+
+  <script>
+  // Real stars falling (all pages)
+  const rs=document.getElementById('realStars');
+  if(rs){const rc=rs.getContext('2d');let rw,rh;const st=[];
+  function rsz(){rw=rs.width=window.innerWidth;rh=rs.height=window.innerHeight}
+  window.addEventListener('resize',rsz);rsz();
+  for(let i=0;i<30;i++)st.push({x:Math.random()*rw,y:Math.random()*rh,s:Math.random()*1.5+0.5,vy:Math.random()*0.4+0.1,a:Math.random()*0.4+0.1});
+  function drs(){rc.clearRect(0,0,rw,rh);st.forEach(s=>{s.y+=s.vy;if(s.y>rh){s.y=-5;s.x=Math.random()*rw}
+  rc.beginPath();rc.arc(s.x,s.y,s.s,0,Math.PI*2);
+  rc.fillStyle=`rgba(255,255,255,${s.a*0.5})`;rc.fill();
+  rc.beginPath();rc.arc(s.x,s.y,s.s*2,0,Math.PI*2);
+  rc.fillStyle=`rgba(200,180,255,${s.a*0.15})`;rc.fill()});
+  requestAnimationFrame(drs)}drs()}
+  </script>
+</body>
+
+</html>

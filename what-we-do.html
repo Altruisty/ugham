@@ -1,0 +1,260 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What We Do &mdash; Ugham</title>
+<meta name="description" content="Discover how Ugham empowers students through education, innovation enabling, product building and venture creation.">
+<link rel="stylesheet" href="assets/css/style.css?v=344">
+</head><body>
+<div id="page-transition" class="page-transition-overlay"></div>
+<canvas id="liquidFog"></canvas>
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" style="display:flex;align-items:center;text-decoration:none;">
+      <img src="assets/img/logo.png" alt="Ugham" style="height:90px;object-fit:contain;transform:scale(1.1);">
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="what-we-do.html">What We Do</a></li>
+      <li><a href="collaboration.html">Collaboration</a></li>
+      <li><a href="awards.html">UGHAM INNOVATION AWARDS</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="#" class="nav-login">Login</a></li>
+    </ul>
+    <button class="menu-toggle" id="menuToggle" aria-label="Menu">&#9776;</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero" style="text-align:center;">
+  <div class="hero-glow glow-1"></div>
+  <div class="hero-glow glow-2"></div>
+  <div class="container page-hero-content">
+<h1 class="huge-text hero-evolution anim-el scale-up del-1" style="margin-bottom:24px;">What We Do</h1>
+    <p class="anim-el warp-in del-2" style="font-size:20px;color:var(--muted);max-width:680px;margin:0 auto;">At Ugham, we turn ideas into reality, working closely with students to help them learn, build, and grow into creators of meaningful solutions.</p>
+  </div>
+</section>
+
+<!-- SERVICES (Accordion) -->
+<div class="section-flow" style="padding:100px 0;position:relative;background:var(--bg);">
+  <div class="container">
+    <div class="grid-2 align-center">
+      
+      <!-- Left Content (Accordions) -->
+      <div>
+        <h2 class="section-title anim-el clip-reveal" style="margin-bottom:40px;">SERVICES</h2>
+        <div class="accordion-item anim-el unfold del-1">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <div class="acc-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+            <h4>EDUCATION EMPOWERMENT</h4>
+            <i class="fa-solid fa-plus" style="color:var(--muted);"></i>
+          </div>
+          <div class="accordion-body"><div class="accordion-body-inner">We equip students with the right mindset, skills, and tools to think creatively and solve real-world problems.</div></div>
+        </div>
+        <div class="accordion-item anim-el unfold del-2">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <div class="acc-icon"><i class="fa-solid fa-lightbulb"></i></div>
+            <h4>INNOVATION ENABLING</h4>
+            <i class="fa-solid fa-plus" style="color:var(--muted);"></i>
+          </div>
+          <div class="accordion-body"><div class="accordion-body-inner">We create an ecosystem that nurtures experimentation, critical thinking, and breakthrough ideas.</div></div>
+        </div>
+        <div class="accordion-item anim-el unfold del-3">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <div class="acc-icon"><i class="fa-solid fa-hammer"></i></div>
+            <h4>PRODUCT BUILDING</h4>
+            <i class="fa-solid fa-plus" style="color:var(--muted);"></i>
+          </div>
+          <div class="accordion-body"><div class="accordion-body-inner">We help transform ideas into tangible products through structured guidance, mentorship, and hands-on support.</div></div>
+        </div>
+        <div class="accordion-item anim-el unfold del-4">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <div class="acc-icon"><i class="fa-solid fa-rocket"></i></div>
+            <h4>VENTURE CREATION</h4>
+            <i class="fa-solid fa-plus" style="color:var(--muted);"></i>
+          </div>
+          <div class="accordion-body"><div class="accordion-body-inner">We support students in shaping their innovations into scalable startups and sustainable ventures.</div></div>
+        </div>
+      </div>
+
+      <!-- Right UI (Floating Tech Stack) -->
+      <div class="services-ui-stack anim-el fade-up del-2">
+        <div class="tech-card tc-1"><i class="fa-solid fa-brain"></i> Ideation Hub</div>
+        <div class="tech-card tc-2"><i class="fa-solid fa-layer-group"></i> Prototyping</div>
+        <div class="tech-card tc-3"><i class="fa-solid fa-chart-pie"></i> Market Scaling</div>
+        <!-- Decorative connecting lines SVG -->
+        <svg style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:-1;opacity:0.2;">
+          <path d="M 150 100 Q 300 200 250 350" stroke="#c026d3" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+          <path d="M 350 250 Q 200 300 150 100" stroke="#7c3aed" stroke-width="2" fill="none" stroke-dasharray="5,5"/>
+        </svg>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- TILTED WORKSHOP PHOTO -->
+<div class="container anim-el warp-in" style="padding:40px 0;">
+  <div class="grid-2" style="align-items:center;gap:48px;">
+    <div class="photo-tilt">
+      <img src="assets/img/final_photo_1.jpg" alt="Ugham Workshop">
+    </div>
+    <div class="photo-stacked">
+      <img src="assets/img/final_photo_2.jpg" alt="Hands On Training">
+    </div>
+  </div>
+</div>
+
+<!-- THE UGHAM ROADMAP (Zigzag Path) -->
+<div class="section-flow" style="padding:100px 0;position:relative;">
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="text-center anim-el warp-in" style="margin-bottom:60px;">
+      <h2 class="section-title">THE UGHAM ROADMAP</h2>
+      <p style="color:var(--primary);font-weight:700;font-size:20px;margin-top:12px;">Learn &rarr; Build &rarr; Grow</p>
+    </div>
+    <div class="zigzag-path anim-el stagger-rise del-1">
+      <div class="zigzag-node">
+        <div class="zigzag-marker">L</div>
+        <div class="zigzag-content">
+          <h4>LEARN</h4>
+          <p>Develop knowledge, explore ideas, and understand real-world challenges through structured learning programs</p>
+        </div>
+      </div>
+      <div class="zigzag-node">
+        <div class="zigzag-marker">B</div>
+        <div class="zigzag-content">
+          <h4>BUILD</h4>
+          <p>Turn ideas into prototypes through guided execution, iteration, and hands-on mentorship support</p>
+        </div>
+      </div>
+      <div class="zigzag-node">
+        <div class="zigzag-marker">G</div>
+        <div class="zigzag-content">
+          <h4>GROW</h4>
+          <p>Scale innovations into impactful solutions, startups, or ventures with ecosystem and investor access</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHO WE SERVE (Spotlight Cards) -->
+<div class="section-flow" style="padding:80px 0 120px;position:relative;">
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="text-center anim-el clip-reveal" style="margin-bottom:60px;">
+      <h2 class="section-title">WHO WE SERVE</h2>
+    </div>
+    <div class="spotlight-grid">
+      <div class="spotlight-card anim-el warp-in del-1">
+        <div class="sc-number">01</div>
+        <div class="sc-icon"><i class="fa-solid fa-user-graduate"></i></div>
+        <h4>Curious Students</h4>
+        <p>Students driven by ideas and curiosity who are looking for the right platform to start their journey.</p>
+      </div>
+      <div class="spotlight-card anim-el warp-in del-2">
+        <div class="sc-number">02</div>
+        <div class="sc-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+        <h4>Aspiring Innovators</h4>
+        <p>Problem-solvers wanting to learn the skills to turn complex challenges into elegant solutions.</p>
+      </div>
+      <div class="spotlight-card anim-el warp-in del-3">
+        <div class="sc-number">03</div>
+        <div class="sc-icon"><i class="fa-solid fa-compass"></i></div>
+        <h4>Early Stage Builders</h4>
+        <p>Founders and builders in the early stages who need direction, mentorship, and a structured path.</p>
+      </div>
+      <div class="spotlight-card anim-el warp-in del-4">
+        <div class="sc-number">04</div>
+        <div class="sc-icon"><i class="fa-solid fa-bullseye"></i></div>
+        <h4>Young Entrepreneurs</h4>
+        <p>Driven individuals aiming to create lasting impact and scale their innovations into real ventures.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- CONTACT CTA STRIP -->
+<div class="cta-contact-strip" style="background:var(--grad);padding:60px 0;text-align:center;position:relative;overflow:hidden;">
+  <div class="cta-glow-orb" style="position:absolute;top:-50px;left:20%;width:200px;height:200px;background:rgba(255,255,255,0.08);border-radius:50%;"></div>
+  <div class="cta-glow-orb" style="position:absolute;bottom:-50px;right:15%;width:150px;height:150px;background:rgba(255,255,255,0.06);border-radius:50%;"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <h3 style="color:white;font-size:clamp(24px,4vw,36px);font-weight:900;margin-bottom:16px;font-family:'Outfit',sans-serif;">Any Queries? Contact Us!</h3>
+    <p style="color:rgba(255,255,255,0.85);font-size:18px;margin-bottom:30px;">We are here to help. Get in touch with our team today.</p>
+    <a href="contact.html" class="btn-primary" style="background:white;color:var(--primary);font-weight:800;padding:18px 40px;font-size:16px;box-shadow:0 10px 30px rgba(0,0,0,0.2);">Contact Us &#8250;</a>
+  </div>
+</div>
+
+<footer style="background:var(--bg);padding:20px 0 30px;border-top:1px solid var(--border);margin-top:40px;position:relative;">
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="grid-4" style="margin-bottom:40px;">
+      <div><a href="index.html" style="display:inline-block;text-decoration:none;"><img src="assets/img/logo.png" alt="Ugham" style="height:80px;margin-bottom:16px;object-fit:contain;"></a><p style="color:var(--muted);font-size:14px;">Where Evolution Starts.<br>Learn. Build. Grow.</p></div>
+      <div><h4 style="text-transform:uppercase;letter-spacing:1px;font-size:13px;color:var(--muted);margin-bottom:20px;">Explore</h4><ul style="list-style:none;display:flex;flex-direction:column;gap:14px;"><li><a href="about.html" style="color:var(--text);text-decoration:none;font-size:15px;font-weight:500;">About Us</a></li><li><a href="what-we-do.html" style="color:var(--text);text-decoration:none;font-size:15px;font-weight:500;">What We Do</a></li><li><a href="collaboration.html" style="color:var(--text);text-decoration:none;font-size:15px;font-weight:500;">Collaboration</a></li><li><a href="awards.html" style="color:var(--text);text-decoration:none;font-size:15px;font-weight:500;">UGHAM INNOVATION AWARDS</a></li></ul></div>
+      <div><h4 style="text-transform:uppercase;letter-spacing:1px;font-size:13px;color:var(--muted);margin-bottom:20px;">Contact</h4><ul style="list-style:none;display:flex;flex-direction:column;gap:14px;color:var(--muted);font-size:15px;"><li>info@ugham.com</li><li>+91 86678 39838</li><li>www.ugham.com</li></ul></div>
+      <div><h4 style="text-transform:uppercase;letter-spacing:1px;font-size:13px;color:var(--muted);margin-bottom:20px;">Get Started</h4><a href="contact.html" class="btn-primary" style="padding:14px 28px;font-size:14px;">Connect With Us</a></div>
+    </div>
+    <div style="border-top:1px solid var(--border);padding-top:20px;text-align:center;color:var(--muted);font-size:13px;"><p>&copy; 2026 Ugham Innovation Studio. All rights reserved.</p></div>
+  </div>
+</footer>
+<script src="assets/js/main.js?v=344"></script>
+<script>
+function toggleAccordion(header) {
+  const item = header.parentElement;
+  const body = item.querySelector('.accordion-body');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.accordion-item.open').forEach(i => { i.classList.remove('open'); i.querySelector('.accordion-body').style.maxHeight = '0'; });
+  if (!isOpen) { item.classList.add('open'); body.style.maxHeight = body.scrollHeight + 'px'; }
+}
+
+// LiquidFog + Dynamic Orbs BG
+const fogCanvas = document.getElementById('liquidFog');
+if (fogCanvas) {
+  const ctx = fogCanvas.getContext('2d');
+  let w, h, t = 0;
+  const orbs = [];
+  
+  function resizeFog() {
+    w = fogCanvas.width = window.innerWidth;
+    h = fogCanvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeFog);
+  resizeFog();
+
+  // Create dynamic orbs
+  for (let i = 0; i < 6; i++) {
+    orbs.push({
+      x: Math.random() * w, y: Math.random() * h,
+      r: Math.random() * 200 + 100,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
+      color: i % 3 === 0 ? [124,58,237] : i % 3 === 1 ? [192,38,211] : [67,56,202],
+      phase: Math.random() * Math.PI * 2
+    });
+  }
+
+  function drawFog() {
+    ctx.clearRect(0, 0, w, h);
+    t += 0.003;
+
+    orbs.forEach(o => {
+      o.x += o.vx + Math.sin(t + o.phase) * 0.3;
+      o.y += o.vy + Math.cos(t + o.phase) * 0.3;
+      if (o.x < -o.r) o.x = w + o.r;
+      if (o.x > w + o.r) o.x = -o.r;
+      if (o.y < -o.r) o.y = h + o.r;
+      if (o.y > h + o.r) o.y = -o.r;
+
+      const pulse = Math.sin(t * 2 + o.phase) * 0.3 + 0.7;
+      const grad = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, o.r * pulse);
+      grad.addColorStop(0, `rgba(${o.color[0]},${o.color[1]},${o.color[2]},0.06)`);
+      grad.addColorStop(0.5, `rgba(${o.color[0]},${o.color[1]},${o.color[2]},0.02)`);
+      grad.addColorStop(1, 'transparent');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, w, h);
+    });
+
+    requestAnimationFrame(drawFog);
+  }
+  drawFog();
+}
+</script>
+</body></html>

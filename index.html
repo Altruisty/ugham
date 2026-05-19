@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home &mdash; Ugham</title>
+<meta name="description" content="Ugham is an innovation studio that transforms ideas into real-world solutions.">
+<link rel="stylesheet" href="assets/css/style.css?v=344">
+</head>
+<body><div id="page-transition" class="page-transition-overlay"></div>
+<div class="bg-icons-container">
+  <div class="bg-icon" style="top:10%;left:15%;animation-duration:15s;animation-delay:0s;"><i class="fa-solid fa-rocket"></i></div>
+  <div class="bg-icon" style="top:25%;right:20%;animation-duration:20s;animation-delay:2s;"><i class="fa-solid fa-lightbulb"></i></div>
+  <div class="bg-icon" style="top:60%;left:10%;animation-duration:18s;animation-delay:4s;"><i class="fa-solid fa-brain"></i></div>
+  <div class="bg-icon" style="top:80%;right:15%;animation-duration:22s;animation-delay:1s;"><i class="fa-solid fa-code"></i></div>
+  <div class="bg-icon" style="top:40%;left:30%;animation-duration:19s;animation-delay:3s;"><i class="fa-solid fa-chart-line"></i></div>
+  <div class="bg-icon" style="top:50%;right:35%;animation-duration:17s;animation-delay:5s;"><i class="fa-solid fa-microchip"></i></div>
+  <div class="bg-icon" style="top:85%;left:40%;animation-duration:21s;animation-delay:0.5s;"><i class="fa-solid fa-earth-americas"></i></div>
+  <div class="bg-icon" style="top:15%;right:40%;animation-duration:16s;animation-delay:2.5s;"><i class="fa-solid fa-seedling"></i></div>
+</div>
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" style="display:flex;align-items:center;text-decoration:none;">
+      <img src="assets/img/logo.png" alt="Ugham" style="height:90px;object-fit:contain;transform:scale(1.1);">
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="what-we-do.html">What We Do</a></li>
+      <li><a href="collaboration.html">Collaboration</a></li>
+      <li><a href="awards.html">UGHAM INNOVATION AWARDS</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="#" class="nav-login">Login</a></li>
+    </ul>
+    <button class="menu-toggle" id="menuToggle">&#9776;</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero" style="padding:220px 0 120px;position:relative;overflow:hidden;">
+  <div class="container text-center" style="position:relative;z-index:1;">
+<h1 class="huge-text hero-evolution anim-el scale-up del-1" style="margin-bottom:24px;">Where Evolution<br>Starts</h1>
+    <p class="anim-el slide-up-fade del-2" style="font-size:clamp(28px, 4vw, 48px);font-weight:900;font-family:'Outfit',sans-serif;margin:0 auto 16px;text-align:center;color:#ffffff;-webkit-text-fill-color:#ffffff;text-shadow:0 2px 25px rgba(192,38,211,0.6), 0 0 10px rgba(0,0,0,0.5);letter-spacing:2px;">Learn. Build. Grow.</p>
+    <p class="anim-el slide-up-fade del-3" style="font-size:20px;color:var(--muted);max-width:680px;margin:0 auto 40px;">Ugham transforms ideas into real-world solutions, guiding students from concept to creation through ideation, development, and scaling.</p>
+    <div class="anim-el fade-up del-4" style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap;">
+      <a href="contact.html" class="btn-primary">Get Started &#8250;</a>
+      <a href="about.html" class="btn-primary">Learn More</a>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US (Enhanced Orbit — overflow fixed, 6 pips) -->
+<section style="padding:100px 0;background:rgba(255,255,255,0.4);position:relative;overflow:hidden;">
+  <div class="container text-center">
+    <h2 class="section-title anim-el fade-up">WHY US</h2>
+    <p class="anim-el fade-up del-1" style="font-size:17px;color:var(--muted);margin:0 auto 60px;line-height:1.9;max-width:800px;">Most ideas never move beyond imagination. Ugham bridges that gap by providing the right ecosystem with mentorship, resources, and opportunities to turn ideas into impactful innovations.</p>
+    
+    <div class="orbit-center-layout anim-el scale-in del-2">
+      <div class="orbit-side side-left">
+        <div class="side-item anim-el slide-right del-3"><i class="fa-solid fa-graduation-cap"></i><p>Expert Mentorship</p></div>
+        <div class="side-item anim-el slide-right del-4"><i class="fa-solid fa-rocket"></i><p>Rapid Prototyping</p></div>
+      </div>
+      <div class="orbit-center-wrapper orbit-enhanced">
+        <div class="orbit-ring orbit-ring-1"></div>
+        <div class="orbit-ring orbit-ring-2"></div>
+        <div class="orbit-ring orbit-ring-3"></div>
+        <div class="orbit-pip pip-1"></div>
+        <div class="orbit-pip pip-2"></div>
+        <div class="orbit-pip pip-3"></div>
+        <div class="orbit-pip pip-4"></div>
+        <div class="orbit-pip pip-5"></div>
+        <div class="orbit-pip pip-6"></div>
+        <canvas id="orbitCanvas" width="420" height="420" style="max-width:100%;"></canvas>
+      </div>
+      <div class="orbit-side side-right">
+        <div class="side-item anim-el slide-left del-3"><i class="fa-solid fa-sack-dollar"></i><p>Investment Access</p></div>
+        <div class="side-item anim-el slide-left del-4"><i class="fa-solid fa-network-wired"></i><p>Global Ecosystem</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CORE EXPERTISE -->
+<section style="padding:100px 0;">
+  <div class="container">
+    <div class="text-center anim-el fade-up" style="margin-bottom:60px;">
+      <h2 class="section-title">OUR CORE EXPERTISE</h2>
+    </div>
+    <div class="grid-4">
+      <div class="expertise-v2 anim-el flip-in-y del-1"><div class="ev2-icon"><i class="fa-solid fa-graduation-cap"></i></div><h4>Education Empowerment</h4><p>Developing problem-solving and innovation mindset</p></div>
+      <div class="expertise-v2 anim-el flip-in-y del-2"><div class="ev2-icon"><i class="fa-solid fa-lightbulb"></i></div><h4>Innovation Enabling</h4><p>Supporting idea validation and structured execution</p></div>
+      <div class="expertise-v2 anim-el flip-in-y del-3"><div class="ev2-icon"><i class="fa-solid fa-hammer"></i></div><h4>Product Building</h4><p>Turning concepts into functional real-world solutions</p></div>
+      <div class="expertise-v2 anim-el flip-in-y del-4"><div class="ev2-icon"><i class="fa-solid fa-rocket"></i></div><h4>Venture Creation</h4><p>Helping ideas grow into scalable ventures</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- KEYNOTE BANNER -->
+<div class="anim-el fade-up" style="position:relative;z-index:1;">
+  <div class="photo-hero-banner">
+    <img src="assets/img/keynote-1.jpg" alt="Ugham Keynote Session">
+    <div class="banner-overlay"></div>
+    <div class="banner-content">
+      <h3>Empowering Student Innovators</h3>
+      <p>From packed auditoriums to one-on-one mentorship, Ugham creates the ecosystem where ideas transform into impactful solutions.</p>
+      <a href="about.html" class="btn-banner">Discover Our Story &#8250;</a>
+    </div>
+  </div>
+</div>
+
+<!-- HOW UGHAM WORKS (GlowBeam + Side Canvas) -->
+<section style="padding:100px 0;background:rgba(255,255,255,0.4);position:relative;overflow:hidden;">
+  <div class="holo-bg" style="opacity:0.3;"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="text-center anim-el slide-down" style="margin-bottom:40px;">
+      <h2 class="section-title">HOW UGHAM WORKS</h2>
+      <p style="color:var(--muted);margin-top:12px;font-size:17px;">Your innovation journey follows a structured path</p>
+    </div>
+    <div class="works-split">
+      <div class="glow-beam-wrap anim-el blur-in del-1">
+        <div class="glow-beam-line"></div>
+        <div class="glow-beam-node"><div class="glow-beam-dot">1</div><div class="glow-beam-info"><h4>Learn</h4><p>Master core concepts, explore problem spaces, and develop the innovation mindset.</p></div></div>
+        <div class="glow-beam-node"><div class="glow-beam-dot">2</div><div class="glow-beam-info"><h4>Ideate</h4><p>Transform observations into actionable ideas through structured brainstorming.</p></div></div>
+        <div class="glow-beam-node"><div class="glow-beam-dot">3</div><div class="glow-beam-info"><h4>Build</h4><p>Turn validated ideas into working prototypes with expert mentorship.</p></div></div>
+        <div class="glow-beam-node"><div class="glow-beam-dot">4</div><div class="glow-beam-info"><h4>Scale</h4><p>Develop prototypes into scalable solutions with business modeling.</p></div></div>
+        <div class="glow-beam-node"><div class="glow-beam-dot">5</div><div class="glow-beam-info"><h4>Launch</h4><p>Deploy your innovation with ecosystem support and growth acceleration.</p></div></div>
+      </div>
+      <canvas id="worksCanvas" class="anim-el blur-in del-2"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM BANNER -->
+<div class="anim-el scale-up" style="position:relative;z-index:1;">
+    <div class="section-side-anim left-anim"><img src="assets/img/logo.png" alt="" style="width:150px;"></div>
+    <div class="section-side-anim right-anim"><img src="assets/img/logo.png" alt="" style="width:120px;animation-direction:reverse;animation-duration:25s;"></div>
+  <div class="photo-hero-banner">
+    <img src="assets/img/team-1.jpg" alt="Ugham Team">
+    <div class="banner-overlay"></div>
+    <div class="banner-content">
+      <h3>Building the Future Together</h3>
+      <p>A passionate community of innovators, mentors, and changemakers driving the next wave of student led ventures.</p>
+      <a href="collaboration.html" class="btn-banner">Create community with us in your college &#8250;</a>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT YOU CAN BUILD (Bento Grid) -->
+<section style="padding:100px 0;">
+  <div class="container">
+    <div class="text-center anim-el fade-up" style="margin-bottom:48px;">
+      <h2 class="section-title">WHAT YOU CAN BUILD</h2>
+      <p style="color:var(--muted);margin:12px auto 0;max-width:600px;font-size:17px;">From concept to product — here's what innovators create with Ugham</p>
+    </div>
+    <div class="bento-grid anim-el blur-in del-1">
+      <div class="bento-card span-2">
+        <div class="bn-icon"><i class="fa-solid fa-box-open"></i></div>
+        <h4>Innovative Products</h4>
+        <p>Hardware and software solutions that solve pressing real-world problems with creativity and technical depth</p>
+      </div>
+      <div class="bento-card span-2">
+        <div class="bn-icon"><i class="fa-solid fa-microchip"></i></div>
+        <h4>Tech Driven Solutions</h4>
+        <p>AI, IoT, blockchain and emerging tech applications designed to disrupt traditional industries</p>
+      </div>
+      <div class="bento-card">
+        <div class="bn-icon"><i class="fa-solid fa-chart-line"></i></div>
+        <h4>Scalable Innovations</h4>
+        <p>Solutions built for growth</p>
+      </div>
+      <div class="bento-card span-2">
+        <div class="bn-icon"><i class="fa-solid fa-earth-americas"></i></div>
+        <h4>Real World Impact Projects</h4>
+        <p>Community-focused initiatives addressing healthcare, education, sustainability, and social equity</p>
+      </div>
+      <div class="bento-card">
+        <div class="bn-icon"><i class="fa-solid fa-flask-vial"></i></div>
+        <h4>Research Projects</h4>
+        <p>Deep-dive explorations</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUR IMPACT (Animated Grid) -->
+<section style="padding:100px 0;background:rgba(124,58,237,0.03);">
+  <div class="container">
+    <div class="text-center anim-el fade-up" style="margin-bottom:12px;">
+      <h2 class="section-title">OUR IMPACT</h2>
+      <p style="color:var(--muted);margin:12px auto 48px;max-width:600px;font-size:17px;">We are building a generation of creators, thinkers, and innovators.</p>
+    </div>
+    <div class="flow-steps anim-el blur-in del-1" style="max-width:600px;">
+      <div class="flow-step"><div class="flow-dot"><i class="fa-solid fa-brain" style="font-size:18px"></i></div><div class="flow-body"><h4>Beyond Theory</h4><p>Empowering students to think beyond textbooks and apply knowledge to real challenges</p></div></div>
+      <div class="flow-step" style="flex-direction:row-reverse"><div class="flow-dot"><i class="fa-solid fa-puzzle-piece" style="font-size:18px"></i></div><div class="flow-body" style="text-align:right"><h4>Problem Solving</h4><p>Enabling real-world problem solving through structured innovation frameworks</p></div></div>
+      <div class="flow-step"><div class="flow-dot"><i class="fa-solid fa-map-location-dot" style="font-size:18px"></i></div><div class="flow-body"><h4>Idea to Execution</h4><p>Supporting the journey from idea to execution of left over projects in events</p></div></div>
+      <div class="flow-step" style="flex-direction:row-reverse"><div class="flow-dot"><i class="fa-solid fa-seedling" style="font-size:18px"></i></div><div class="flow-body" style="text-align:right"><h4>Growth Catalyst</h4><p>Creating opportunities for sustained growth and innovation in every student</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- UGHAM INNOVATION CLUB (Kanban Board) -->
+<section style="padding:100px 0;">
+  <div class="container">
+    <div class="text-center anim-el fade-up" style="margin-bottom:48px;">
+      <h2 class="section-title">UGHAM INNOVATION CLUB</h2>
+      <p style="color:var(--muted);margin:12px auto 0;font-size:17px;">What happens inside the innovation club that powers student success</p>
+    </div>
+    <div class="kanban-board anim-el blur-in del-1">
+      <div class="kanban-col">
+        <div class="kc-header">Activities</div>
+        <div class="kanban-card purple">
+          <h4>Innovation Competitions</h4>
+          <p>Programs and challenges that push boundaries and reward creative thinking</p>
+          
+        </div>
+        <div class="kanban-card magenta">
+          <h4>Hands On Workshops</h4>
+          <p>Masterclasses and practical sessions led by industry experts</p>
+          
+        </div>
+      </div>
+      <div class="kanban-col">
+        <div class="kc-header">Growth</div>
+        <div class="kanban-card blue">
+          <h4>Development Tracks</h4>
+          <p>Mentorship driven development paths tailored to individual goals</p>
+          
+        </div>
+        <div class="kanban-card teal">
+          <h4>Ecosystem Connections</h4>
+          <p>Connect with incubation centers, mentors, and active investors</p>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW YOU CAN GET STARTED (Flowchart) -->
+<section style="padding:100px 0;background:rgba(124,58,237,0.03);">
+  <div class="container">
+    <div class="text-center anim-el fade-up" style="margin-bottom:48px;">
+      <h2 class="section-title">HOW YOU CAN GET STARTED</h2>
+      <p style="color:var(--muted);margin:12px auto 0;max-width:600px;font-size:17px;">Your innovation journey in four steps</p>
+    </div>
+    <div class="flow-steps anim-el blur-in del-1">
+      <div class="flow-step"><div class="flow-dot">1</div><div class="flow-body"><h4>Start the Club</h4><p>Launch Ugham Innovation Club in your college and rally fellow innovators to join the movement</p></div></div>
+      <div class="flow-step"><div class="flow-dot">2</div><div class="flow-body"><h4>Share Your Idea</h4><p>Present your concept, pitch your vision, or express interest in club activities and programs</p></div></div>
+      <div class="flow-step"><div class="flow-dot">3</div><div class="flow-body"><h4>Collaborate &amp; Learn</h4><p>Work with mentors, peers, and industry experts to refine and validate your innovation</p></div></div>
+      <div class="flow-step"><div class="flow-dot">4</div><div class="flow-body"><h4>Build Your Innovation</h4><p>Start building, iterating, and scaling your innovation into a real-world solution</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNER ECOSYSTEM SECTION -->
+<div class="ecosystem-section" style="padding: 80px 0 0;">
+  <div class="container">
+    <div class="ecosystem-header">
+      <h2 class="section-title partner-title-glow" style="font-size: clamp(32px, 5vw, 48px); margin-bottom: 20px;">OUR PARTNERS</h2>
+      <p style="color:var(--muted);font-size:18px;max-width:600px;margin:0 auto 50px;">Powered by a network of visionary industry leaders, mentors, and media partners driving the next generation of innovators.</p>
+    </div>
+  </div>
+  
+  <div class="ecosystem-track-container" style="mask-image:none;-webkit-mask-image:none;">
+    <!-- Track 1: Industry -->
+    <div class="ecosystem-track-wrapper">
+      <div class="ecosystem-track-title"><i class="fa-solid fa-building-columns"></i> Industry Collaborators</div>
+      <div class="ecosystem-track-3 pan-left">
+        <div class="partner-ghost"><i class="fa-solid fa-building"></i></div>
+        <div class="partner-ghost"><i class="fa-solid fa-industry"></i></div>
+        <div class="partner-ghost"><i class="fa-solid fa-network-wired"></i></div>
+      </div>
+    </div>
+
+    <!-- Track 2: Mentors -->
+    <div class="ecosystem-track-wrapper">
+      <div class="ecosystem-track-title" style="right: auto; left: 20px;"><i class="fa-solid fa-user-tie"></i> Mentor Partners</div>
+      <div class="ecosystem-track-3 pan-right">
+        <div class="partner-ghost"><i class="fa-solid fa-chalkboard-user"></i></div>
+        <div class="partner-ghost"><i class="fa-solid fa-handshake-angle"></i></div>
+        <div class="partner-ghost"><i class="fa-solid fa-lightbulb"></i></div>
+      </div>
+    </div>
+
+    <!-- Track 3: Media -->
+    <div class="ecosystem-track-wrapper">
+      <div class="ecosystem-track-title"><i class="fa-solid fa-bullhorn"></i> Media Partners</div>
+      <div class="ecosystem-track-3 pan-left" style="animation-duration: 15s;">
+        <div class="partner-ghost"><i class="fa-solid fa-newspaper"></i></div>
+        <div class="partner-ghost"><i class="fa-solid fa-podcast"></i></div>
+        <div class="partner-ghost"><i class="fa-solid fa-video"></i></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- CONTACT CTA STRIP -->
+<div class="cta-contact-strip" style="background:var(--grad);padding:60px 0;text-align:center;position:relative;overflow:hidden;">
+  <div class="cta-glow-orb" style="position:absolute;top:-50px;left:20%;width:200px;height:200px;background:rgba(255,255,255,0.08);border-radius:50%;"></div>
+  <div class="cta-glow-orb" style="position:absolute;bottom:-50px;right:15%;width:150px;height:150px;background:rgba(255,255,255,0.06);border-radius:50%;"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <h3 style="color:white;font-size:clamp(24px,4vw,36px);font-weight:900;margin-bottom:16px;font-family:'Outfit',sans-serif;">Any Queries? Contact Us!</h3>
+    <p style="color:rgba(255,255,255,0.85);font-size:18px;margin-bottom:30px;">We are here to help. Get in touch with our team today.</p>
+    <a href="contact.html" class="btn-primary" style="background:white;color:var(--primary);font-weight:800;padding:18px 40px;font-size:16px;box-shadow:0 10px 30px rgba(0,0,0,0.2);">Contact Us &#8250;</a>
+  </div>
+</div>
+
+<footer style="background:var(--bg);padding:20px 0 30px;border-top:1px solid var(--border);position:relative;">
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="grid-4" style="margin-bottom:40px;">
+      <div><a href="index.html" style="display:inline-block;text-decoration:none;"><img src="assets/img/logo.png" alt="Ugham" style="height:80px;margin-bottom:16px;object-fit:contain;"></a><p style="color:var(--muted);font-size:14px;">Where Evolution Starts.<br>Learn. Build. Grow.</p></div>
+      <div><h4 style="text-transform:uppercase;letter-spacing:1px;font-size:13px;color:var(--muted);margin-bottom:20px;">Explore</h4><ul style="list-style:none;display:flex;flex-direction:column;gap:14px;"><li><a href="about.html" style="color:var(--text);text-decoration:none;font-size:15px;font-weight:500;">About Us</a></li><li><a href="what-we-do.html" style="color:var(--text);text-decoration:none;font-size:15px;font-weight:500;">What We Do</a></li><li><a href="collaboration.html" style="color:var(--text);text-decoration:none;font-size:15px;font-weight:500;">Collaboration</a></li><li><a href="awards.html" style="color:var(--text);text-decoration:none;font-size:15px;font-weight:500;">UGHAM INNOVATION AWARDS</a></li></ul></div>
+      <div><h4 style="text-transform:uppercase;letter-spacing:1px;font-size:13px;color:var(--muted);margin-bottom:20px;">Contact</h4><ul style="list-style:none;display:flex;flex-direction:column;gap:14px;color:var(--muted);font-size:15px;"><li>info@ugham.com</li><li>+91 86678 39838</li><li>www.ugham.com</li></ul></div>
+      <div><h4 style="text-transform:uppercase;letter-spacing:1px;font-size:13px;color:var(--muted);margin-bottom:20px;">Get Started</h4><a href="contact.html" class="btn-primary" style="padding:14px 28px;font-size:14px;">Connect With Us</a></div>
+    </div>
+    <div style="border-top:1px solid var(--border);padding-top:20px;text-align:center;color:var(--muted);font-size:13px;"><p>&copy; 2026 Ugham Innovation Studio. All rights reserved.</p></div>
+  </div>
+</footer>
+<script src="assets/js/main.js?v=344"></script>
+<script>
+// Bento Card 3D Tilt
+document.querySelectorAll('.bento-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    card.style.transform = `perspective(800px) rotateY(${x * 12}deg) rotateX(${-y * 12}deg) scale(1.02)`;
+    card.style.boxShadow = `${-x * 20}px ${y * 20}px 40px rgba(124,58,237,0.1)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+    card.style.boxShadow = '';
+  });
+});
+
+// Works Canvas — Particle funnel with animated arrows
+const wCanvas = document.getElementById('worksCanvas');
+if (wCanvas && window.innerWidth > 900) {
+  const ctx = wCanvas.getContext('2d');
+  wCanvas.width = wCanvas.offsetWidth * 2;
+  wCanvas.height = wCanvas.offsetHeight * 2;
+  ctx.scale(2, 2);
+  const w = wCanvas.offsetWidth, h = wCanvas.offsetHeight;
+  const particles = [];
+  for (let i = 0; i < 40; i++) {
+    particles.push({ x: Math.random() * w, y: Math.random() * h, vy: Math.random() * 1.5 + 0.5, size: Math.random() * 3 + 1, alpha: Math.random() * 0.5 + 0.2, phase: Math.random() * Math.PI * 2 });
+  }
+  const stages = ['Learn', 'Ideate', 'Build', 'Scale', 'Launch'];
+
+  function drawArrow(ctx, x, y, size, bounce) {
+    ctx.save();
+    ctx.translate(x, y + bounce);
+    ctx.beginPath();
+    ctx.moveTo(-size, -size * 0.6);
+    ctx.lineTo(0, size * 0.6);
+    ctx.lineTo(size, -size * 0.6);
+    ctx.strokeStyle = 'rgba(124,58,237,0.35)';
+    ctx.lineWidth = 2.5;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawWorks() {
+    ctx.clearRect(0, 0, w, h);
+    const t = Date.now() * 0.001;
+    stages.forEach((s, i) => {
+      const y = (h / 6) * (i + 0.8);
+      const xc = w / 2;
+      const spread = (w * 0.4) * (1 - i * 0.18);
+      ctx.beginPath();
+      ctx.moveTo(xc - spread, y);
+      ctx.lineTo(xc + spread, y);
+      ctx.strokeStyle = `rgba(124,58,237,${0.08 + i * 0.03})`;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.fillStyle = `rgba(124,58,237,${0.35 + i * 0.12})`;
+      ctx.font = '700 13px Outfit';
+      ctx.textAlign = 'center';
+      ctx.fillText(s, xc, y - 10);
+      // Animated arrows between stages
+      if (i < stages.length - 1) {
+        const nextY = (h / 6) * (i + 1.8);
+        const midY = (y + nextY) / 2;
+        const bounce = Math.sin(t * 2 + i) * 4;
+        drawArrow(ctx, xc - 30, midY, 8, bounce);
+        drawArrow(ctx, xc, midY, 8, bounce + 2);
+        drawArrow(ctx, xc + 30, midY, 8, bounce - 1);
+      }
+    });
+    // Particles
+    particles.forEach(p => {
+      p.y += p.vy;
+      p.x += Math.sin(t * 2 + p.phase) * 0.5;
+      const progress = p.y / h;
+      const xCenter = w / 2;
+      const maxSpread = w * 0.4 * (1 - progress * 0.8);
+      if (p.x < xCenter - maxSpread) p.x = xCenter - maxSpread;
+      if (p.x > xCenter + maxSpread) p.x = xCenter + maxSpread;
+      if (p.y > h) { p.y = 0; p.x = w / 2 + (Math.random() - 0.5) * w * 0.7; }
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      const hue = progress > 0.5 ? [192, 38, 211] : [124, 58, 237];
+      ctx.fillStyle = `rgba(${hue[0]},${hue[1]},${hue[2]},${p.alpha * (0.5 + progress * 0.5)})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(drawWorks);
+  }
+  drawWorks();
+}
+</script>
+</body></html>

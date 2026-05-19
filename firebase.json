@@ -1,0 +1,15 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "*.py",
+      "cache_bust.py",
+      "generate_homepage.py",
+      "regen_pages.py",
+      "update_logo.py"
+    ]
+  }
+}
