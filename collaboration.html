@@ -3,6 +3,148 @@
 <title>Collaboration &mdash; Ugham</title>
 <meta name="description" content="Partner with Ugham to empower the next generation of innovators.">
 <link rel="stylesheet" href="assets/css/style.css?v=344">
+
+<style>
+/* Collaboration Animations - Horizontal Glide */
+@keyframes floatBadgeCollab {
+  0% { transform: translateX(-15px) translateY(5px); }
+  50% { transform: translateX(15px) translateY(-5px); }
+  100% { transform: translateX(-15px) translateY(5px); }
+}
+.floating-badge { animation: floatBadgeCollab 6s ease-in-out infinite !important; }
+.floating-badge.badge-1 { animation-duration: 5s !important; }
+.floating-badge.badge-2 { animation-duration: 7s !important; }
+.floating-badge.badge-3 { animation-duration: 6.5s !important; }
+.floating-badge.badge-4 { animation-duration: 5.5s !important; }
+
+/* Partner Marquee Styles */
+.partner-marquee-container {
+  position: relative;
+  width: 100vw;
+  max-width: 100%;
+  overflow: hidden;
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 20px 0;
+}
+
+.partner-track-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.track-badge {
+  align-self: flex-start;
+  margin-left: 5%;
+  background: var(--bg);
+  color: var(--primary);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-weight: 800;
+  font-size: 15px;
+  margin-bottom: 20px;
+  z-index: 10;
+  box-shadow: 0 4px 15px rgba(124,58,237,0.1);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.marquee-content {
+  display: flex;
+  width: max-content;
+}
+
+.marquee-group {
+  display: flex;
+  gap: 30px;
+  padding-right: 30px;
+}
+
+.scroll-left {
+  animation: scrollMarqueeLeft 35s linear infinite;
+}
+.scroll-right {
+  transform: translateX(-50%);
+  animation: scrollMarqueeRight 40s linear infinite;
+}
+
+.marquee-content:hover {
+  animation-play-state: paused;
+}
+
+.partner-logo-box {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(124, 58, 237, 0.15);
+  border-radius: 24px;
+  padding: 25px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 130px;
+  min-width: 280px;
+  box-shadow: 0 10px 30px rgba(124, 58, 237, 0.05);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+}
+
+.partner-logo-box:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 20px 40px rgba(124, 58, 237, 0.2);
+  border-color: rgba(124, 58, 237, 0.5);
+  background: rgba(255, 255, 255, 1);
+}
+
+.partner-logo-box img {
+  max-width: 180px;
+  max-height: 80px;
+  object-fit: contain;
+  filter: none !important;
+  opacity: 1 !important;
+  transition: transform 0.4s ease;
+}
+
+.partner-logo-box:hover img {
+  filter: none !important;
+  opacity: 1 !important;
+  transform: scale(1.08);
+}
+
+.partner-marquee-container::before,
+.partner-marquee-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 15vw;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+.partner-marquee-container::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg) 0%, transparent 100%);
+}
+.partner-marquee-container::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg) 0%, transparent 100%);
+}
+
+@keyframes scrollMarqueeLeft {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes scrollMarqueeRight {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+</style>
 </head><body>
 <div id="page-transition" class="page-transition-overlay"></div>
 <canvas id="neuralCanvas"></canvas>
@@ -25,14 +167,40 @@
 </nav>
 
 <!-- HERO -->
-<section class="page-hero" style="text-align:center;">
-  <div class="hero-glow glow-1"></div>
-  <div class="hero-glow glow-2"></div>
-  <div class="container page-hero-content">
-<h1 class="huge-text hero-evolution anim-el scale-up del-1" style="margin-bottom:24px;">Collaboration</h1>
-    <p class="anim-el slide-up-fade del-2" style="font-size:20px;color:var(--muted);max-width:700px;margin:0 auto;">At Ugham, innovation grows through collaboration. We partner with institutions, industry leaders, incubators, investors, and experts to empower the next generation of innovators.</p>
+
+<section class="split-hero">
+  <div class="split-hero-container">
+    <div class="split-hero-left">
+      <h1 class="split-hero-title anim-el slide-right">Partner With <span class="highlight">Us.</span><br>Grow <span class="highlight">Together.</span></h1>
+      <p class="split-hero-desc anim-el slide-right del-1">At Ugham, innovation grows through collaboration. We partner with colleges, investors, and mentors to foster a rich ecosystem.</p>
+      <div class="split-hero-buttons anim-el slide-right del-2">
+        <a href="#mentor" class="btn-primary-solid">Join as Mentor &rarr;</a>
+        <a href="contact.html" class="btn-secondary-outline">Partner With Us</a>
+      </div>
+    </div>
+    <div class="split-hero-right anim-el scale-up del-1">
+      <div class="split-hero-image-wrapper">
+        <img src="assets/img/hero_handshake.png" alt="Hero Graphic">
+        
+        <div class="floating-badge badge-1"><i class="fa-solid fa-handshake-angle"></i> PARTNER</div>
+<div class="floating-badge badge-2"><i class="fa-solid fa-building-columns"></i> INSTITUTE</div>
+<div class="floating-badge badge-3"><i class="fa-solid fa-industry"></i> INDUSTRY</div>
+<div class="floating-badge badge-4"><i class="fa-solid fa-seedling"></i> INCUBATE</div>
+
+      </div>
+    </div>
   </div>
+</div>
+
+  
+<div class="split-hero-bottom-curve">
+  <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+    <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V0C50.62,19.24,115.54,34.42,175.5,45.87,224.23,55.19,274.67,61.1,321.39,56.44Z" class="shape-fill"></path>
+  </svg>
+</div>
+
 </section>
+
 
 <!-- WHO CAN COLLABORATE -->
 <div class="section-flow" style="padding:80px 0;position:relative;">
@@ -191,25 +359,88 @@
         <p>Host workshops, hackathons, and startup initiatives together with Ugham</p>
       </div>
     </div>
-    <div style="margin-top:40px;">
+    <div style="">
       
     </div>
   </div>
 </div>
 
+<!-- PARTNER ECOSYSTEM SECTION -->
+<div class="ecosystem-section" style="padding: 80px 0 0; position: relative;">
+  <div class="container">
+    <div class="ecosystem-header text-center" style="margin-bottom: 60px;">
+      <h2 class="section-title partner-title-glow" style="font-size: clamp(32px, 5vw, 48px); margin-bottom: 20px;">OUR PARTNERS</h2>
+      <p style="color:var(--muted);font-size:18px;max-width:600px;margin:0 auto;">Powered by a network of visionary industry leaders, mentors, and partners driving the next generation of innovators.</p>
+    </div>
+  </div>
+
+  <div class="partner-marquee-container">
+    
+    <!-- Knowledge Partners Track -->
+    <div class="partner-track-wrapper">
+      <div class="track-badge"><i class="fa-solid fa-graduation-cap"></i> Knowledge Partners</div>
+      <div class="marquee-content scroll-left">
+        <!-- Group 1 -->
+        <div class="marquee-group">
+          <div class="partner-logo-box"><img src="assets/img/partner-shortfundly.png?v=7" alt="Shortfundly"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-haris.png?v=7" alt="Hari's Media"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-afop.png?v=7" alt="AFOP Crafting Lives"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-shortfundly.png?v=7" alt="Shortfundly"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-haris.png?v=7" alt="Hari's Media"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-afop.png?v=7" alt="AFOP Crafting Lives"></div>
+        </div>
+        <!-- Group 2 -->
+        <div class="marquee-group">
+          <div class="partner-logo-box"><img src="assets/img/partner-shortfundly.png?v=7" alt="Shortfundly"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-haris.png?v=7" alt="Hari's Media"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-afop.png?v=7" alt="AFOP Crafting Lives"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-shortfundly.png?v=7" alt="Shortfundly"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-haris.png?v=7" alt="Hari's Media"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-afop.png?v=7" alt="AFOP Crafting Lives"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Industry Partners Track -->
+    <div class="partner-track-wrapper">
+      <div class="track-badge" style="align-self: flex-end; margin-left: 0; margin-right: 5%;"><i class="fa-solid fa-building"></i> Industry Partners</div>
+      <div class="marquee-content scroll-right">
+        <!-- Group 1 -->
+        <div class="marquee-group">
+          <div class="partner-logo-box"><img src="assets/img/partner-yaalee.png?v=7" alt="Yaalee Biotech"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-dechta.png?v=7" alt="Dechta"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-campusx.png?v=7" alt="CampusX"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-altruisty.png?v=7" alt="Altruisty Innovation"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-seclance.png?v=7" alt="Sec Lance"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-yaalee.png?v=7" alt="Yaalee Biotech"></div>
+        </div>
+        <!-- Group 2 -->
+        <div class="marquee-group">
+          <div class="partner-logo-box"><img src="assets/img/partner-yaalee.png?v=7" alt="Yaalee Biotech"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-dechta.png?v=7" alt="Dechta"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-campusx.png?v=7" alt="CampusX"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-altruisty.png?v=7" alt="Altruisty Innovation"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-seclance.png?v=7" alt="Sec Lance"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-yaalee.png?v=7" alt="Yaalee Biotech"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <!-- CONTACT CTA STRIP -->
 <div class="cta-contact-strip" style="background:var(--grad);padding:60px 0;text-align:center;position:relative;overflow:hidden;">
   <div class="cta-glow-orb" style="position:absolute;top:-50px;left:20%;width:200px;height:200px;background:rgba(255,255,255,0.08);border-radius:50%;"></div>
   <div class="cta-glow-orb" style="position:absolute;bottom:-50px;right:15%;width:150px;height:150px;background:rgba(255,255,255,0.06);border-radius:50%;"></div>
   <div class="container" style="position:relative;z-index:1;">
-    <h3 style="color:white;font-size:clamp(24px,4vw,36px);font-weight:900;margin-bottom:16px;font-family:'Outfit',sans-serif;">Any Queries? Contact Us!</h3>
+    <h3 style="color:white;font-size:clamp(24px,4vw,36px);font-weight:900;margin-bottom:16px;font-family:'Outfit',sans-serif;">Interested in Partnering With Us?</h3>
     <p style="color:rgba(255,255,255,0.85);font-size:18px;margin-bottom:30px;">We are here to help. Get in touch with our team today.</p>
     <a href="contact.html" class="btn-primary" style="background:white;color:var(--primary);font-weight:800;padding:18px 40px;font-size:16px;box-shadow:0 10px 30px rgba(0,0,0,0.2);">Contact Us &#8250;</a>
   </div>
 </div>
 
-<footer style="background:var(--bg);padding:20px 0 30px;border-top:1px solid var(--border);position:relative;">
+<footer style="background:var(--bg);padding:20px 0 30px;position:relative;">
   <div class="container" style="position:relative;z-index:1;">
     <div class="grid-4" style="margin-bottom:40px;">
       <div><a href="index.html" style="display:inline-block;text-decoration:none;"><img src="assets/img/logo.png" alt="Ugham" style="height:80px;margin-bottom:16px;object-fit:contain;"></a><p style="color:var(--muted);font-size:14px;">Where Evolution Starts.<br>Learn. Build. Grow.</p></div>
@@ -217,7 +448,7 @@
       <div><h4 style="text-transform:uppercase;letter-spacing:1px;font-size:13px;color:var(--muted);margin-bottom:20px;">Contact</h4><ul style="list-style:none;display:flex;flex-direction:column;gap:14px;color:var(--muted);font-size:15px;"><li>info@ugham.com</li><li>+91 86678 39838</li><li>www.ugham.com</li></ul></div>
       <div><h4 style="text-transform:uppercase;letter-spacing:1px;font-size:13px;color:var(--muted);margin-bottom:20px;">Get Started</h4><a href="contact.html" class="btn-primary" style="padding:14px 28px;font-size:14px;">Connect With Us</a></div>
     </div>
-    <div style="border-top:1px solid var(--border);padding-top:20px;text-align:center;color:var(--muted);font-size:13px;"><p>&copy; 2026 Ugham Innovation Studio. All rights reserved.</p></div>
+    <div style="padding-top:20px;text-align:center;color:var(--muted);font-size:13px;"><p>&copy; 2026 Ugham Innovation Studio. All rights reserved.</p></div>
   </div>
 </footer>
 <script src="assets/js/main.js?v=344"></script>

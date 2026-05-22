@@ -5,19 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Home &mdash; Ugham</title>
 <meta name="description" content="Ugham is an innovation studio that transforms ideas into real-world solutions.">
-<link rel="stylesheet" href="assets/css/style.css?v=344">
+<link rel="stylesheet" href="assets/css/style.css?v=347">
+
+<style>
+/* Index Animations - Orbit/Expand */
+@keyframes floatBadgeIndex {
+  0% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-15px) scale(1.05); box-shadow: 0 15px 35px rgba(124,58,237,0.2); }
+  100% { transform: translateY(0) scale(1); }
+}
+.floating-badge { animation: floatBadgeIndex 4s ease-in-out infinite alternate !important; }
+.floating-badge.badge-1 { animation-delay: 0s !important; }
+.floating-badge.badge-2 { animation-delay: 1s !important; }
+.floating-badge.badge-3 { animation-delay: 2s !important; }
+.floating-badge.badge-4 { animation-delay: 3s !important; }
+</style>
 </head>
 <body><div id="page-transition" class="page-transition-overlay"></div>
-<div class="bg-icons-container">
-  <div class="bg-icon" style="top:10%;left:15%;animation-duration:15s;animation-delay:0s;"><i class="fa-solid fa-rocket"></i></div>
-  <div class="bg-icon" style="top:25%;right:20%;animation-duration:20s;animation-delay:2s;"><i class="fa-solid fa-lightbulb"></i></div>
-  <div class="bg-icon" style="top:60%;left:10%;animation-duration:18s;animation-delay:4s;"><i class="fa-solid fa-brain"></i></div>
-  <div class="bg-icon" style="top:80%;right:15%;animation-duration:22s;animation-delay:1s;"><i class="fa-solid fa-code"></i></div>
-  <div class="bg-icon" style="top:40%;left:30%;animation-duration:19s;animation-delay:3s;"><i class="fa-solid fa-chart-line"></i></div>
-  <div class="bg-icon" style="top:50%;right:35%;animation-duration:17s;animation-delay:5s;"><i class="fa-solid fa-microchip"></i></div>
-  <div class="bg-icon" style="top:85%;left:40%;animation-duration:21s;animation-delay:0.5s;"><i class="fa-solid fa-earth-americas"></i></div>
-  <div class="bg-icon" style="top:15%;right:40%;animation-duration:16s;animation-delay:2.5s;"><i class="fa-solid fa-seedling"></i></div>
-</div>
 <nav id="navbar">
   <div class="nav-inner">
     <a href="index.html" style="display:flex;align-items:center;text-decoration:none;">
@@ -37,19 +41,39 @@
 </nav>
 
 <!-- HERO -->
-<section class="page-hero" style="padding:220px 0 120px;position:relative;overflow:hidden;">
-  <div class="container text-center" style="position:relative;z-index:1;">
-<h1 class="huge-text hero-evolution anim-el scale-up del-1" style="margin-bottom:24px;">Where Evolution<br>Starts</h1>
-    <p class="anim-el slide-up-fade del-2" style="font-size:clamp(28px, 4vw, 48px);font-weight:900;font-family:'Outfit',sans-serif;margin:0 auto 16px;text-align:center;color:#ffffff;-webkit-text-fill-color:#ffffff;text-shadow:0 2px 25px rgba(192,38,211,0.6), 0 0 10px rgba(0,0,0,0.5);letter-spacing:2px;">Learn. Build. Grow.</p>
-    <p class="anim-el slide-up-fade del-3" style="font-size:20px;color:var(--muted);max-width:680px;margin:0 auto 40px;">Ugham transforms ideas into real-world solutions, guiding students from concept to creation through ideation, development, and scaling.</p>
-    <div class="anim-el fade-up del-4" style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap;">
-      <a href="contact.html" class="btn-primary">Get Started &#8250;</a>
-      <a href="about.html" class="btn-primary">Learn More</a>
+
+<section class="split-hero">
+  <div class="split-hero-container">
+    <div class="split-hero-left">
+      <h1 class="split-hero-title anim-el slide-right">Empowering <span class="highlight">Innovators.</span><br>Building <span class="highlight">Impactful</span> Solutions.</h1>
+      <p class="split-hero-desc anim-el slide-right del-1">UGHAM is an innovation platform that fuels creativity, supports problem solvers, and creates real-world impact.</p>
+      <div class="split-hero-buttons anim-el slide-right del-2">
+        <a href="what-we-do.html" class="btn-primary-solid">Explore Programs &rarr;</a>
+        <a href="collaboration.html" class="btn-secondary-outline">Collaborate With Us</a>
+      </div>
+    </div>
+    <div class="split-hero-right anim-el scale-up del-1">
+      <div class="split-hero-image-wrapper">
+        <img src="assets/img/hero_lightbulb.png" alt="Hero Graphic">
+        
+        <div class="floating-badge badge-1"><i class="fa-solid fa-rocket"></i> INNOVATION</div>
+<div class="floating-badge badge-2"><i class="fa-solid fa-lightbulb"></i> IDEATION</div>
+<div class="floating-badge badge-3"><i class="fa-solid fa-users"></i> COMMUNITY</div>
+<div class="floating-badge badge-4"><i class="fa-solid fa-chart-line"></i> GROWTH</div>
+
+      </div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- WHY US (Enhanced Orbit — overflow fixed, 6 pips) -->
+  
+<div class="split-hero-bottom-curve">
+  <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+    <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V0C50.62,19.24,115.54,34.42,175.5,45.87,224.23,55.19,274.67,61.1,321.39,56.44Z" class="shape-fill"></path>
+  </svg>
+</div>
+
+</section>
 <section style="padding:100px 0;background:rgba(255,255,255,0.4);position:relative;overflow:hidden;">
   <div class="container text-center">
     <h2 class="section-title anim-el fade-up">WHY US</h2>
@@ -253,60 +277,210 @@
 </section>
 
 <!-- PARTNER ECOSYSTEM SECTION -->
-<div class="ecosystem-section" style="padding: 80px 0 0;">
+<div class="ecosystem-section" style="padding: 80px 0 0; position: relative;">
   <div class="container">
-    <div class="ecosystem-header">
+    <div class="ecosystem-header text-center" style="margin-bottom: 60px;">
       <h2 class="section-title partner-title-glow" style="font-size: clamp(32px, 5vw, 48px); margin-bottom: 20px;">OUR PARTNERS</h2>
-      <p style="color:var(--muted);font-size:18px;max-width:600px;margin:0 auto 50px;">Powered by a network of visionary industry leaders, mentors, and media partners driving the next generation of innovators.</p>
+      <p style="color:var(--muted);font-size:18px;max-width:600px;margin:0 auto;">Powered by a network of visionary industry leaders, mentors, and partners driving the next generation of innovators.</p>
     </div>
   </div>
-  
-  <div class="ecosystem-track-container" style="mask-image:none;-webkit-mask-image:none;">
-    <!-- Track 1: Industry -->
-    <div class="ecosystem-track-wrapper">
-      <div class="ecosystem-track-title"><i class="fa-solid fa-building-columns"></i> Industry Collaborators</div>
-      <div class="ecosystem-track-3 pan-left">
-        <div class="partner-ghost"><i class="fa-solid fa-building"></i></div>
-        <div class="partner-ghost"><i class="fa-solid fa-industry"></i></div>
-        <div class="partner-ghost"><i class="fa-solid fa-network-wired"></i></div>
+
+  <style>
+    .partner-marquee-container {
+      position: relative;
+      width: 100vw;
+      max-width: 100%;
+      overflow: hidden;
+      margin-bottom: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      padding: 20px 0;
+    }
+    
+    .partner-track-wrapper {
+      position: relative;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .track-badge {
+      align-self: flex-start;
+      margin-left: 5%;
+      background: var(--bg);
+      color: var(--primary);
+      border: 1px solid rgba(124, 58, 237, 0.3);
+      padding: 8px 20px;
+      border-radius: 30px;
+      font-weight: 800;
+      font-size: 15px;
+      margin-bottom: 20px;
+      z-index: 10;
+      box-shadow: 0 4px 15px rgba(124,58,237,0.1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .marquee-content {
+      display: flex;
+      width: max-content;
+    }
+
+    .marquee-group {
+      display: flex;
+      gap: 30px;
+      padding-right: 30px;
+    }
+
+    .scroll-left {
+      animation: scrollMarqueeLeft 35s linear infinite;
+    }
+    .scroll-right {
+      transform: translateX(-50%);
+      animation: scrollMarqueeRight 40s linear infinite;
+    }
+
+    .marquee-content:hover {
+      animation-play-state: paused;
+    }
+
+    .partner-logo-box {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(124, 58, 237, 0.15);
+      border-radius: 24px;
+      padding: 25px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 130px;
+      min-width: 280px;
+      box-shadow: 0 10px 30px rgba(124, 58, 237, 0.05);
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
+    }
+
+    .partner-logo-box:hover {
+      transform: translateY(-10px) scale(1.05);
+      box-shadow: 0 20px 40px rgba(124, 58, 237, 0.2);
+      border-color: rgba(124, 58, 237, 0.5);
+      background: rgba(255, 255, 255, 1);
+    }
+
+    .partner-logo-box img {
+      max-width: 180px;
+      max-height: 80px;
+      object-fit: contain;
+      filter: none !important;
+      opacity: 1 !important;
+      transition: transform 0.4s ease;
+    }
+
+    .partner-logo-box:hover img {
+      filter: none !important;
+      opacity: 1 !important;
+      transform: scale(1.08);
+    }
+
+    .partner-marquee-container::before,
+    .partner-marquee-container::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      width: 15vw;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .partner-marquee-container::before {
+      left: 0;
+      background: linear-gradient(to right, var(--bg) 0%, transparent 100%);
+    }
+    .partner-marquee-container::after {
+      right: 0;
+      background: linear-gradient(to left, var(--bg) 0%, transparent 100%);
+    }
+
+    @keyframes scrollMarqueeLeft {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes scrollMarqueeRight {
+      0% { transform: translateX(-50%); }
+      100% { transform: translateX(0); }
+    }
+  </style>
+
+  <div class="partner-marquee-container">
+    
+    <!-- Knowledge Partners Track -->
+    <div class="partner-track-wrapper">
+      <div class="track-badge"><i class="fa-solid fa-graduation-cap"></i> Knowledge Partners</div>
+      <div class="marquee-content scroll-left">
+        <!-- Group 1 -->
+        <div class="marquee-group">
+          <div class="partner-logo-box"><img src="assets/img/partner-shortfundly.png?v=7" alt="Shortfundly"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-haris.png?v=7" alt="Hari's Media"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-afop.png?v=7" alt="AFOP Crafting Lives"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-shortfundly.png?v=7" alt="Shortfundly"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-haris.png?v=7" alt="Hari's Media"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-afop.png?v=7" alt="AFOP Crafting Lives"></div>
+        </div>
+        <!-- Group 2 -->
+        <div class="marquee-group">
+          <div class="partner-logo-box"><img src="assets/img/partner-shortfundly.png?v=7" alt="Shortfundly"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-haris.png?v=7" alt="Hari's Media"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-afop.png?v=7" alt="AFOP Crafting Lives"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-shortfundly.png?v=7" alt="Shortfundly"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-haris.png?v=7" alt="Hari's Media"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-afop.png?v=7" alt="AFOP Crafting Lives"></div>
+        </div>
       </div>
     </div>
 
-    <!-- Track 2: Mentors -->
-    <div class="ecosystem-track-wrapper">
-      <div class="ecosystem-track-title" style="right: auto; left: 20px;"><i class="fa-solid fa-user-tie"></i> Mentor Partners</div>
-      <div class="ecosystem-track-3 pan-right">
-        <div class="partner-ghost"><i class="fa-solid fa-chalkboard-user"></i></div>
-        <div class="partner-ghost"><i class="fa-solid fa-handshake-angle"></i></div>
-        <div class="partner-ghost"><i class="fa-solid fa-lightbulb"></i></div>
+    <!-- Industry Partners Track -->
+    <div class="partner-track-wrapper">
+      <div class="track-badge" style="align-self: flex-end; margin-left: 0; margin-right: 5%;"><i class="fa-solid fa-building"></i> Industry Partners</div>
+      <div class="marquee-content scroll-right">
+        <!-- Group 1 -->
+        <div class="marquee-group">
+          <div class="partner-logo-box"><img src="assets/img/partner-yaalee.png?v=7" alt="Yaalee Biotech"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-dechta.png?v=7" alt="Dechta"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-campusx.png?v=7" alt="CampusX"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-altruisty.png?v=7" alt="Altruisty Innovation"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-seclance.png?v=7" alt="Sec Lance"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-yaalee.png?v=7" alt="Yaalee Biotech"></div>
+        </div>
+        <!-- Group 2 -->
+        <div class="marquee-group">
+          <div class="partner-logo-box"><img src="assets/img/partner-yaalee.png?v=7" alt="Yaalee Biotech"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-dechta.png?v=7" alt="Dechta"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-campusx.png?v=7" alt="CampusX"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-altruisty.png?v=7" alt="Altruisty Innovation"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-seclance.png?v=7" alt="Sec Lance"></div>
+          <div class="partner-logo-box"><img src="assets/img/partner-yaalee.png?v=7" alt="Yaalee Biotech"></div>
+        </div>
       </div>
     </div>
 
-    <!-- Track 3: Media -->
-    <div class="ecosystem-track-wrapper">
-      <div class="ecosystem-track-title"><i class="fa-solid fa-bullhorn"></i> Media Partners</div>
-      <div class="ecosystem-track-3 pan-left" style="animation-duration: 15s;">
-        <div class="partner-ghost"><i class="fa-solid fa-newspaper"></i></div>
-        <div class="partner-ghost"><i class="fa-solid fa-podcast"></i></div>
-        <div class="partner-ghost"><i class="fa-solid fa-video"></i></div>
-      </div>
-    </div>
   </div>
 </div>
-
 
 <!-- CONTACT CTA STRIP -->
 <div class="cta-contact-strip" style="background:var(--grad);padding:60px 0;text-align:center;position:relative;overflow:hidden;">
   <div class="cta-glow-orb" style="position:absolute;top:-50px;left:20%;width:200px;height:200px;background:rgba(255,255,255,0.08);border-radius:50%;"></div>
   <div class="cta-glow-orb" style="position:absolute;bottom:-50px;right:15%;width:150px;height:150px;background:rgba(255,255,255,0.06);border-radius:50%;"></div>
   <div class="container" style="position:relative;z-index:1;">
-    <h3 style="color:white;font-size:clamp(24px,4vw,36px);font-weight:900;margin-bottom:16px;font-family:'Outfit',sans-serif;">Any Queries? Contact Us!</h3>
+    <h3 style="color:white;font-size:clamp(24px,4vw,36px);font-weight:900;margin-bottom:16px;font-family:'Outfit',sans-serif;">Ready to Start Your Innovation Journey?</h3>
     <p style="color:rgba(255,255,255,0.85);font-size:18px;margin-bottom:30px;">We are here to help. Get in touch with our team today.</p>
     <a href="contact.html" class="btn-primary" style="background:white;color:var(--primary);font-weight:800;padding:18px 40px;font-size:16px;box-shadow:0 10px 30px rgba(0,0,0,0.2);">Contact Us &#8250;</a>
   </div>
 </div>
 
-<footer style="background:var(--bg);padding:20px 0 30px;border-top:1px solid var(--border);position:relative;">
+<footer style="background:var(--bg);padding:20px 0 30px;position:relative;">
   <div class="container" style="position:relative;z-index:1;">
     <div class="grid-4" style="margin-bottom:40px;">
       <div><a href="index.html" style="display:inline-block;text-decoration:none;"><img src="assets/img/logo.png" alt="Ugham" style="height:80px;margin-bottom:16px;object-fit:contain;"></a><p style="color:var(--muted);font-size:14px;">Where Evolution Starts.<br>Learn. Build. Grow.</p></div>
@@ -314,10 +488,10 @@
       <div><h4 style="text-transform:uppercase;letter-spacing:1px;font-size:13px;color:var(--muted);margin-bottom:20px;">Contact</h4><ul style="list-style:none;display:flex;flex-direction:column;gap:14px;color:var(--muted);font-size:15px;"><li>info@ugham.com</li><li>+91 86678 39838</li><li>www.ugham.com</li></ul></div>
       <div><h4 style="text-transform:uppercase;letter-spacing:1px;font-size:13px;color:var(--muted);margin-bottom:20px;">Get Started</h4><a href="contact.html" class="btn-primary" style="padding:14px 28px;font-size:14px;">Connect With Us</a></div>
     </div>
-    <div style="border-top:1px solid var(--border);padding-top:20px;text-align:center;color:var(--muted);font-size:13px;"><p>&copy; 2026 Ugham Innovation Studio. All rights reserved.</p></div>
+    <div style="padding-top:20px;text-align:center;color:var(--muted);font-size:13px;"><p>&copy; 2026 Ugham Innovation Studio. All rights reserved.</p></div>
   </div>
 </footer>
-<script src="assets/js/main.js?v=344"></script>
+<script src="assets/js/main.js?v=5"></script>
 <script>
 // Bento Card 3D Tilt
 document.querySelectorAll('.bento-card').forEach(card => {

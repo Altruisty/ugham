@@ -2619,3 +2619,251 @@ div:not(#registration-form):has(+ .cta-contact-strip),
 .cta-contact-strip + footer {
     padding-top: 20px !important;
 }
+
+
+/* ═══ NEW SPLIT HERO SECTION ═══ */
+.split-hero {
+  position: relative;
+  background: #ffffff; /* Match the bright, clean screenshot */
+  color: #1e293b; /* Dark text for light background */
+  padding: 140px 0 80px;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Smooth transition from white hero to dark body */
+.split-hero-bottom-curve {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  transform: translateY(1px); /* Prevent pixel gap */
+}
+.split-hero-bottom-curve svg {
+  display: block;
+  width: calc(100% + 1.3px);
+  height: 60px;
+}
+.split-hero-bottom-curve .shape-fill {
+  fill: var(--bg); /* Transitions smoothly to dark mode body */
+}
+
+.split-hero-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.split-hero-left {
+  flex: 1;
+  max-width: 55%;
+}
+
+.split-hero-title {
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  color: #0f172a;
+  letter-spacing: -1px;
+}
+
+.split-hero-title .highlight {
+  color: transparent;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  display: inline-block;
+}
+
+.split-hero-desc {
+  font-size: clamp(16px, 2vw, 20px);
+  color: #475569;
+  line-height: 1.6;
+  margin-bottom: 40px;
+  max-width: 90%;
+}
+
+.split-hero-buttons {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.btn-primary-solid {
+  background: var(--grad);
+  color: white;
+  padding: 16px 32px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 16px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 10px 30px rgba(124,58,237,0.3);
+  transition: all 0.3s ease;
+}
+.btn-primary-solid:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(124,58,237,0.4);
+  color: white;
+}
+
+.btn-secondary-outline {
+  background: transparent;
+  color: #7C3AED;
+  padding: 16px 32px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 16px;
+  text-decoration: none;
+  border: 2px solid rgba(124,58,237,0.3);
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+.btn-secondary-outline:hover {
+  border-color: #7C3AED;
+  background: rgba(124,58,237,0.05);
+}
+
+.split-hero-right {
+  flex: 1;
+  max-width: 45%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.split-hero-image-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+  animation: float 6s ease-in-out infinite;
+}
+
+.split-hero-image-wrapper img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  /* Blend pure white background of generated images with the white hero background */
+  mix-blend-mode: darken; 
+}
+
+.hero-overlay-logo {
+  position: absolute;
+  top: 44%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16%; /* Sized perfectly to fit inside the lightbulb hole */
+  z-index: 10;
+  opacity: 0.9; /* Slight blend with the bulb */
+  filter: drop-shadow(0 0 10px rgba(255,255,255,0.8));
+}
+
+/* Floating Badges */
+.floating-badge {
+  position: absolute;
+  background: white;
+  padding: 10px 20px;
+  border-radius: 30px;
+  box-shadow: 0 10px 25px rgba(124,58,237,0.1);
+  font-weight: 700;
+  font-size: 12px;
+  color: #1e293b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid rgba(124,58,237,0.1);
+  animation: floatBadge 4s ease-in-out infinite alternate;
+  z-index: 5;
+}
+.floating-badge i {
+  font-size: 20px;
+  color: #7C3AED;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@keyframes floatBadge {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-10px); }
+}
+
+.badge-1 { top: 10%; left: -10%; animation-delay: 0s; }
+.badge-2 { top: 20%; right: -10%; animation-delay: 1s; }
+.badge-3 { bottom: 20%; left: -5%; animation-delay: 2s; }
+.badge-4 { bottom: 10%; right: 0%; animation-delay: 1.5s; }
+
+/* Stats Bar */
+.hero-stats-bar {
+  max-width: 1000px;
+  margin: 60px auto 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+  border: 1px solid rgba(124,58,237,0.05);
+  position: relative;
+  z-index: 10;
+  text-align: center;
+}
+.stat-item h3 {
+  font-size: 32px;
+  font-weight: 800;
+  color: #7C3AED;
+  margin-bottom: 5px;
+}
+.stat-item p {
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+/* Mobile Optimization */
+@media (max-width: 991px) {
+  .split-hero-container {
+    flex-direction: column;
+    text-align: center;
+    padding-top: 40px;
+  }
+  .split-hero-left, .split-hero-right {
+    max-width: 100%;
+  }
+  .split-hero-desc {
+    margin: 0 auto 30px;
+  }
+  .split-hero-buttons {
+    justify-content: center;
+  }
+  .hero-stats-bar {
+    grid-template-columns: repeat(2, 1fr);
+    margin: 40px 20px 0;
+  }
+  .floating-badge {
+    display: none; /* Hide badges on mobile to prevent clutter */
+  }
+  .split-hero {
+    padding: 120px 0 60px;
+  }
+}
+@media (max-width: 576px) {
+  .hero-stats-bar {
+    grid-template-columns: 1fr;
+  }
+}
