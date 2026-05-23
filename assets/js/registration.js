@@ -7,7 +7,7 @@ const scriptURL =
 "https://script.google.com/macros/s/AKfycbySGVGfC6rsI1AMuOYiSFeHk8INiqQnj74Wc-NfT852HY1cNlBsqDZwdHoA7pohV7Ug/exec";
 
 
-const RAZORPAY_KEY = "rzp_live_SZRkYdQMzFlJYX"; // replace with your key
+const RAZORPAY_KEY = "rzp_live_Sss0YAeeJBz6Iq"; // replace with your key
 
 let isProcessing = false;
 
@@ -146,10 +146,10 @@ document.getElementById("payBtn")
                 document.getElementById("projectTitle").value,
 
             deckLink:
-                document.getElementById("deckLink").value,
+                document.getElementById("deckLink")?.value || "",
 
             demoLink:
-                document.getElementById("demoLink").value,
+                document.getElementById("demoLink")?.value || "",
 
             referralCode:
                 document.getElementById("referralCode")?.value || "",
