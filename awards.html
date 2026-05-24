@@ -182,7 +182,7 @@
       <h1 class="split-hero-title anim-el slide-right">UGHAM <span class="highlight">Innovation</span><br><span class="highlight">Awards</span> 2026.</h1>
       <p class="split-hero-desc anim-el slide-right del-1">Recognizing the brightest minds and most disruptive ideas. Compete, pitch, and win funding to accelerate your startup journey.</p>
       <div class="split-hero-buttons anim-el slide-right del-2">
-        <a href="#registration-form" class="btn-primary-solid">Register Now &rarr;</a>
+        <a href="#register" class="btn-primary-solid">Register Now &rarr;</a>
         <a href="#guidelines" class="btn-secondary-outline">View Guidelines</a>
       </div>
     </div>
@@ -224,7 +224,7 @@
           <div class="pc-feat"><i class="fa-solid fa-check-circle"></i> Certificate of participation</div>
           <div class="pc-feat"><i class="fa-solid fa-check-circle"></i> Team size: 2-5 members</div>
         </div>
-        <div class="pc-action"><a href="contact.html">Register Now &#8250;</a></div>
+        <div class="pc-action"><a href="#register">Register Now &#8250;</a></div>
       </div>
       <div class="price-card">
         <div class="pc-header"><h3>Prototype Pitch</h3><p>Prototype / Working Model</p></div>
@@ -236,7 +236,7 @@
           <div class="pc-feat"><i class="fa-solid fa-check-circle"></i> Incubation opportunity</div>
           <div class="pc-feat"><i class="fa-solid fa-check-circle"></i> Team size: 2-5 members</div>
         </div>
-        <div class="pc-action"><a href="contact.html">Register Now &#8250;</a></div>
+        <div class="pc-action"><a href="#register">Register Now &#8250;</a></div>
       </div>
     </div>
   </div>
@@ -704,7 +704,7 @@
               </span>
               <h3 class="mt-4 text-2xl font-black uppercase tracking-tighter text-white">Idea Pitch</h3>
               <div class="mt-6 flex items-baseline gap-1">
-                <span class="text-4xl font-black text-white">₹249</span>
+                <span class="text-4xl font-black text-white">₹199</span>
                 <span class="text-xs font-bold uppercase tracking-widest text-slate-400">/ Per Member</span>
               </div>
               <p class="mt-2 text-xs font-medium text-slate-400 italic">For early-stage conceptual innovations</p>
@@ -719,7 +719,7 @@
               </span>
               <h3 class="mt-4 text-2xl font-black uppercase tracking-tighter text-white">Prototype Pitch</h3>
               <div class="mt-6 flex items-baseline gap-1">
-                <span class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">₹299</span>
+                <span class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">₹249</span>
                 <span class="text-xs font-bold uppercase tracking-widest text-slate-300">/ Per Member</span>
               </div>
               <p class="mt-2 text-xs font-medium text-slate-300 italic">For working models & MVP presentations</p>
@@ -823,7 +823,7 @@
                     <label for="projectTitle" class="absolute left-0 -top-3.5 text-[10px] font-black uppercase tracking-widest text-slate-400 transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-purple-400">Title of Idea / Project</label>
                   </div>
 
-                  <div class="relative">
+                  <!-- <div class="relative">
                     <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-2">Select Presentation Date</label>
                     <div class="flex items-center border-b-2 border-slate-700 focus-within:border-purple-500 py-2">
                       <input type="text" id="eventDate" name="eventDate" readonly class="w-full bg-transparent outline-none text-sm font-bold cursor-pointer text-white" placeholder="Choose Date">
@@ -857,8 +857,45 @@
                       <button type="button" onclick="pickDate('Sept 12')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase">Sept 12</button>
                       <button type="button" onclick="pickDate('Sept 13')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase">Sept 13</button>
                     </div>
-                  </div>
+                  </div> -->
 
+                  <div class="relative">
+                    <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-2">Select Domain</label>
+                    <div class="flex items-center border-b-2 border-slate-700 focus-within:border-purple-500 py-2">
+                      <input type="text" id="projectDomain" name="projectDomain" readonly class="w-full bg-transparent outline-none text-sm font-bold cursor-pointer text-white" placeholder="Choose Domain">
+                      <button type="button" onclick="document.getElementById('domainOverlay').classList.toggle('hidden')" class="hover:bg-slate-800 p-2 rounded-full transition-colors text-slate-400 hover:text-white">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </button>
+                    </div>
+                    <div id="domainOverlay" class="hidden absolute z-50 mt-2 w-full bg-slate-900 border border-slate-800 shadow-2xl rounded-2xl p-4 grid grid-cols-1 sm:grid-cols-2 gap-2 animate-in fade-in slide-in-from-top-2 overflow-y-auto max-h-64 custom-scrollbar">
+                      <button type="button" onclick="pickDomain('AI & ML')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase text-left">AI & ML</button>
+                      <button type="button" onclick="pickDomain('Deep Tech')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase text-left">Deep Tech</button>
+                      <button type="button" onclick="pickDomain('Cybersecurity')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase text-left">Cybersecurity</button>
+                      <button type="button" onclick="pickDomain('Blockchain')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase text-left">Blockchain</button>
+                      <button type="button" onclick="pickDomain('Internet of Things (IoT)')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase text-left">Internet of Things (IoT)</button>
+                      <button type="button" onclick="pickDomain('Cloud')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase text-left">Cloud</button>
+                      <button type="button" onclick="pickDomain('Industry 4.0')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase text-left">Industry 4.0</button>
+                      <button type="button" onclick="pickDomain('FinTech')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase text-left">FinTech</button>
+                      <button type="button" onclick="pickDomain('HealthTech')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase text-left">HealthTech</button>
+                      <button type="button" onclick="pickDomain('EdTech')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase text-left">EdTech</button>
+                      <button type="button" onclick="pickDomain('AgriTech')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase text-left">AgriTech</button>
+                      <button type="button" onclick="pickDomain('ClimateTech')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase text-left">ClimateTech</button>
+                      <button type="button" onclick="pickDomain('SpaceTech')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase text-left">SpaceTech</button>
+                      <button type="button" onclick="pickDomain('Robotics')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase text-left">Robotics</button>
+                      <button type="button" onclick="pickDomain('AR & VR')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase text-left">AR & VR</button>
+                      <button type="button" onclick="pickDomain('Agentic AI')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase text-left">Agentic AI</button>
+                      <button type="button" onclick="pickDomain('Smart Cities')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase text-left">Smart Cities</button>
+                      <button type="button" onclick="pickDomain('Renewable Energy')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase text-left">Renewable Energy</button>
+                      <button type="button" onclick="pickDomain('BioTech')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase text-left">BioTech</button>
+                      <button type="button" onclick="pickDomain('Creative Tech')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase text-left">Creative Tech</button>
+                      <button type="button" onclick="pickDomain('Quantum Computing')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase text-left">Quantum Computing</button>
+                      <button type="button" onclick="pickDomain('SaaS')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase text-left">SaaS</button>
+                      <button type="button" onclick="pickDomain('Gaming Technology')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase text-left">Gaming Technology</button>
+                      <button type="button" onclick="pickDomain('LegalTech')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase text-left">LegalTech</button>
+                      <button type="button" onclick="pickDomain('Defence Tech')" class="text-[10px] font-bold p-2 border border-slate-800 hover:border-purple-500 hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 text-slate-300 hover:text-white rounded-lg transition-all uppercase text-left">Defence Tech</button>
+                    </div>
+                  </div>
+                                    
                   <div class="relative group">
                     <input type="text" id="referralCode" name="referralCode" class="peer w-full bg-transparent border-b-2 border-slate-700 py-3 outline-none focus:border-purple-500 transition-all placeholder-transparent text-white" placeholder="Referral Code">
                     <label for="referralCode" class="absolute left-0 -top-3.5 text-[10px] font-black uppercase tracking-widest text-slate-400 transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:top-3 peer-focus:-top-3.5 peer-focus:text-purple-400">
@@ -965,7 +1002,7 @@
 			function updatePricing() {
 				const size = parseInt(document.getElementById('teamSize').value) || 0;
 				const category = document.querySelector('input[name="category"]:checked')?.value;
-				const rate = category === "Ideathon" ? 150 : 200;
+				const rate = category === "Ideathon" ? 199 : 249;
 				const total = size * rate;
 				
 				document.getElementById('totalAmount').innerText = `₹${total}`;

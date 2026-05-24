@@ -11,6 +11,17 @@ const RAZORPAY_KEY = "rzp_live_Sss0YAeeJBz6Iq"; // replace with your key
 
 let isProcessing = false;
 
+function pickDomain(val) {
+    const domainInput = document.getElementById('projectDomain');
+    if (domainInput) {
+        domainInput.value = val;
+    }
+    const overlay = document.getElementById('domainOverlay');
+    if (overlay) {
+        overlay.classList.add('hidden');
+    }
+}
+
 document.getElementById("payBtn")
 .addEventListener("click", async () => {
 
@@ -35,7 +46,7 @@ document.getElementById("payBtn")
         const amountText =
             document.getElementById("totalAmount").innerText;
 
-        const amount =
+        let amount =
             parseInt(amountText.replace("₹", ""));
 
         if (!amount || amount <= 0) {
@@ -46,6 +57,21 @@ document.getElementById("payBtn")
 
             return;
 
+        }
+
+        const chosenDomain = document.getElementById("projectDomain").value;
+        if (!chosenDomain) {
+            alert("Please select a project domain");
+            isProcessing = false;
+            return;
+        }
+
+        // Referral Code Logic
+        const refCodeInput = document.getElementById("referralCode")?.value || "";
+        const cleanRefCode = refCodeInput.trim().toUpperCase();
+
+        if (cleanRefCode === "UIA50") {
+            amount = Math.max(0, amount - 50);
         }
 
         // SHOW LOADER
@@ -151,11 +177,9 @@ document.getElementById("payBtn")
             demoLink:
                 document.getElementById("demoLink")?.value || "",
 
-            referralCode:
-                document.getElementById("referralCode")?.value || "",
+            referralCode: cleanRefCode || "None",
 
-            eventDate:
-                document.getElementById("eventDate").value,
+            projectDomain: chosenDomain,
 
             totalAmount: amount,
 
@@ -176,7 +200,7 @@ document.getElementById("payBtn")
 
             currency: "INR",
 
-            name: "Hackathon Registration",
+            name: "UGHAM Innovation Awards registration",
 
             description:
                 "Event Registration Fee",
