@@ -200,7 +200,7 @@ document.getElementById("payBtn")
 
             currency: "INR",
 
-            name: "UGHAM Innovation Awards registration",
+            name: "UGHAM INNOVATION AWARDS REGISTRATION",
 
             description:
                 "Event Registration Fee",
