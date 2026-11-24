@@ -1,0 +1,86 @@
+[
+  {
+    "id": "disp_01",
+    "registrationId": "UGH-TEST-MWUNJU97",
+    "recipientEmail": "ughambusiness@gmail.com",
+    "recipientName": "Ugham Executive Desk",
+    "subject": "Brevo SMTP Relay Live Handshake Test",
+    "type": "Brevo Relay Test",
+    "eventName": "System Infrastructure",
+    "teamName": "UGHAM Admin",
+    "status": "sent",
+    "timestamp": "2026-11-24T10:15:30.000Z"
+  },
+  {
+    "id": "disp_02",
+    "registrationId": "UGH-TEST-MWUNJU97",
+    "recipientEmail": "test@ugham.com",
+    "recipientName": "Test Participant",
+    "subject": "Welcome to ShePitch 2026 - Squad Confirmation",
+    "type": "Squad Leader Confirmation",
+    "eventName": "shepitch",
+    "teamName": "NovaInnovators",
+    "status": "sent",
+    "timestamp": "2026-11-24T11:20:10.000Z"
+  },
+  {
+    "id": "disp_03",
+    "registrationId": "UGH-TEST-MWUNJU97",
+    "recipientEmail": "aarav@ugham.com",
+    "recipientName": "Aarav Sharma",
+    "subject": "ShePitch 2026 - Member Portal Credentials",
+    "type": "Squad Member Confirmation",
+    "eventName": "shepitch",
+    "teamName": "NovaInnovators",
+    "status": "sent",
+    "timestamp": "2026-11-24T11:20:15.000Z"
+  },
+  {
+    "id": "disp_04",
+    "registrationId": "UGH-TEST-MWUNJU97",
+    "recipientEmail": "priya@ugham.com",
+    "recipientName": "Priya Nair",
+    "subject": "ShePitch 2026 - Member Portal Credentials",
+    "type": "Squad Member Confirmation",
+    "eventName": "shepitch",
+    "teamName": "NovaInnovators",
+    "status": "sent",
+    "timestamp": "2026-11-24T11:20:20.000Z"
+  },
+  {
+    "id": "disp_05",
+    "registrationId": "UGH-TEST-MWUNJU97",
+    "recipientEmail": "ughambusiness@gmail.com",
+    "recipientName": "Security Supervisor",
+    "subject": "Brevo SMTP 6-Digit Domain Verification OTP",
+    "type": "Security OTP Verification",
+    "eventName": "Domain Verification",
+    "teamName": "UGHAM Security",
+    "status": "sent",
+    "timestamp": "2026-11-24T12:05:40.000Z"
+  },
+  {
+    "id": "disp_06",
+    "registrationId": "UGH-TEST-MWUNJU97",
+    "recipientEmail": "admin@ugham.com",
+    "recipientName": "Administrative Supervisor",
+    "subject": "Official Domain Transmission Test - events@ugham.com",
+    "type": "Domain Transmission Verification",
+    "eventName": "System Infrastructure",
+    "teamName": "UGHAM Events Desk",
+    "status": "sent",
+    "timestamp": "2026-11-24T12:35:10.000Z"
+  },
+  {
+    "id": "disp_07",
+    "registrationId": "UGH-TEST-MWUNJU97",
+    "recipientEmail": "john@example.com",
+    "recipientName": "John Smith",
+    "subject": "HackPick 2026 - Official Squad Registration Confirmation",
+    "type": "HackPick Registration",
+    "eventName": "hackpick",
+    "teamName": "CyberKnights",
+    "status": "sent",
+    "timestamp": "2026-11-24T13:10:00.000Z"
+  }
+]

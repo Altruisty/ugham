@@ -1,0 +1,38 @@
+[
+  {
+    "id": "UGH-TEST-MWUNJU97",
+    "event_name": "shepitch",
+    "track": "Project Pitch",
+    "domain": "AI & DEEP TECH",
+    "team_name": "NovaInnovators",
+    "leader_name": "Test Participant",
+    "leader_email": "test@ugham.com",
+    "mobile": "+91 98765 43210",
+    "college_name": "Indian Institute of Technology (IIT) Madras",
+    "year_of_study": "3rd Year",
+    "department": "Computer Science & Engineering",
+    "team_size": 3,
+    "amount_paid": 297,
+    "payment_id": "pay_test_1795522186987",
+    "members": [
+      {
+        "name": "Test Participant",
+        "email": "test@ugham.com",
+        "phone": "+91 98765 43210",
+        "role": "Leader"
+      },
+      {
+        "name": "Aarav Sharma",
+        "email": "aarav@ugham.com",
+        "role": "Member"
+      },
+      {
+        "name": "Priya Nair",
+        "email": "priya@ugham.com",
+        "role": "Member"
+      }
+    ],
+    "email_status": "sent",
+    "created_at": "2026-11-24T12:00:00.000Z"
+  }
+]
