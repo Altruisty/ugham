@@ -1303,31 +1303,59 @@ export default function ParticipantPortalPage() {
                     <div style={{ fontSize: "12.5px", color: "#64748b", display: "flex", flexDirection: "column", gap: "6px", marginBottom: "22px" }}>
                       <div>Squad Size: <strong style={{ color: "#0f172a" }}>{ed.teamSizeMin}–{ed.teamSizeMax} Members</strong></div>
                       <div>Domains: <strong style={{ color: "#0f172a" }}>{ed.domains?.length || 8} High-Growth Sectors</strong></div>
-                      <div>Status: <strong style={{ color: "#059669" }}>Open for Applications</strong></div>
+                      <div>
+                        Status:{" "}
+                        <strong style={{ color: (ed as any).registrationClosed ? "#dc2626" : "#059669" }}>
+                          {(ed as any).registrationClosed ? "Registrations Stopped" : "Open for Applications"}
+                        </strong>
+                      </div>
                     </div>
                   </div>
 
-                  <Link
-                    href={`/events-hub?event=${encodeURIComponent(ed.slug)}#event-registration`}
-                    className="glacier-btn"
-                    style={{
-                      width: "100%",
-                      display: "inline-flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      padding: "12px",
-                      borderRadius: "10px",
-                      fontSize: "13.5px",
-                      fontWeight: 800,
-                      textDecoration: "none",
-                      background: LOGO_GRADIENT,
-                      color: "#ffffff",
-                      border: "1.5px solid transparent",
-                      boxShadow: "0 6px 18px rgba(124, 58, 237, 0.25)",
-                    }}
-                  >
-                    Apply for {ed.title} →
-                  </Link>
+                  {(ed as any).registrationClosed ? (
+                    <button
+                      type="button"
+                      disabled
+                      style={{
+                        width: "100%",
+                        display: "inline-flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        padding: "12px",
+                        borderRadius: "10px",
+                        fontSize: "13.5px",
+                        fontWeight: 800,
+                        background: "#f1f5f9",
+                        color: "#64748b",
+                        border: "1.5px solid #cbd5e1",
+                        cursor: "not-allowed",
+                      }}
+                    >
+                      Registrations Closed
+                    </button>
+                  ) : (
+                    <Link
+                      href={`/events-hub?event=${encodeURIComponent(ed.slug)}#event-registration`}
+                      className="glacier-btn"
+                      style={{
+                        width: "100%",
+                        display: "inline-flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        padding: "12px",
+                        borderRadius: "10px",
+                        fontSize: "13.5px",
+                        fontWeight: 800,
+                        textDecoration: "none",
+                        background: LOGO_GRADIENT,
+                        color: "#ffffff",
+                        border: "1.5px solid transparent",
+                        boxShadow: "0 6px 18px rgba(124, 58, 237, 0.25)",
+                      }}
+                    >
+                      Apply for {ed.title} →
+                    </Link>
+                  )}
                 </div>
               ))}
             </div>

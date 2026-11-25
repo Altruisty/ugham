@@ -73,11 +73,11 @@ export async function POST(req: Request) {
 
 export async function PATCH(req: Request) {
   try {
-    const { slug, status } = await req.json();
-    if (!slug || !status) {
-      return NextResponse.json({ success: false, error: "Slug and status are required." }, { status: 400 });
+    const { slug, status, registrationClosed } = await req.json();
+    if (!slug || (status === undefined && typeof registrationClosed !== "boolean")) {
+      return NextResponse.json({ success: false, error: "Slug and update fields are required." }, { status: 400 });
     }
-    const editions = await updateEditionStatus(slug, status);
+    const editions = await updateEditionStatus(slug, status, registrationClosed);
     return NextResponse.json({ success: true, editions });
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });

@@ -21,6 +21,7 @@ export interface EventEditionRecord {
   tagline: string;
   description: string;
   status: "active" | "upcoming" | "past";
+  registrationClosed?: boolean;
   pricingMode: "per_member" | "flat_team";
   feeAmount: number;
   teamSizeMin: number;
@@ -202,9 +203,24 @@ async function initEditionsDb() {
           whatsapp_link TEXT,
           schedule_note VARCHAR(255),
           rounds JSONB DEFAULT '[]',
+          registration_closed BOOLEAN DEFAULT FALSE,
           created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
         );
       `);
+      await client.query(`
+        ALTER TABLE event_editions ADD COLUMN IF NOT EXISTS registration_closed BOOLEAN DEFAULT FALSE;
+        CREATE TABLE IF NOT EXISTS app_meta (
+          key VARCHAR(64) PRIMARY KEY,
+          value TEXT
+        );
+      `);
+      const coimbatoreMigrated = await client.query(`SELECT value FROM app_meta WHERE key = 'coimbatore_upcoming_v1'`);
+      if (coimbatoreMigrated.rows.length === 0) {
+        await client.query(`UPDATE event_editions SET status = 'upcoming' WHERE slug = 'shepitch_coimbatore'`);
+        await client.query(
+          `INSERT INTO app_meta (key, value) VALUES ('coimbatore_upcoming_v1', 'true') ON CONFLICT (key) DO NOTHING`
+        );
+      }
       const countRes = await client.query(`SELECT COUNT(*)::int AS cnt FROM event_editions`);
       if (countRes.rows[0]?.cnt === 0) {
         const localSeed = ensureLocalEditionsFile();
@@ -263,6 +279,7 @@ export async function getEventEditions(): Promise<EventEditionRecord[]> {
           tagline: r.tagline || "",
           description: r.description || "",
           status: r.status,
+          registrationClosed: Boolean(r.registration_closed),
           pricingMode: r.pricing_mode,
           feeAmount: r.fee_amount,
           teamSizeMin: r.team_size_min,
@@ -290,8 +307,8 @@ export async function upsertEventEdition(ed: EventEditionRecord): Promise<EventE
         `INSERT INTO event_editions (
           slug, series, edition_number, title, badge_text, tagline, description, status,
           pricing_mode, fee_amount, team_size_min, team_size_max, tracks, domains, whatsapp_link,
-          schedule_note, rounds, created_at
-        ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)
+          schedule_note, rounds, registration_closed, created_at
+        ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)
         ON CONFLICT (slug) DO UPDATE SET
           title = EXCLUDED.title,
           badge_text = EXCLUDED.badge_text,
@@ -306,7 +323,8 @@ export async function upsertEventEdition(ed: EventEditionRecord): Promise<EventE
           domains = EXCLUDED.domains,
           whatsapp_link = EXCLUDED.whatsapp_link,
           schedule_note = EXCLUDED.schedule_note,
-          rounds = EXCLUDED.rounds`,
+          rounds = EXCLUDED.rounds,
+          registration_closed = EXCLUDED.registration_closed`,
         [
           ed.slug,
           ed.series,
@@ -325,6 +343,7 @@ export async function upsertEventEdition(ed: EventEditionRecord): Promise<EventE
           ed.whatsappLink,
           ed.scheduleNote,
           JSON.stringify(ed.rounds || []),
+          Boolean(ed.registrationClosed),
           ed.createdAt || new Date().toISOString(),
         ]
       );
@@ -344,11 +363,20 @@ export async function upsertEventEdition(ed: EventEditionRecord): Promise<EventE
   return getEventEditions();
 }
 
-export async function updateEditionStatus(slug: string, status: "active" | "upcoming" | "past"): Promise<EventEditionRecord[]> {
+export async function updateEditionStatus(
+  slug: string,
+  status?: "active" | "upcoming" | "past",
+  registrationClosed?: boolean
+): Promise<EventEditionRecord[]> {
   if (pool) {
     try {
       await initEditionsDb();
-      await pool.query(`UPDATE event_editions SET status = $1 WHERE slug = $2`, [status, slug]);
+      if (status !== undefined) {
+        await pool.query(`UPDATE event_editions SET status = $1 WHERE slug = $2`, [status, slug]);
+      }
+      if (typeof registrationClosed === "boolean") {
+        await pool.query(`UPDATE event_editions SET registration_closed = $1 WHERE slug = $2`, [registrationClosed, slug]);
+      }
     } catch (err) {
       console.error("Postgres updateEditionStatus error:", err);
     }
@@ -357,7 +385,8 @@ export async function updateEditionStatus(slug: string, status: "active" | "upco
   const list = ensureLocalEditionsFile();
   const item = list.find((ed) => ed.slug === slug);
   if (item) {
-    item.status = status;
+    if (status !== undefined) item.status = status;
+    if (typeof registrationClosed === "boolean") item.registrationClosed = registrationClosed;
     fs.writeFileSync(EDITIONS_FILE, JSON.stringify(list, null, 2), "utf-8");
   }
   return getEventEditions();

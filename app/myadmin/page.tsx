@@ -557,6 +557,28 @@ export default function MyAdminPage() {
     }
   };
 
+  const handleToggleEditionRegistration = async (slug: string, closed: boolean) => {
+    try {
+      const res = await fetch("/api/events/editions", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug, registrationClosed: closed }),
+      });
+      const data = await res.json();
+      if (data.success && Array.isArray(data.editions)) {
+        setEditions(data.editions);
+        setEditionMsg(
+          closed
+            ? "Registrations stopped for this event. Public registration is now blocked."
+            : "Registrations reopened for this event."
+        );
+        setTimeout(() => setEditionMsg(""), 3500);
+      }
+    } catch (err) {
+      console.error("Error toggling edition registration:", err);
+    }
+  };
+
   const handleUpdateTeamStatus = async (
     teamId: string,
     updates: {
@@ -1859,7 +1881,7 @@ export default function MyAdminPage() {
                   {activeTab === "emails-sent" && "Outgoing Emails Dispatch Monitor"}
                 </h1>
                 <p style={{ color: "#64748b", fontSize: "14px", margin: 0 }}>
-                  {activeTab === "overview" && "Live registration metrics, revenue counters, WhatsApp community links & auto-sync (3s)."}
+                  {activeTab === "overview" && "Live registration metrics, revenue counters, and WhatsApp community links."}
                   {activeTab === "registrations" && "Participant database records, member rosters, and Excel spreadsheet export."}
                   {activeTab === "payments" && "Razorpay online collections, event-wise fee breakdown, and transaction status."}
                   {activeTab === "colleges" && "College-wise registered teams, student rosters, college payments, and manual portal credentials."}
@@ -2060,23 +2082,6 @@ export default function MyAdminPage() {
                   </svg>
                   <span>Sync Records</span>
                 </button>
-                <span
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    padding: "6px 12px",
-                    borderRadius: "100px",
-                    background: "rgba(16, 185, 129, 0.1)",
-                    border: "1px solid rgba(16, 185, 129, 0.25)",
-                    color: "#059669",
-                    fontSize: "11.5px",
-                    fontWeight: 800,
-                  }}
-                >
-                  <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: "#10b981" }} />
-                  Auto-Sync (3s)
-                </span>
               </div>
             </div>
 
@@ -6290,9 +6295,14 @@ export default function MyAdminPage() {
                                     <h3 style={{ fontSize: "19px", fontWeight: 900, color: "#0f172a", margin: 0 }}>
                                       {ed.title}
                                     </h3>
-                                    <span style={{ fontSize: "11px", fontWeight: 800, padding: "3px 9px", borderRadius: "6px", background: "#f1f5f9", color: "#334155", border: "1px solid #cbd5e1", textTransform: "uppercase" }}>
+                                    <span style={{ fontSize: "11px", fontWeight: 800, padding: "3px 9px", borderRadius: "6px", background: ed.status === "upcoming" ? "#fef3c7" : "#f1f5f9", color: ed.status === "upcoming" ? "#92400e" : "#334155", border: ed.status === "upcoming" ? "1px solid #fcd34d" : "1px solid #cbd5e1", textTransform: "uppercase" }}>
                                       {ed.status}
                                     </span>
+                                    {ed.registrationClosed && (
+                                      <span style={{ fontSize: "11px", fontWeight: 800, padding: "3px 9px", borderRadius: "6px", background: "#fef2f2", color: "#dc2626", border: "1px solid #fecaca", textTransform: "uppercase" }}>
+                                        Registration Stopped
+                                      </span>
+                                    )}
                                   </div>
                                   <div style={{ fontSize: "13px", color: "#64748b", marginTop: "3px" }}>
                                     {ed.tagline} • ₹{ed.feeAmount} ({ed.pricingMode === "per_member" ? "per member" : "flat team"}) • {ed.teamSizeMin}–{ed.teamSizeMax} Members
@@ -6301,6 +6311,25 @@ export default function MyAdminPage() {
                               </div>
 
                               <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                                {ed.status === "active" && (
+                                  <button
+                                    type="button"
+                                    className="glacier-btn"
+                                    onClick={() => handleToggleEditionRegistration(ed.slug, !ed.registrationClosed)}
+                                    style={{
+                                      padding: "8px 12px",
+                                      borderRadius: "8px",
+                                      border: ed.registrationClosed ? "1px solid #10b981" : "1px solid #fecaca",
+                                      background: ed.registrationClosed ? "#ecfdf5" : "#fef2f2",
+                                      color: ed.registrationClosed ? "#047857" : "#dc2626",
+                                      fontSize: "12px",
+                                      fontWeight: 800,
+                                      cursor: "pointer",
+                                    }}
+                                  >
+                                    {ed.registrationClosed ? "Reopen Registration" : "Stop Registration"}
+                                  </button>
+                                )}
                                 {ed.status !== "active" && (
                                   <button
                                     type="button"
@@ -6309,6 +6338,16 @@ export default function MyAdminPage() {
                                     style={{ padding: "8px 12px", borderRadius: "8px", border: "1px solid #cbd5e1", background: "#ffffff", color: "#0f172a", fontSize: "12px", fontWeight: 700, cursor: "pointer" }}
                                   >
                                     Set Active
+                                  </button>
+                                )}
+                                {ed.status === "active" && (
+                                  <button
+                                    type="button"
+                                    className="glacier-btn"
+                                    onClick={() => handleUpdateEditionStatus(ed.slug, "upcoming")}
+                                    style={{ padding: "8px 12px", borderRadius: "8px", border: "1px solid #cbd5e1", background: "#ffffff", color: "#0f172a", fontSize: "12px", fontWeight: 700, cursor: "pointer" }}
+                                  >
+                                    Set Upcoming
                                   </button>
                                 )}
                                 {ed.status !== "past" && (

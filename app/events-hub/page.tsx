@@ -155,6 +155,10 @@ export default function EventsHubPage() {
     [activeEditionsList, selectedEvent]
   );
 
+  const isCurrentEditionClosed = Boolean(
+    currentEdition && (currentEdition.status !== "active" || currentEdition.registrationClosed)
+  );
+
   const isShepitch =
     currentEdition?.series === "shepitch_chennai" ||
     currentEdition?.series === "shepitch_coimbatore" ||
@@ -239,7 +243,7 @@ export default function EventsHubPage() {
   const isFormValid = validationErrors.length === 0;
 
   const executeBackendRegistration = async (paymentId: string) => {
-    if (!isFormValid) return;
+    if (!isFormValid || isCurrentEditionClosed) return;
     setErrorMessage("");
 
     const membersList = [
@@ -298,12 +302,12 @@ export default function EventsHubPage() {
   };
 
   const handleTestModeSimulate = async () => {
-    if (!isFormValid || !isRazorpayTestMode || isProcessingPayment) return;
+    if (!isFormValid || !isRazorpayTestMode || isProcessingPayment || isCurrentEditionClosed) return;
     await executeBackendRegistration(`RZP_TEST_SANDBOX_${Date.now()}`);
   };
 
   const handlePayAndRegister = async () => {
-    if (!isFormValid) return;
+    if (!isFormValid || isCurrentEditionClosed) return;
     setErrorMessage("");
 
     const loadRazorpaySdk = (): Promise<boolean> => {
@@ -1380,9 +1384,29 @@ export default function EventsHubPage() {
                     )}
                   </div>
                   <div className="hub-tab-text">
-                    <span className="hub-tab-name">{ed.title}</span>
+                    <span className="hub-tab-name">
+                      {ed.title}
+                      {ed.registrationClosed && (
+                        <span
+                          style={{
+                            marginLeft: "8px",
+                            fontSize: "10px",
+                            fontWeight: 800,
+                            padding: "2px 7px",
+                            borderRadius: "6px",
+                            background: "rgba(239, 68, 68, 0.14)",
+                            color: "#dc2626",
+                            verticalAlign: "middle",
+                          }}
+                        >
+                          CLOSED
+                        </span>
+                      )}
+                    </span>
                     <span className="hub-tab-meta">
-                      {ed.teamSizeMin}–{ed.teamSizeMax} Members • ₹{ed.feeAmount}{ed.pricingMode === "per_member" ? " / member" : " flat squad"}
+                      {ed.registrationClosed
+                        ? "Registrations Stopped by Admin"
+                        : `${ed.teamSizeMin}–${ed.teamSizeMax} Members • ₹${ed.feeAmount}${ed.pricingMode === "per_member" ? " / member" : " flat squad"}`}
                     </span>
                   </div>
                 </button>
@@ -2179,7 +2203,31 @@ export default function EventsHubPage() {
                 </div>
 
                 {/* Validation helper status */}
-                {!isFormValid ? (
+                {isCurrentEditionClosed ? (
+                  <div
+                    style={{
+                      background: "rgba(239, 68, 68, 0.16)",
+                      border: "1px solid rgba(248, 113, 113, 0.45)",
+                      padding: "14px 18px",
+                      borderRadius: "12px",
+                      fontSize: "13.5px",
+                      color: "#fecaca",
+                      marginBottom: "20px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                      fontWeight: 700,
+                    }}
+                  >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f87171" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+                    </svg>
+                    <span>
+                      Registrations for <strong>{currentEdition?.title}</strong> have been stopped. Please select another active edition or check back later.
+                    </span>
+                  </div>
+                ) : !isFormValid ? (
                   <div
                     style={{
                       background: "rgba(255,255,255,0.06)",
@@ -2228,7 +2276,7 @@ export default function EventsHubPage() {
 
                 <button
                   type="submit"
-                  disabled={!isFormValid || isProcessingPayment}
+                  disabled={!isFormValid || isProcessingPayment || isCurrentEditionClosed}
                   className="btn-primary"
                   style={{
                     width: "100%",
@@ -2238,23 +2286,25 @@ export default function EventsHubPage() {
                     fontWeight: 900,
                     letterSpacing: "0.5px",
                     borderRadius: "16px",
-                    opacity: isFormValid ? 1 : 0.45,
-                    cursor: isFormValid ? "pointer" : "not-allowed",
-                    background: isFormValid
+                    opacity: isFormValid && !isCurrentEditionClosed ? 1 : 0.45,
+                    cursor: isFormValid && !isCurrentEditionClosed ? "pointer" : "not-allowed",
+                    background: isFormValid && !isCurrentEditionClosed
                       ? "linear-gradient(135deg, #3B29CC 0%, #7C3AED 50%, #C026D3 100%)"
                       : "#475569",
-                    boxShadow: isFormValid ? "0 12px 35px rgba(124, 58, 237, 0.4)" : "none",
+                    boxShadow: isFormValid && !isCurrentEditionClosed ? "0 12px 35px rgba(124, 58, 237, 0.4)" : "none",
                   }}
                 >
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: "10px" }}>
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                   </svg>
-                  {isRazorpayTestMode
-                    ? `OPEN RAZORPAY TEST CHECKOUT (₹${totalAmount} SIMULATED)`
-                    : `PAY ₹${totalAmount} & COMPLETE REGISTRATION`}
+                  {isCurrentEditionClosed
+                    ? "REGISTRATIONS CLOSED FOR THIS EVENT"
+                    : isRazorpayTestMode
+                      ? `OPEN RAZORPAY TEST CHECKOUT (₹${totalAmount} SIMULATED)`
+                      : `PAY ₹${totalAmount} & COMPLETE REGISTRATION`}
                 </button>
 
-                {isRazorpayTestMode && (
+                {isRazorpayTestMode && !isCurrentEditionClosed && (
                   <div
                     style={{
                       marginTop: "16px",

@@ -29,6 +29,12 @@ export async function POST(req: NextRequest) {
 
     const editions = await getEventEditions();
     const matched = editions.find((e) => e.slug === eventName);
+    if (matched && (matched.status !== "active" || matched.registrationClosed)) {
+      return NextResponse.json(
+        { success: false, error: `Registrations for ${matched.title} are currently stopped.` },
+        { status: 403 }
+      );
+    }
     const isShePitch =
       matched?.series === "shepitch_chennai" ||
       matched?.series === "shepitch_coimbatore" ||
