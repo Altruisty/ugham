@@ -686,7 +686,7 @@ export default function MyAdminPage() {
       setWarningSelectedIds([]);
       setWarningPasswordInput("");
       setShowWarningPasswordModal(false);
-      await silentRefreshAll();
+      await refreshAllData();
       setTimeout(() => setWarningSuccess(""), 4000);
     } catch (err: any) {
       setWarningError(err.message || "Failed to execute deletion.");
@@ -695,7 +695,7 @@ export default function MyAdminPage() {
     }
   };
 
-  const silentRefreshAll = async () => {
+  const refreshAllData = async () => {
     try {
       const [regRes, colRes, credRes, smtpRes, edRes] = await Promise.all([
         fetch("/api/admin/registrations"),
@@ -718,7 +718,7 @@ export default function MyAdminPage() {
       if (smtpData) setSmtpInfo(smtpData);
       if (edData?.success && Array.isArray(edData.editions)) setEditions(edData.editions);
     } catch {
-      // silent background refresh error ignored
+      // background refresh error ignored
     }
   };
 
@@ -734,24 +734,24 @@ export default function MyAdminPage() {
     fetchEditions();
   }, []);
 
-  // Auto-refresh all Admin details smoothly every 3 seconds
-  useEffect(() => {
-    if (!isAuthenticated) return;
-    const timer = setInterval(() => {
-      void silentRefreshAll();
-    }, 3000);
-    return () => clearInterval(timer);
-  }, [isAuthenticated]);
-
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const validKeys = ["Admin@123", "ugham@admin2026", "admin", "UGHAM2026"];
-    if (validKeys.includes(passwordInput.trim())) {
-      setIsAuthenticated(true);
-      sessionStorage.setItem("ugham_admin_auth", "true");
-      setAuthError("");
-    } else {
-      setAuthError("Invalid admin access key.");
+    try {
+      const res = await fetch("/api/admin/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: passwordInput.trim() }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setIsAuthenticated(true);
+        sessionStorage.setItem("ugham_admin_auth", "true");
+        setAuthError("");
+      } else {
+        setAuthError(data.error || "Invalid admin access key.");
+      }
+    } catch {
+      setAuthError("Unable to verify admin access key right now.");
     }
   };
 
@@ -4739,7 +4739,7 @@ export default function MyAdminPage() {
                       return (
                         <div
                           key={col.collegeName}
-                          className="glacier-card"
+                          className="glacier-card admin-college-card"
                           style={{
                             background: "#ffffff",
                             borderRadius: "20px",
@@ -4752,6 +4752,7 @@ export default function MyAdminPage() {
                         >
                           {/* Top Row: Premium Round Number + College Name & Neutral Event Badges */}
                           <div
+                            className="admin-college-card-top"
                             style={{
                               display: "flex",
                               justifyContent: "space-between",
@@ -4761,7 +4762,7 @@ export default function MyAdminPage() {
                               marginBottom: "16px",
                             }}
                           >
-                            <div style={{ display: "flex", alignItems: "flex-start", gap: "14px" }}>
+                            <div style={{ display: "flex", alignItems: "flex-start", gap: "14px", minWidth: 0, flex: "1 1 280px" }}>
                               <div
                                 style={{
                                   width: "40px",
@@ -4852,8 +4853,9 @@ export default function MyAdminPage() {
                             </div>
 
                             {/* Metrics Pills */}
-                            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                            <div className="admin-college-metrics" style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                               <div
+                                className="admin-college-metric-box"
                                 style={{
                                   padding: "8px 14px",
                                   borderRadius: "10px",
@@ -4870,6 +4872,7 @@ export default function MyAdminPage() {
                                 </strong>
                               </div>
                               <div
+                                className="admin-college-metric-box"
                                 style={{
                                   padding: "8px 14px",
                                   borderRadius: "10px",
@@ -4890,6 +4893,7 @@ export default function MyAdminPage() {
 
                           {/* Portal Login Status + Quick Payments Summary Strip */}
                           <div
+                            className="admin-college-login-strip"
                             style={{
                               padding: "14px 18px",
                               borderRadius: "12px",
@@ -4946,7 +4950,7 @@ export default function MyAdminPage() {
 
                             <button
                               type="button"
-                              className="glacier-btn"
+                              className="glacier-btn admin-college-cred-btn"
                               onClick={() => {
                                 setCollegeSubTab("credentials");
                                 setManualCollegeSelect(col.collegeName);
@@ -4981,8 +4985,18 @@ export default function MyAdminPage() {
 
                           {/* College-Wise Teams & Payments List (Each Team with Dropdown for Student Details) */}
                           <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2px" }}>
-                              <span style={{ fontSize: "11.5px", fontWeight: 800, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                            <div
+                              className="admin-college-teams-header"
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                flexWrap: "wrap",
+                                gap: "4px 12px",
+                                marginBottom: "2px",
+                              }}
+                            >
+                              <span style={{ fontSize: "11.5px", fontWeight: 800, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.5px", lineHeight: 1.45 }}>
                                 Registered Teams &amp; Payments from {col.collegeName} ({col.teams.length})
                               </span>
                               <span style={{ fontSize: "11.5px", color: "#94a3b8", fontWeight: 600 }}>
@@ -5053,8 +5067,8 @@ export default function MyAdminPage() {
                                       )}
                                     </div>
 
-                                    <div style={{ display: "flex", alignItems: "center", gap: "14px", flexWrap: "wrap" }}>
-                                      <div style={{ textAlign: "right" }}>
+                                    <div className="admin-college-team-meta" style={{ display: "flex", alignItems: "center", gap: "14px", flexWrap: "wrap" }}>
+                                      <div className="admin-college-team-amount" style={{ textAlign: "right" }}>
                                         <span style={{ fontSize: "13.5px", fontWeight: 900, color: "#0f172a" }}>
                                           ₹{team.amount_paid}
                                         </span>

@@ -1,19 +1,6 @@
-import { Pool } from "pg";
 import fs from "fs";
 import path from "path";
-
-const rawConnectionString = process.env.DATABASE_URL || "";
-const connectionString = rawConnectionString.split("?")[0].trim();
-
-let pool: Pool | null = null;
-if (connectionString) {
-  pool = new Pool({
-    connectionString,
-    ssl: { rejectUnauthorized: false },
-    max: 5,
-    idleTimeoutMillis: 30000,
-  });
-}
+import { pgPool as pool, runOnceInitialized } from "./pgPool";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const EDITIONS_FILE = path.join(DATA_DIR, "event_editions.json");
@@ -193,7 +180,7 @@ function ensureLocalEditionsFile(): EventEditionRecord[] {
 
 async function initEditionsDb() {
   if (!pool) return;
-  try {
+  return runOnceInitialized("event_editions_init", async () => {
     const client = await pool.connect();
     try {
       await client.query(`
@@ -255,9 +242,10 @@ async function initEditionsDb() {
     } finally {
       client.release();
     }
-  } catch (err) {
+  }).catch((err) => {
     console.error("Postgres initEditionsDb error, falling back to local:", err);
-  }
+    throw err;
+  });
 }
 
 export async function getEventEditions(): Promise<EventEditionRecord[]> {

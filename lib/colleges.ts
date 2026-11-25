@@ -1,20 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { Pool } from "pg";
-
-// Aiven Cloud PostgreSQL connection URL
-// Strip query parameters (?sslmode=require) so pg does not enforce strict CA verification for cloud databases with self-signed certs
-const rawConnectionString = process.env.DATABASE_URL || "";
-const connectionString = rawConnectionString.split("?")[0].trim();
-
-let pool: Pool | null = null;
-if (connectionString) {
-  pool = new Pool({
-    connectionString,
-    ssl: { rejectUnauthorized: false },
-    max: 5,
-  });
-}
+import { pgPool as pool, runOnceInitialized } from "./pgPool";
 
 
 
@@ -47,7 +33,7 @@ function ensureCollegesFile(): string[] {
 
 async function initCollegesTable() {
   if (!pool) return;
-  try {
+  return runOnceInitialized("admin_colleges_init", async () => {
     const client = await pool.connect();
     try {
       await client.query(`
@@ -70,9 +56,10 @@ async function initCollegesTable() {
     } finally {
       client.release();
     }
-  } catch (err) {
+  }).catch((err) => {
     console.error("Colleges table init error:", err);
-  }
+    throw err;
+  });
 }
 
 export async function getColleges(): Promise<string[]> {

@@ -16,13 +16,23 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 1. Check Administrator Access
-    const validAdminKeys = ["Admin@123", "ugham@admin2026", "admin", "UGHAM2026"];
+    // 1. Check Administrator Access via server-configured environment credentials
+    const configuredAdminKeys = [
+      process.env.ADMIN_PASSWORD,
+      ...(process.env.ADMIN_ACCESS_KEYS ? process.env.ADMIN_ACCESS_KEYS.split(",") : []),
+    ]
+      .map((k) => (k || "").trim())
+      .filter(Boolean);
+
+    const adminUsernames = [
+      "admin",
+      (process.env.EMAIL_FROM_ADDRESS || "").trim().toLowerCase(),
+      (process.env.EMAIL_REPLY_TO || "").trim().toLowerCase(),
+    ].filter(Boolean);
+
     if (
-      (username.toLowerCase() === "admin" ||
-        username.toLowerCase() === "events@ugham.com" ||
-        username.toLowerCase() === "ughambusiness@gmail.com") &&
-      validAdminKeys.includes(password)
+      configuredAdminKeys.includes(password) &&
+      (adminUsernames.includes(username.toLowerCase()) || configuredAdminKeys.includes(username))
     ) {
       return NextResponse.json({
         success: true,
@@ -30,18 +40,6 @@ export async function POST(req: NextRequest) {
         redirectUrl: "/myadmin",
         message: "Executive Desk Authentication Successful",
       });
-    }
-
-    // Direct admin secret key login
-    if (username.toLowerCase() === "admin" || validAdminKeys.includes(username)) {
-      if (validAdminKeys.includes(password)) {
-        return NextResponse.json({
-          success: true,
-          role: "admin",
-          redirectUrl: "/myadmin",
-          message: "Executive Desk Authentication Successful",
-        });
-      }
     }
 
     // 2. Check Participant Access

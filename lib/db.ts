@@ -1,23 +1,6 @@
-import { Pool } from "pg";
 import fs from "fs";
 import path from "path";
-
-// Aiven PostgreSQL connection URL
-// Strip query parameters so pg doesn't force strict CA chain verification for cloud DBs with self-signed certs
-const rawConnectionString = process.env.DATABASE_URL || "";
-const connectionString = rawConnectionString.split("?")[0].trim();
-
-let pool: Pool | null = null;
-if (connectionString) {
-  pool = new Pool({
-    connectionString,
-    ssl: {
-      rejectUnauthorized: false,
-    },
-    max: 10,
-    idleTimeoutMillis: 30000,
-  });
-}
+import { pgPool as pool, runOnceInitialized } from "./pgPool";
 
 // Local fallback file path when DATABASE_URL is not yet configured
 const DATA_DIR = path.join(process.cwd(), "data");
@@ -340,7 +323,7 @@ export const DEMO_TEST_REGISTRATIONS: RegistrationRecord[] = [
 
 export async function initDb() {
   if (pool) {
-    try {
+    return runOnceInitialized("event_registrations_init", async () => {
       const client = await pool.connect();
       try {
         await client.query(`
@@ -438,9 +421,10 @@ export async function initDb() {
       } finally {
         client.release();
       }
-    } catch (err) {
+    }).catch((err) => {
       console.error("Aiven Postgres connection error, falling back to local storage:", err);
-    }
+      throw err;
+    });
   } else {
     ensureLocalFallback();
   }

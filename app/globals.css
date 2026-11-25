@@ -4014,17 +4014,17 @@ div:not(#registration-form):has(+ .cta-contact-strip),
   .admin-mobile-fab {
     display: flex !important;
     position: fixed !important;
-    bottom: 24px !important;
-    right: 24px !important;
+    bottom: 16px !important;
+    right: 16px !important;
     z-index: 999 !important;
-    width: 56px !important;
-    height: 56px !important;
+    width: 50px !important;
+    height: 50px !important;
     border-radius: 50% !important;
     background: linear-gradient(135deg, #7C3AED 0%, #C026D3 100%) !important;
     color: #ffffff !important;
     border: none !important;
     cursor: pointer !important;
-    box-shadow: 0 8px 30px rgba(124, 58, 237, 0.5) !important;
+    box-shadow: 0 8px 26px rgba(124, 58, 237, 0.45) !important;
     align-items: center !important;
     justify-content: center !important;
     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease !important;
@@ -4040,7 +4040,7 @@ div:not(#registration-form):has(+ .cta-contact-strip),
     background: #0f172a !important;
   }
 
-  /* Mobile Speed-Dial Floating Menu Stack (from user image reference) */
+  /* Mobile Speed-Dial Floating Menu Stack (flexible & compact for short mobile heights) */
   .admin-speed-dial-backdrop {
     display: block !important;
     position: fixed !important;
@@ -4060,27 +4060,38 @@ div:not(#registration-form):has(+ .cta-contact-strip),
     display: flex !important;
     flex-direction: column !important;
     align-items: flex-end !important;
-    gap: 10px !important;
+    gap: 6px !important;
     position: fixed !important;
-    bottom: 92px !important;
-    right: 24px !important;
+    bottom: 74px !important;
+    right: 16px !important;
     z-index: 998 !important;
-    max-height: calc(100vh - 120px) !important;
+    max-height: calc(100dvh - 88px) !important;
+    max-width: calc(100vw - 24px) !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    padding: 4px 2px !important;
     pointer-events: auto !important;
+  }
+
+  .admin-speed-dial-stack::-webkit-scrollbar {
+    display: none !important;
   }
 
   .admin-speed-dial-pill {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: flex-end !important;
-    gap: 12px !important;
-    padding: 6px 6px 6px 18px !important;
+    flex-shrink: 0 !important;
+    gap: 8px !important;
+    padding: 4px 4px 4px 13px !important;
     border-radius: 100px !important;
     background: #ffffff !important;
     border: 1.5px solid #e2e8f0 !important;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1) !important;
     color: #0f172a !important;
-    font-size: 13.5px !important;
+    font-size: 12px !important;
     font-weight: 700 !important;
     font-family: inherit !important;
     cursor: pointer !important;
@@ -4102,21 +4113,21 @@ div:not(#registration-form):has(+ .cta-contact-strip),
     background: #7c3aed !important;
     border-color: #7c3aed !important;
     color: #ffffff !important;
-    box-shadow: 0 10px 28px rgba(124, 58, 237, 0.35) !important;
+    box-shadow: 0 8px 22px rgba(124, 58, 237, 0.32) !important;
   }
 
   .admin-speed-dial-pill .speed-dial-label {
-    font-size: 13.5px !important;
+    font-size: 12px !important;
     font-weight: 700 !important;
-    letter-spacing: 0.2px !important;
+    letter-spacing: 0.15px !important;
   }
 
   .admin-speed-dial-pill .speed-dial-badge {
     background: #f1f5f9 !important;
     color: #475569 !important;
-    padding: 2px 7px !important;
+    padding: 1px 6px !important;
     border-radius: 6px !important;
-    font-size: 11px !important;
+    font-size: 10px !important;
     font-weight: 800 !important;
     border: 1px solid #e2e8f0 !important;
   }
@@ -4128,8 +4139,8 @@ div:not(#registration-form):has(+ .cta-contact-strip),
   }
 
   .admin-speed-dial-pill .speed-dial-icon {
-    width: 34px !important;
-    height: 34px !important;
+    width: 28px !important;
+    height: 28px !important;
     border-radius: 50% !important;
     background: #f8fafc !important;
     border: 1px solid #e2e8f0 !important;
@@ -4141,10 +4152,49 @@ div:not(#registration-form):has(+ .cta-contact-strip),
     transition: all 0.2s ease !important;
   }
 
+  .admin-speed-dial-pill .speed-dial-icon svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
   .admin-speed-dial-pill.active .speed-dial-icon {
     background: rgba(255, 255, 255, 0.2) !important;
     border-color: transparent !important;
     color: #ffffff !important;
+  }
+}
+
+@media (max-width: 991px) and (max-height: 680px) {
+  .admin-mobile-fab {
+    width: 44px !important;
+    height: 44px !important;
+    bottom: 12px !important;
+    right: 12px !important;
+  }
+  .admin-speed-dial-stack {
+    bottom: 62px !important;
+    right: 12px !important;
+    gap: 4px !important;
+    max-height: calc(100dvh - 74px) !important;
+  }
+  .admin-speed-dial-pill {
+    padding: 3px 3px 3px 10px !important;
+    gap: 6px !important;
+  }
+  .admin-speed-dial-pill .speed-dial-label {
+    font-size: 11px !important;
+  }
+  .admin-speed-dial-pill .speed-dial-badge {
+    font-size: 9.5px !important;
+    padding: 1px 5px !important;
+  }
+  .admin-speed-dial-pill .speed-dial-icon {
+    width: 24px !important;
+    height: 24px !important;
+  }
+  .admin-speed-dial-pill .speed-dial-icon svg {
+    width: 12px !important;
+    height: 12px !important;
   }
 }
 
@@ -4364,4 +4414,60 @@ div:not(#registration-form):has(+ .cta-contact-strip),
 
 .step-active-node {
   animation: stepPulseRing 2s infinite;
+}
+
+@media (max-width: 767px) {
+  .admin-college-card {
+    padding: 16px !important;
+    border-radius: 16px !important;
+  }
+
+  .admin-college-card-top {
+    flex-direction: column !important;
+    gap: 12px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .admin-college-metrics {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  .admin-college-metric-box {
+    text-align: left !important;
+    padding: 10px 12px !important;
+  }
+
+  .admin-college-login-strip {
+    padding: 12px 14px !important;
+    gap: 10px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .admin-college-cred-btn {
+    width: 100% !important;
+    display: inline-flex !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  .admin-college-teams-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
+  }
+
+  .admin-college-team-meta {
+    width: 100% !important;
+    justify-content: space-between !important;
+    padding-top: 8px !important;
+    border-top: 1px dashed #e2e8f0 !important;
+  }
+
+  .admin-college-team-amount {
+    text-align: left !important;
+  }
 }
