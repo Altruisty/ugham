@@ -16,6 +16,8 @@ if (connectionString) {
   });
 }
 
+
+
 const DATA_DIR = path.join(process.cwd(), "data");
 const COLLEGES_FILE = path.join(DATA_DIR, "colleges.json");
 
