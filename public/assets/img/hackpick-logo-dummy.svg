@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+  <defs>
+    <linearGradient id="hpGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1D4ED8" />
+      <stop offset="50%" stop-color="#3B82F6" />
+      <stop offset="100%" stop-color="#6366F1" />
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="224" height="224" rx="48" fill="url(#hpGrad)" />
+  <rect x="16" y="16" width="208" height="208" rx="42" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="2" />
+  <rect x="74" y="54" width="92" height="66" rx="16" fill="rgba(255,255,255,0.14)" stroke="#93C5FD" stroke-width="3" />
+  <path d="M102 76 L88 87 L102 98 M138 76 L152 87 L138 98 M124 72 L116 102" fill="none" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+  <text x="120" y="164" text-anchor="middle" font-family="Arial, sans-serif" font-weight="900" font-size="26" fill="#FFFFFF" letter-spacing="1.5">HACKPICK</text>
+  <text x="120" y="186" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="11" fill="#DBEAFE" letter-spacing="2">DEEP-TECH SPRINT 2026</text>
+  <text x="120" y="206" text-anchor="middle" font-family="Arial, sans-serif" font-weight="600" font-size="9" fill="rgba(255,255,255,0.65)" letter-spacing="1">DUMMY LOGO</text>
+</svg>

@@ -240,7 +240,7 @@ export default function AboutPage() {
       </div>
 
       {/* SPLIT SCREEN SESSION PHOTO */}
-      <div className="container anim-el scale-up" style={{ padding: "40px 0" }}>
+      <div className="container anim-el scale-up" style={{ padding: "40px 0 100px" }}>
         <div className="photo-split">
           <div className="split-img">
             <img src="/assets/img/session-1.jpg" alt="Ugham Session" />
@@ -249,66 +249,6 @@ export default function AboutPage() {
             <p>
               Every session, every interaction, every idea shared is a step towards building something extraordinary. Ugham is where innovation comes alive.
             </p>
-          </div>
-        </div>
-      </div>
-
-      {/* CORE VALUES */}
-      <div
-        className="section-flow"
-        style={{
-          padding: "100px 0 160px",
-          textAlign: "center",
-          position: "relative",
-          background: "radial-gradient(circle at center, rgba(124,58,237,0.03) 0%, transparent 70%)",
-        }}
-      >
-        <div className="container" style={{ position: "relative", zIndex: 1 }}>
-          <h2 className="section-title anim-el bounce-in" style={{ marginBottom: "60px", fontSize: "clamp(32px, 5vw, 48px)" }}>
-            CORE VALUES
-          </h2>
-
-          <div className="core-values-wrapper anim-el blur-in del-1">
-            <div className="core-values-row">
-              <div className="core-value-card">
-                <div className="cv-icon-wrapper">
-                  <i className="fa-solid fa-magnifying-glass-chart"></i>
-                </div>
-                <h4>Market Research</h4>
-                <p>Driving data-backed decisions to identify true market gaps and deep user needs.</p>
-              </div>
-              <div className="core-value-card">
-                <div className="cv-icon-wrapper">
-                  <i className="fa-solid fa-clipboard-check"></i>
-                </div>
-                <h4>Idea Validation</h4>
-                <p>Rigorous testing and rapid prototyping before building solutions at scale.</p>
-              </div>
-              <div className="core-value-card">
-                <div className="cv-icon-wrapper">
-                  <i className="fa-solid fa-people-group"></i>
-                </div>
-                <h4>Team Collaboration</h4>
-                <p>Fostering synergy because together we achieve the truly extraordinary.</p>
-              </div>
-            </div>
-
-            <div className="core-values-row">
-              <div className="core-value-card">
-                <div className="cv-icon-wrapper">
-                  <i className="fa-solid fa-code"></i>
-                </div>
-                <h4>Product Development</h4>
-                <p>Transforming visionary concepts into robust, scalable digital realities.</p>
-              </div>
-              <div className="core-value-card">
-                <div className="cv-icon-wrapper">
-                  <i className="fa-solid fa-chart-line"></i>
-                </div>
-                <h4>Scale and Grow</h4>
-                <p>Engineering sustainable expansion for long-term global impact.</p>
-              </div>
-            </div>
           </div>
         </div>
       </div>

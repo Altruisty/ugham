@@ -1,0 +1,164 @@
+[
+  {
+    "slug": "shepitch_chennai",
+    "series": "shepitch_chennai",
+    "editionNumber": 2,
+    "title": "ShePitch Chennai Edition 2",
+    "badgeText": "CHENNAI EDITION 2",
+    "tagline": "Women-led innovation challenge • Chennai Hub",
+    "description": "Premier women-led innovation arena in Chennai. Showcase working prototypes or conceptual blueprints to angel investors and deep-tech incubators.",
+    "status": "active",
+    "pricingMode": "per_member",
+    "feeAmount": 99,
+    "teamSizeMin": 3,
+    "teamSizeMax": 4,
+    "tracks": [
+      "Project Pitch",
+      "Idea Pitch"
+    ],
+    "domains": [
+      "AI",
+      "SAAS",
+      "EDUTECH",
+      "HEALTHCARE",
+      "FINTECH",
+      "AGRITECH",
+      "IOT",
+      "MECHANICAL",
+      "CYBER SECURITY",
+      "OPEN INNOVATION"
+    ],
+    "whatsappLink": "https://chat.whatsapp.com/invite/ugham-shepitch-chennai",
+    "scheduleNote": "Registrations Open • Chennai Finale",
+    "rounds": [
+      {
+        "roundNumber": 1,
+        "title": "( SAMPLE PPT ) PPT SUBMISSION & VIDEO SUBMISSION ( DRIVE LINK OR OTHER LINKS )",
+        "description": "Download the official sample pitch PPT format and submit your Google Drive deck or pitch video link.",
+        "certificateNote": "AUTOMATIC PARTICIPATION CERTIFICATE FOR NOT SELECTED TO ROUND 2"
+      },
+      {
+        "roundNumber": 2,
+        "title": "PROTOTYPE SUBMISSION & VIDEO EXPLANATION ( LINKS )",
+        "description": "Submit working codebase / prototype demonstration links with architectural walkthrough.",
+        "certificateNote": "APPRECIATION CERTIFICATE FOR NOT MOVED NEXT"
+      },
+      {
+        "roundNumber": 3,
+        "title": "OFFLINE GRAND FINALE",
+        "description": "Physical on-stage pitch in Chennai before angel investors, venture partners & technical jury.",
+        "certificateNote": "FINAL STAGE: GRANTS, INCUBATION & INTERNSHIPS"
+      }
+    ],
+    "createdAt": "2026-10-01T00:00:00.000Z"
+  },
+  {
+    "slug": "hackpick",
+    "series": "hackpick",
+    "editionNumber": 1,
+    "title": "HackPick 2026",
+    "badgeText": "EDITION 1 • DEEP-TECH SPRINT",
+    "tagline": "Rapid engineering marathon • Flat ₹199/squad",
+    "description": "A 36-hour rapid engineering marathon. Build deep-tech hardware, autonomous software, and industrial automation tools tackling real-world enterprise briefs.",
+    "status": "active",
+    "pricingMode": "flat_team",
+    "feeAmount": 199,
+    "teamSizeMin": 2,
+    "teamSizeMax": 3,
+    "tracks": [
+      "Deep-Tech Sprint"
+    ],
+    "domains": [
+      "AI",
+      "CYBER SECURITY",
+      "FINTECH",
+      "IOT",
+      "SAAS",
+      "AGRI TECH",
+      "HEALTH CARE",
+      "CLOUD"
+    ],
+    "whatsappLink": "https://chat.whatsapp.com/invite/ugham-hackpick-2026",
+    "scheduleNote": "Registrations Open • 36-Hour Sprint",
+    "rounds": [
+      {
+        "roundNumber": 1,
+        "title": "( SAMPLE PPT ) PPT SUBMISSION & VIDEO SUBMISSION ( DRIVE LINK OR OTHER LINKS )",
+        "description": "Download the official Sample PPT and upload solution architecture + Drive/Video link.",
+        "certificateNote": "AUTOMATIC PARTICIPATION CERTIFICATE FOR NOT SELECTED TO ROUND 2"
+      },
+      {
+        "roundNumber": 2,
+        "title": "PROTOTYPE SUBMISSION & VIDEO EXPLANATION ( LINKS )",
+        "description": "Submit working code repository / hardware prototype & technical video demonstration.",
+        "certificateNote": "APPRECIATION CERTIFICATE FOR NOT MOVED NEXT"
+      },
+      {
+        "roundNumber": 3,
+        "title": "( SAMPLE PPT ) PRESENT TO JURIES",
+        "description": "Present live system architecture and technical Q&A defense to industry jury panel.",
+        "certificateNote": "EXCELLENCE CERTIFICATE FOR NOT MOVED NEXT"
+      },
+      {
+        "roundNumber": 4,
+        "title": "OFFLINE GRAND FINALE ( BEST TEAM, WINNER TEAM )",
+        "description": "36-hour on-ground championship crowning Best Team & Winner Team with awards & internships.",
+        "certificateNote": "GRAND FINALE: BEST TEAM & WINNER TEAM"
+      }
+    ],
+    "createdAt": "2026-10-01T00:00:00.000Z"
+  },
+  {
+    "slug": "shepitch_coimbatore",
+    "series": "shepitch_coimbatore",
+    "editionNumber": 1,
+    "title": "ShePitch Coimbatore Edition",
+    "badgeText": "COIMBATORE EDITION 1",
+    "tagline": "Women-led innovation challenge • Western TN",
+    "description": "Regional women-led startup & prototype challenge serving Coimbatore and Western Tamil Nadu innovation chapters.",
+    "status": "upcoming",
+    "pricingMode": "per_member",
+    "feeAmount": 99,
+    "teamSizeMin": 3,
+    "teamSizeMax": 4,
+    "tracks": [
+      "Project Pitch",
+      "Idea Pitch"
+    ],
+    "domains": [
+      "AI",
+      "SAAS",
+      "EDUTECH",
+      "HEALTHCARE",
+      "FINTECH",
+      "AGRITECH",
+      "IOT",
+      "MECHANICAL",
+      "CYBER SECURITY",
+      "OPEN INNOVATION"
+    ],
+    "whatsappLink": "https://chat.whatsapp.com/invite/ugham-shepitch-coimbatore",
+    "scheduleNote": "Upcoming Soon • Coimbatore Chapter",
+    "rounds": [
+      {
+        "roundNumber": 1,
+        "title": "( SAMPLE PPT ) PPT SUBMISSION & VIDEO SUBMISSION ( DRIVE LINK OR OTHER LINKS )",
+        "description": "Download the official sample pitch PPT format and submit your Google Drive deck or pitch video link.",
+        "certificateNote": "AUTOMATIC PARTICIPATION CERTIFICATE FOR NOT SELECTED TO ROUND 2"
+      },
+      {
+        "roundNumber": 2,
+        "title": "PROTOTYPE SUBMISSION & VIDEO EXPLANATION ( LINKS )",
+        "description": "Submit working codebase / prototype demonstration links with architectural walkthrough.",
+        "certificateNote": "APPRECIATION CERTIFICATE FOR NOT MOVED NEXT"
+      },
+      {
+        "roundNumber": 3,
+        "title": "OFFLINE GRAND FINALE",
+        "description": "On-stage finals in Coimbatore before venture partners & technical jury.",
+        "certificateNote": "FINAL STAGE: GRANTS, INCUBATION & INTERNSHIPS"
+      }
+    ],
+    "createdAt": "2026-10-05T00:00:00.000Z"
+  }
+]

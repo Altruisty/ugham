@@ -4,9 +4,9 @@ import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import Script from "next/script";
 import CustomSelect from "@/components/CustomSelect";
-import { DEFAULT_COLLEGES } from "@/lib/constants";
+import type { EventEditionRecord } from "@/lib/editions";
 
-type EventType = "shepitch" | "hackpick";
+type EventType = string;
 
 const SHEPITCH_DOMAINS = [
   "AI",
@@ -41,7 +41,32 @@ const YEAR_OPTIONS = [
 ];
 
 export default function EventsHubPage() {
-  const [selectedEvent, setSelectedEvent] = useState<EventType>("shepitch");
+  const [selectedEvent, setSelectedEvent] = useState<EventType>("shepitch_chennai");
+  const [liveEditions, setLiveEditions] = useState<EventEditionRecord[]>([]);
+  const [isRazorpayTestMode, setIsRazorpayTestMode] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const q = new URLSearchParams(window.location.search).get("event");
+      if (q) setSelectedEvent(q);
+    }
+    fetch("/api/events/editions")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.editions)) {
+          setLiveEditions(data.editions);
+        }
+      })
+      .catch(() => {});
+    fetch("/api/razorpay/order")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setIsRazorpayTestMode(Boolean(data.isTestMode));
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // ShePitch specific
   const [shepitchTrack, setShepitchTrack] = useState<"Project Pitch" | "Idea Pitch">("Project Pitch");
@@ -54,9 +79,7 @@ export default function EventsHubPage() {
 
   // Common Fields
   const [teamName, setTeamName] = useState("");
-  const [collegeList, setCollegeList] = useState<string[]>(DEFAULT_COLLEGES);
-  const [collegeName, setCollegeName] = useState("IIT Madras");
-  const [customCollegeName, setCustomCollegeName] = useState("");
+  const [collegeName, setCollegeName] = useState("");
   const [yearOfStudy, setYearOfStudy] = useState("3rd Year");
   const [department, setDepartment] = useState("");
 
@@ -74,6 +97,7 @@ export default function EventsHubPage() {
   const [member4Email, setMember4Email] = useState("");
 
   // UI Flow States
+  const [detailsModalEvent, setDetailsModalEvent] = useState<"shepitch_chennai" | "hackpick" | null>(null);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [processingStep, setProcessingStep] = useState(0);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -81,39 +105,76 @@ export default function EventsHubPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
-  // Fetch dynamic colleges from Admin API
-  useEffect(() => {
-    fetch("/api/admin/colleges")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success && Array.isArray(data.colleges) && data.colleges.length > 0) {
-          setCollegeList(data.colleges);
-          if (!data.colleges.includes(collegeName)) {
-            setCollegeName(data.colleges[0]);
-          }
-        }
-      })
-      .catch((err) => console.error("Error loading college options:", err));
-  }, []);
+  const activeEditionsList = useMemo(() => {
+    const active = liveEditions.filter((ed) => ed.status === "active");
+    if (active.length > 0) return active;
+    return [
+      {
+        slug: "shepitch_chennai",
+        series: "shepitch_chennai" as const,
+        editionNumber: 2,
+        title: "ShePitch Chennai Edition 2",
+        badgeText: "CHENNAI EDITION 2",
+        tagline: "Women-led innovation challenge",
+        description: "Premier women-led innovation arena in Chennai.",
+        status: "active" as const,
+        pricingMode: "per_member" as const,
+        feeAmount: 99,
+        teamSizeMin: 3,
+        teamSizeMax: 4,
+        domains: SHEPITCH_DOMAINS,
+        whatsappLink: "",
+        scheduleNote: "",
+        rounds: [],
+        createdAt: "",
+      },
+      {
+        slug: "hackpick",
+        series: "hackpick" as const,
+        editionNumber: 1,
+        title: "HackPick 2026",
+        badgeText: "DEEP-TECH SPRINT",
+        tagline: "Rapid engineering marathon",
+        description: "36-hour rapid engineering marathon.",
+        status: "active" as const,
+        pricingMode: "flat_team" as const,
+        feeAmount: 199,
+        teamSizeMin: 2,
+        teamSizeMax: 3,
+        domains: HACKPICK_DOMAINS,
+        whatsappLink: "",
+        scheduleNote: "",
+        rounds: [],
+        createdAt: "",
+      },
+    ];
+  }, [liveEditions]);
 
-  const currentTeamSize = selectedEvent === "shepitch" ? shepitchTeamSize : hackpickTeamSize;
-  const currentDomain = selectedEvent === "shepitch" ? shepitchDomain : hackpickDomain;
+  const currentEdition = useMemo(
+    () => activeEditionsList.find((ed) => ed.slug === selectedEvent) || activeEditionsList[0],
+    [activeEditionsList, selectedEvent]
+  );
 
-  // Pricing calculation
+  const isShepitch =
+    currentEdition?.series === "shepitch_chennai" ||
+    currentEdition?.series === "shepitch_coimbatore" ||
+    selectedEvent.includes("shepitch");
+  const currentTeamSize = isShepitch ? shepitchTeamSize : hackpickTeamSize;
+  const currentDomain = isShepitch ? shepitchDomain : hackpickDomain;
+
+  // Pricing calculation (respects dynamic edition config)
   const totalAmount = useMemo(() => {
-    if (selectedEvent === "shepitch") {
-      return shepitchTeamSize * 99; // ₹99 per member
-    } else {
-      return 199; // Flat ₹199 per team
-    }
-  }, [selectedEvent, shepitchTeamSize]);
+    const fee = currentEdition?.feeAmount ?? (isShepitch ? 99 : 199);
+    const mode = currentEdition?.pricingMode ?? (isShepitch ? "per_member" : "flat_team");
+    return mode === "per_member" ? currentTeamSize * fee : fee;
+  }, [currentEdition, isShepitch, currentTeamSize]);
 
   // Real-time validations
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const phoneClean = mobileNumber.trim().replace(/[\s\-\+]/g, "");
   
   const isTeamNameValid = teamName.trim().length >= 2;
-  const effectiveCollegeName = collegeName === "other" ? customCollegeName.trim() : collegeName.trim();
+  const effectiveCollegeName = collegeName.trim();
   const isCollegeValid = effectiveCollegeName.length >= 2;
   const isDepartmentValid = department.trim().length >= 2;
   
@@ -127,8 +188,8 @@ export default function EventsHubPage() {
   const isMember3NameValid = currentTeamSize < 3 || member3Name.trim().length >= 2;
   const isMember3EmailValid = currentTeamSize < 3 || emailRegex.test(member3Email.trim());
 
-  const isMember4NameValid = !(selectedEvent === "shepitch" && shepitchTeamSize === 4) || member4Name.trim().length >= 2;
-  const isMember4EmailValid = !(selectedEvent === "shepitch" && shepitchTeamSize === 4) || emailRegex.test(member4Email.trim());
+  const isMember4NameValid = !(isShepitch && shepitchTeamSize === 4) || member4Name.trim().length >= 2;
+  const isMember4EmailValid = !(isShepitch && shepitchTeamSize === 4) || emailRegex.test(member4Email.trim());
 
   // Aggregate validation
   const validationErrors = useMemo(() => {
@@ -150,7 +211,7 @@ export default function EventsHubPage() {
       if (!isMember3EmailValid) errors.push("Valid Member 3 Email");
     }
 
-    if (selectedEvent === "shepitch" && shepitchTeamSize === 4) {
+    if (isShepitch && shepitchTeamSize === 4) {
       if (!isMember4NameValid) errors.push("Member 4 Name");
       if (!isMember4EmailValid) errors.push("Valid Member 4 Email");
     }
@@ -166,18 +227,18 @@ export default function EventsHubPage() {
     isMobileValid,
     isMember2NameValid,
     isMember2EmailValid,
+    currentTeamSize,
     isMember3NameValid,
     isMember3EmailValid,
+    isShepitch,
+    shepitchTeamSize,
     isMember4NameValid,
     isMember4EmailValid,
-    currentTeamSize,
-    selectedEvent,
-    shepitchTeamSize,
   ]);
 
   const isFormValid = validationErrors.length === 0;
 
-  const handlePayAndRegister = async () => {
+  const executeBackendRegistration = async (paymentId: string) => {
     if (!isFormValid) return;
     setErrorMessage("");
 
@@ -187,90 +248,146 @@ export default function EventsHubPage() {
     if (currentTeamSize >= 3) {
       membersList.push({ name: member3Name.trim(), email: member3Email.trim(), role: "Member" });
     }
-    if (selectedEvent === "shepitch" && shepitchTeamSize === 4) {
+    if (isShepitch && shepitchTeamSize === 4) {
       membersList.push({ name: member4Name.trim(), email: member4Email.trim(), role: "Member" });
     }
 
-    const executeBackendRegistration = async (paymentId: string) => {
-      setIsProcessingPayment(true);
-      setProcessingStep(1);
+    setIsProcessingPayment(true);
+    setProcessingStep(1);
 
-      const step1Timer = setTimeout(() => setProcessingStep(2), 1000);
-      const step2Timer = setTimeout(() => setProcessingStep(3), 2000);
+    const step1Timer = setTimeout(() => setProcessingStep(2), 1000);
+    const step2Timer = setTimeout(() => setProcessingStep(3), 2000);
 
-      try {
-        const res = await fetch("/api/register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            eventName: selectedEvent,
-            track: selectedEvent === "shepitch" ? shepitchTrack : undefined,
-            domain: currentDomain,
-            teamName: teamName.trim(),
-            leaderName: leaderName.trim(),
-            leaderEmail: leaderEmail.trim(),
-            mobile: mobileNumber.trim(),
-            collegeName: effectiveCollegeName,
-            yearOfStudy,
-            department: department.trim(),
-            teamSize: currentTeamSize,
-            members: membersList,
-            paymentId,
-          }),
-        });
+    try {
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          eventName: selectedEvent,
+          track: isShepitch ? shepitchTrack : undefined,
+          domain: currentDomain,
+          teamName: teamName.trim(),
+          leaderName: leaderName.trim(),
+          leaderEmail: leaderEmail.trim(),
+          mobile: mobileNumber.trim(),
+          collegeName: effectiveCollegeName,
+          yearOfStudy,
+          department: department.trim(),
+          teamSize: currentTeamSize,
+          members: membersList,
+          paymentId,
+        }),
+      });
 
-        const data = await res.json();
-        if (!res.ok) {
-          throw new Error(data.error || "Registration failed");
-        }
-
-        setTimeout(() => {
-          setIsProcessingPayment(false);
-          setRegistrationResult(data);
-          setShowSuccessModal(true);
-        }, 3000);
-      } catch (err: any) {
-        clearTimeout(step1Timer);
-        clearTimeout(step2Timer);
-        setIsProcessingPayment(false);
-        setErrorMessage(err.message || "Failed to submit registration");
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Registration failed");
       }
+
+      setTimeout(() => {
+        setIsProcessingPayment(false);
+        setRegistrationResult(data);
+        setShowSuccessModal(true);
+      }, 3000);
+    } catch (err: any) {
+      clearTimeout(step1Timer);
+      clearTimeout(step2Timer);
+      setIsProcessingPayment(false);
+      setErrorMessage(err.message || "Failed to submit registration");
+    }
+  };
+
+  const handleTestModeSimulate = async () => {
+    if (!isFormValid || !isRazorpayTestMode || isProcessingPayment) return;
+    await executeBackendRegistration(`RZP_TEST_SANDBOX_${Date.now()}`);
+  };
+
+  const handlePayAndRegister = async () => {
+    if (!isFormValid) return;
+    setErrorMessage("");
+
+    const loadRazorpaySdk = (): Promise<boolean> => {
+      return new Promise((resolve) => {
+        if (typeof window !== "undefined" && (window as any).Razorpay) {
+          resolve(true);
+          return;
+        }
+        const existing = document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]');
+        if (existing) {
+          existing.addEventListener("load", () => resolve(true));
+          existing.addEventListener("error", () => resolve(false));
+          setTimeout(() => resolve(Boolean((window as any).Razorpay)), 2500);
+          return;
+        }
+        const script = document.createElement("script");
+        script.src = "https://checkout.razorpay.com/v1/checkout.js";
+        script.async = true;
+        script.onload = () => resolve(true);
+        script.onerror = () => resolve(false);
+        document.body.appendChild(script);
+      });
     };
 
-    const razorpayAvailable = typeof window !== "undefined" && (window as any).Razorpay;
+    try {
+      setErrorMessage("");
+      const orderRes = await fetch("/api/razorpay/order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          eventName: selectedEvent,
+          teamSize: currentTeamSize,
+        }),
+      });
+      const orderData = await orderRes.json();
 
-    if (razorpayAvailable && process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID) {
-      try {
-        const options = {
-          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-          amount: totalAmount * 100,
-          currency: "INR",
-          name: "UGHAM INNOVATION",
-          description: `${selectedEvent.toUpperCase()} Registration - Team ${teamName}`,
-          image: "/assets/img/logo.png",
-          handler: function (response: any) {
-            executeBackendRegistration(response.razorpay_payment_id || `RZP_${Date.now()}`);
-          },
-          prefill: {
-            name: leaderName,
-            email: leaderEmail,
-            contact: mobileNumber,
-          },
-          theme: {
-            color: "#7C3AED",
-          },
-        };
-
-        const rzp = new (window as any).Razorpay(options);
-        rzp.on("payment.failed", function (response: any) {
-          setErrorMessage(response.error?.description || "Payment failed, please try again.");
-        });
-        rzp.open();
-      } catch (err) {
-        executeBackendRegistration(`RZP_MOCK_${Date.now()}`);
+      if (!orderRes.ok || !orderData.success || !orderData.keyId) {
+        setErrorMessage(orderData.error || "Unable to initialize Razorpay payment gateway. Please try again.");
+        return;
       }
-    } else {
-      executeBackendRegistration(`RZP_MOCK_${Date.now()}`);
+
+      const sdkLoaded = await loadRazorpaySdk();
+      if (!sdkLoaded || typeof window === "undefined" || !(window as any).Razorpay) {
+        setErrorMessage("Razorpay Checkout SDK could not be loaded. Please check your internet connection and retry.");
+        return;
+      }
+
+      const options: any = {
+        key: orderData.keyId,
+        amount: orderData.amount || totalAmount * 100,
+        currency: orderData.currency || "INR",
+        name: "UGHAM INNOVATION",
+        description: `${currentEdition?.title || selectedEvent.toUpperCase()} Registration - Team ${teamName}`,
+        image: "/assets/img/logo.png",
+        ...(orderData.orderId ? { order_id: orderData.orderId } : {}),
+        handler: function (response: any) {
+          if (response?.razorpay_payment_id) {
+            executeBackendRegistration(response.razorpay_payment_id);
+          } else {
+            setErrorMessage("Payment verification returned no payment reference.");
+          }
+        },
+        prefill: {
+          name: leaderName,
+          email: leaderEmail,
+          contact: mobileNumber,
+        },
+        theme: {
+          color: "#7C3AED",
+        },
+        modal: {
+          ondismiss: function () {
+            setErrorMessage("Payment was cancelled. Complete Razorpay payment to receive your credentials.");
+          },
+        },
+      };
+
+      const rzp = new (window as any).Razorpay(options);
+      rzp.on("payment.failed", function (response: any) {
+        setErrorMessage(response?.error?.description || "Payment failed. Please retry.");
+      });
+      rzp.open();
+    } catch (err: any) {
+      setErrorMessage(err.message || "Payment gateway connection error. Please try again.");
     }
   };
 
@@ -280,30 +397,33 @@ export default function EventsHubPage() {
     setTimeout(() => setCopiedIndex(null), 2000);
   };
 
-  // Prepare custom select options for colleges
-  const formattedCollegeOptions = [
-    ...collegeList.map((c) => ({ value: c, label: c })),
-    { value: "other", label: "Other / Institution Not Listed..." },
-  ];
+  const teamSizeOptions = useMemo(() => {
+    const minS = currentEdition?.teamSizeMin ?? (isShepitch ? 3 : 2);
+    const maxS = currentEdition?.teamSizeMax ?? (isShepitch ? 4 : 3);
+    const fee = currentEdition?.feeAmount ?? (isShepitch ? 99 : 199);
+    const mode = currentEdition?.pricingMode ?? (isShepitch ? "per_member" : "flat_team");
+    const opts = [];
+    for (let s = minS; s <= maxS; s++) {
+      opts.push({
+        value: String(s),
+        label: mode === "per_member" ? `${s} Members (₹${s * fee} total)` : `${s} Members (₹${fee} flat)`,
+        badge: mode === "per_member" ? `₹${fee} / member` : "Flat Squad",
+      });
+    }
+    return opts;
+  }, [currentEdition, isShepitch]);
 
-  const teamSizeOptions =
-    selectedEvent === "shepitch"
-      ? [
-          { value: "3", label: "3 Members (₹297 total)", badge: "₹99 / member" },
-          { value: "4", label: "4 Members (₹396 total)", badge: "₹99 / member" },
-        ]
-      : [
-          { value: "2", label: "2 Members (₹199 flat)", badge: "Flat Squad" },
-          { value: "3", label: "3 Members (₹199 flat)", badge: "Flat Squad" },
-        ];
-
-  const domainOptions = (selectedEvent === "shepitch" ? SHEPITCH_DOMAINS : HACKPICK_DOMAINS).map(
-    (d) => ({ value: d, label: d })
-  );
+  const domainOptions = (
+    currentEdition?.domains && currentEdition.domains.length > 0
+      ? currentEdition.domains
+      : isShepitch
+      ? SHEPITCH_DOMAINS
+      : HACKPICK_DOMAINS
+  ).map((d) => ({ value: d, label: d }));
 
   return (
     <>
-      <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
+      <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="afterInteractive" />
 
       {/* ── 1. HERO BANNER WITH NAV CLEARANCE ── */}
       <section
@@ -362,8 +482,8 @@ export default function EventsHubPage() {
                   <polyline points="19 12 12 19 5 12"></polyline>
                 </svg>
               </a>
-              <a href="#competition-pipeline" className="btn-outline" style={{ padding: "16px 32px" }}>
-                <span>Lifecycle Pipeline</span>
+              <a href="#shepitch-showcase" className="btn-outline" style={{ padding: "16px 32px" }}>
+                <span>Explore Flagship Events</span>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="9 18 15 12 9 6"></polyline>
                 </svg>
@@ -392,317 +512,828 @@ export default function EventsHubPage() {
         </div>
       </section>
 
-      {/* ── 2. UNIQUE COMPETITION LIFECYCLE PIPELINE (REPLACED OLD WHAT-WE-DO CARDS) ── */}
-      <section id="competition-pipeline" style={{ padding: "90px 0 100px", background: "#fcfaff", position: "relative" }}>
-        <div className="container">
-          <div className="text-center anim-el fade-up" style={{ marginBottom: "50px" }}>
-            <span className="section-label">STRUCTURED ACCELERATION JOURNEY</span>
-            <h2 className="section-title">THE 4-STAGE PIPELINE</h2>
-            <p style={{ color: "var(--muted)", margin: "12px auto 0", maxWidth: "680px", fontSize: "16px", lineHeight: "1.7" }}>
-              Every Ugham competition follows an end-to-end framework turning student ideas into production-ready architectures and venture-backed startups.
-            </p>
-          </div>
-
-          <div className="stage-pipeline-grid">
-            {/* Stage 1 */}
-            <div className="stage-pipeline-card anim-el fade-up del-1">
+      {/* ── 2A. FLAGSHIP SHOWCASE 1: SHEPITCH CHENNAI EDITION 2 ── */}
+      <section id="shepitch-showcase" style={{ padding: "80px 0 40px", background: "#fcfaff", position: "relative" }}>
+        <div className="container" style={{ maxWidth: "1140px" }}>
+          <div
+            style={{
+              background: "#ffffff",
+              borderRadius: "28px",
+              border: "1.5px solid rgba(192, 38, 211, 0.2)",
+              boxShadow: "0 16px 50px rgba(124, 58, 237, 0.06)",
+              padding: "clamp(24px, 4vw, 44px)",
+              overflow: "hidden",
+            }}
+          >
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+                gap: "36px",
+                alignItems: "center",
+              }}
+            >
+              {/* Left Column: Logo, Summary & Controls */}
               <div>
-                <div className="stage-pipeline-header">
-                  <span className="stage-pipeline-pill">PHASE 01</span>
-                  <span style={{ fontSize: "12px", color: "#64748b", fontWeight: 700 }}>DAYS 1–3</span>
+                <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "18px", flexWrap: "wrap" }}>
+                  <img
+                    src="/assets/img/shepitch-logo-dummy.svg"
+                    alt="ShePitch Chennai Edition 2 Logo"
+                    style={{
+                      width: "68px",
+                      height: "68px",
+                      borderRadius: "18px",
+                      objectFit: "cover",
+                      boxShadow: "0 8px 24px rgba(192, 38, 211, 0.22)",
+                      border: "1.5px solid rgba(192, 38, 211, 0.25)",
+                    }}
+                  />
+                  <div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", marginBottom: "4px" }}>
+                      <span
+                        style={{
+                          fontSize: "11px",
+                          fontWeight: 800,
+                          padding: "4px 10px",
+                          borderRadius: "6px",
+                          background: "rgba(192, 38, 211, 0.1)",
+                          color: "#C026D3",
+                          letterSpacing: "0.8px",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        CHENNAI EDITION 2
+                      </span>
+                      <span
+                        style={{
+                          fontSize: "11px",
+                          fontWeight: 800,
+                          padding: "4px 10px",
+                          borderRadius: "6px",
+                          background: "rgba(16, 185, 129, 0.1)",
+                          color: "#059669",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        ● Registrations Live
+                      </span>
+                    </div>
+                    <h2 style={{ fontSize: "clamp(24px, 3vw, 32px)", fontWeight: 900, color: "#0f172a", margin: 0, lineHeight: 1.15 }}>
+                      ShePitch Chennai Edition 2
+                    </h2>
+                  </div>
                 </div>
-                <div className="stage-pipeline-icon">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-                  </svg>
-                </div>
-                <h3 className="stage-pipeline-title">Squad Roster &amp; Domain Lock</h3>
-                <p className="stage-pipeline-desc">
-                  Finalize your team composition, select your specialized sector track, and receive automated portal login credentials for each member.
-                </p>
-              </div>
-              <div className="stage-pipeline-meta">
-                <span>Deliverable</span>
-                <strong style={{ color: "#7C3AED" }}>Portal Lock &amp; Team ID</strong>
-              </div>
-            </div>
 
-            {/* Stage 2 */}
-            <div className="stage-pipeline-card anim-el fade-up del-2">
-              <div>
-                <div className="stage-pipeline-header">
-                  <span className="stage-pipeline-pill">PHASE 02</span>
-                  <span style={{ fontSize: "12px", color: "#64748b", fontWeight: 700 }}>WEEK 02</span>
+                {/* Upcoming Coimbatore Edition Status */}
+                <div
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    padding: "7px 14px",
+                    borderRadius: "10px",
+                    background: "rgba(124, 58, 237, 0.06)",
+                    border: "1px solid rgba(124, 58, 237, 0.2)",
+                    color: "#6D28D9",
+                    fontSize: "12.5px",
+                    fontWeight: 700,
+                    marginBottom: "18px",
+                  }}
+                >
+                  <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: "#8B5CF6" }}></span>
+                  <span>Upcoming Regional Expansion: <strong>ShePitch Coimbatore Edition</strong> (Launching Soon)</span>
                 </div>
-                <div className="stage-pipeline-icon">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="16 18 22 12 16 6"></polyline>
-                    <polyline points="8 6 2 12 8 18"></polyline>
-                  </svg>
-                </div>
-                <h3 className="stage-pipeline-title">Deep-Tech Clinics &amp; Mentorship</h3>
-                <p className="stage-pipeline-desc">
-                  Participate in dedicated architecture design clinics, prototype stress testing, and 1-on-1 sprint reviews with seasoned tech executives.
-                </p>
-              </div>
-              <div className="stage-pipeline-meta">
-                <span>Deliverable</span>
-                <strong style={{ color: "#7C3AED" }}>Architecture Review</strong>
-              </div>
-            </div>
 
-            {/* Stage 3 */}
-            <div className="stage-pipeline-card anim-el fade-up del-3">
-              <div>
-                <div className="stage-pipeline-header">
-                  <span className="stage-pipeline-pill">PHASE 03</span>
-                  <span style={{ fontSize: "12px", color: "#64748b", fontWeight: 700 }}>WEEK 03</span>
-                </div>
-                <div className="stage-pipeline-icon">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                    <line x1="8" y1="21" x2="16" y2="21"></line>
-                    <line x1="12" y1="17" x2="12" y2="21"></line>
-                  </svg>
-                </div>
-                <h3 className="stage-pipeline-title">Live Demo &amp; Grand Jury Pitch</h3>
-                <p className="stage-pipeline-desc">
-                  Demonstrate functional code, live hardware, and validation metrics on the mainstage before an elite jury of founders and venture partners.
+                <p style={{ color: "#475569", fontSize: "15px", lineHeight: "1.7", margin: "0 0 22px 0" }}>
+                  India&apos;s flagship women-led venture &amp; innovation pitch arena in Chennai. Present working prototypes or validated startup blueprints before angel investors, industry mentors, and deep-tech incubators.
                 </p>
-              </div>
-              <div className="stage-pipeline-meta">
-                <span>Deliverable</span>
-                <strong style={{ color: "#7C3AED" }}>Live Demonstration</strong>
-              </div>
-            </div>
 
-            {/* Stage 4 */}
-            <div className="stage-pipeline-card anim-el fade-up del-4">
-              <div>
-                <div className="stage-pipeline-header">
-                  <span className="stage-pipeline-pill">PHASE 04</span>
-                  <span style={{ fontSize: "12px", color: "#64748b", fontWeight: 700 }}>FINALS</span>
+                {/* Concise Key Facts Grid */}
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                    gap: "12px",
+                    marginBottom: "24px",
+                  }}
+                >
+                  <div style={{ padding: "12px 14px", borderRadius: "12px", background: "#f8fafc", border: "1px solid #e2e8f0" }}>
+                    <span style={{ fontSize: "11px", fontWeight: 700, color: "#64748b", textTransform: "uppercase", display: "block" }}>Entry Fee</span>
+                    <strong style={{ fontSize: "15px", color: "#C026D3" }}>₹99 / member</strong>
+                  </div>
+                  <div style={{ padding: "12px 14px", borderRadius: "12px", background: "#f8fafc", border: "1px solid #e2e8f0" }}>
+                    <span style={{ fontSize: "11px", fontWeight: 700, color: "#64748b", textTransform: "uppercase", display: "block" }}>Squad Size</span>
+                    <strong style={{ fontSize: "15px", color: "#0f172a" }}>3 to 4 Members</strong>
+                  </div>
+                  <div style={{ padding: "12px 14px", borderRadius: "12px", background: "#f8fafc", border: "1px solid #e2e8f0" }}>
+                    <span style={{ fontSize: "11px", fontWeight: 700, color: "#64748b", textTransform: "uppercase", display: "block" }}>Tracks</span>
+                    <strong style={{ fontSize: "14px", color: "#0f172a" }}>Project &amp; Idea Pitch</strong>
+                  </div>
+                  <div style={{ padding: "12px 14px", borderRadius: "12px", background: "#f8fafc", border: "1px solid #e2e8f0" }}>
+                    <span style={{ fontSize: "11px", fontWeight: 700, color: "#64748b", textTransform: "uppercase", display: "block" }}>Format</span>
+                    <strong style={{ fontSize: "14px", color: "#0f172a" }}>3 Rounds • 10 Sectors</strong>
+                  </div>
                 </div>
-                <div className="stage-pipeline-icon">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="8" r="6"></circle>
-                    <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
-                  </svg>
+
+                {/* Action Buttons */}
+                <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                  <button
+                    type="button"
+                    onClick={() => setDetailsModalEvent("shepitch_chennai")}
+                    className="glacier-btn"
+                    style={{
+                      padding: "13px 24px",
+                      borderRadius: "12px",
+                      fontSize: "14px",
+                      fontWeight: 800,
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      border: "1.5px solid #cbd5e1",
+                      color: "#0f172a",
+                      background: "#ffffff",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <span>More Details</span>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedEvent("shepitch_chennai");
+                      document.getElementById("event-registration")?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="btn-primary"
+                    style={{
+                      padding: "13px 26px",
+                      borderRadius: "12px",
+                      fontSize: "14px",
+                      fontWeight: 800,
+                      background: "linear-gradient(135deg, #C026D3 0%, #7C3AED 100%)",
+                      border: "none",
+                    }}
+                  >
+                    <span>Register for Chennai Edition 2 →</span>
+                  </button>
                 </div>
-                <h3 className="stage-pipeline-title">Grants &amp; Venture Incubation</h3>
-                <p className="stage-pipeline-desc">
-                  Top squads receive direct cash grants, incubation slots at Ugham Studio, cloud credits, and direct investor syndicate backing.
-                </p>
               </div>
-              <div className="stage-pipeline-meta">
-                <span>Deliverable</span>
-                <strong style={{ color: "#7C3AED" }}>Grants &amp; Term Sheets</strong>
+
+              {/* Right Column: Dummy Event Image */}
+              <div>
+                <div
+                  style={{
+                    borderRadius: "20px",
+                    overflow: "hidden",
+                    border: "1.5px solid rgba(192, 38, 211, 0.18)",
+                    boxShadow: "0 14px 36px rgba(29, 15, 58, 0.12)",
+                    background: "#1d0f3a",
+                  }}
+                >
+                  <img
+                    src="/assets/img/shepitch-banner-dummy.svg"
+                    alt="ShePitch Chennai Edition 2 Arena Preview"
+                    style={{ width: "100%", height: "auto", display: "block" }}
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── 3. FLAGSHIP EVENTS COMPARISON CONSOLES ── */}
-      <section style={{ padding: "90px 0" }}>
-        <div className="container">
-          <div className="text-center anim-el fade-up" style={{ marginBottom: "50px" }}>
+      {/* ── 2B. FLAGSHIP SHOWCASE 2: HACKPICK 2026 ── */}
+      <section id="hackpick-showcase" style={{ padding: "20px 0 80px", background: "#fcfaff", position: "relative" }}>
+        <div className="container" style={{ maxWidth: "1140px" }}>
+          <div
+            style={{
+              background: "#ffffff",
+              borderRadius: "28px",
+              border: "1.5px solid rgba(59, 130, 246, 0.22)",
+              boxShadow: "0 16px 50px rgba(37, 99, 235, 0.06)",
+              padding: "clamp(24px, 4vw, 44px)",
+              overflow: "hidden",
+            }}
+          >
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+                gap: "36px",
+                alignItems: "center",
+              }}
+            >
+              {/* Left Column: Dummy Event Image */}
+              <div>
+                <div
+                  style={{
+                    borderRadius: "20px",
+                    overflow: "hidden",
+                    border: "1.5px solid rgba(59, 130, 246, 0.2)",
+                    boxShadow: "0 14px 36px rgba(15, 23, 42, 0.14)",
+                    background: "#0b1120",
+                  }}
+                >
+                  <img
+                    src="/assets/img/hackpick-banner-dummy.svg"
+                    alt="HackPick 2026 Arena Preview"
+                    style={{ width: "100%", height: "auto", display: "block" }}
+                  />
+                </div>
+              </div>
+
+              {/* Right Column: Logo, Summary & Controls */}
+              <div>
+                <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "18px", flexWrap: "wrap" }}>
+                  <img
+                    src="/assets/img/hackpick-logo-dummy.svg"
+                    alt="HackPick 2026 Logo"
+                    style={{
+                      width: "68px",
+                      height: "68px",
+                      borderRadius: "18px",
+                      objectFit: "cover",
+                      boxShadow: "0 8px 24px rgba(37, 99, 235, 0.22)",
+                      border: "1.5px solid rgba(59, 130, 246, 0.25)",
+                    }}
+                  />
+                  <div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", marginBottom: "4px" }}>
+                      <span
+                        style={{
+                          fontSize: "11px",
+                          fontWeight: 800,
+                          padding: "4px 10px",
+                          borderRadius: "6px",
+                          background: "rgba(37, 99, 235, 0.1)",
+                          color: "#2563EB",
+                          letterSpacing: "0.8px",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        DEEP-TECH SPRINT
+                      </span>
+                      <span
+                        style={{
+                          fontSize: "11px",
+                          fontWeight: 800,
+                          padding: "4px 10px",
+                          borderRadius: "6px",
+                          background: "rgba(16, 185, 129, 0.1)",
+                          color: "#059669",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        ● Registrations Live
+                      </span>
+                    </div>
+                    <h2 style={{ fontSize: "clamp(24px, 3vw, 32px)", fontWeight: 900, color: "#0f172a", margin: 0, lineHeight: 1.15 }}>
+                      HackPick 2026
+                    </h2>
+                  </div>
+                </div>
+
+                <p style={{ color: "#475569", fontSize: "15px", lineHeight: "1.7", margin: "0 0 22px 0" }}>
+                  A high-intensity 36-hour engineering hackathon built for student coders, hardware makers, and systems architects to build real enterprise solutions from concept to live jury sprint.
+                </p>
+
+                {/* Concise Key Facts Grid */}
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                    gap: "12px",
+                    marginBottom: "24px",
+                  }}
+                >
+                  <div style={{ padding: "12px 14px", borderRadius: "12px", background: "#f8fafc", border: "1px solid #e2e8f0" }}>
+                    <span style={{ fontSize: "11px", fontWeight: 700, color: "#64748b", textTransform: "uppercase", display: "block" }}>Squad Fee</span>
+                    <strong style={{ fontSize: "15px", color: "#2563EB" }}>Flat ₹199 / team</strong>
+                  </div>
+                  <div style={{ padding: "12px 14px", borderRadius: "12px", background: "#f8fafc", border: "1px solid #e2e8f0" }}>
+                    <span style={{ fontSize: "11px", fontWeight: 700, color: "#64748b", textTransform: "uppercase", display: "block" }}>Squad Size</span>
+                    <strong style={{ fontSize: "15px", color: "#0f172a" }}>2 to 3 Members</strong>
+                  </div>
+                  <div style={{ padding: "12px 14px", borderRadius: "12px", background: "#f8fafc", border: "1px solid #e2e8f0" }}>
+                    <span style={{ fontSize: "11px", fontWeight: 700, color: "#64748b", textTransform: "uppercase", display: "block" }}>Competition Flow</span>
+                    <strong style={{ fontSize: "14px", color: "#0f172a" }}>4 Evaluation Rounds</strong>
+                  </div>
+                  <div style={{ padding: "12px 14px", borderRadius: "12px", background: "#f8fafc", border: "1px solid #e2e8f0" }}>
+                    <span style={{ fontSize: "11px", fontWeight: 700, color: "#64748b", textTransform: "uppercase", display: "block" }}>Sectors</span>
+                    <strong style={{ fontSize: "14px", color: "#0f172a" }}>8 Deep-Tech Domains</strong>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                  <button
+                    type="button"
+                    onClick={() => setDetailsModalEvent("hackpick")}
+                    className="glacier-btn"
+                    style={{
+                      padding: "13px 24px",
+                      borderRadius: "12px",
+                      fontSize: "14px",
+                      fontWeight: 800,
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      border: "1.5px solid #cbd5e1",
+                      color: "#0f172a",
+                      background: "#ffffff",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <span>More Details</span>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedEvent("hackpick");
+                      document.getElementById("event-registration")?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="btn-primary"
+                    style={{
+                      padding: "13px 26px",
+                      borderRadius: "12px",
+                      fontSize: "14px",
+                      fontWeight: 800,
+                      background: "linear-gradient(135deg, #2563EB 0%, #6366F1 100%)",
+                      border: "none",
+                    }}
+                  >
+                    <span>Register for HackPick 2026 →</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── ATTRACTIVE "MORE DETAILS" POPUP VIEW WITH SEQUENTIAL ONE-BY-ONE ROUND FLOW & SVG ICONS ── */}
+      {detailsModalEvent && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(15, 23, 42, 0.65)",
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
+            zIndex: 99999,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "20px",
+          }}
+          onClick={() => setDetailsModalEvent(null)}
+        >
+          <div
+            className="modal-animate-in"
+            style={{
+              background: "#ffffff",
+              borderRadius: "28px",
+              border: "1.5px solid #e2e8f0",
+              maxWidth: "820px",
+              width: "100%",
+              maxHeight: "90vh",
+              overflowY: "auto",
+              padding: "clamp(24px, 4vw, 38px)",
+              boxShadow: "0 30px 80px rgba(15, 23, 42, 0.35)",
+              position: "relative",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header Bar */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "16px", marginBottom: "24px", paddingBottom: "20px", borderBottom: "1.5px solid #f1f5f9" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap" }}>
+                <img
+                  src={detailsModalEvent === "shepitch_chennai" ? "/assets/img/shepitch-logo-dummy.svg" : "/assets/img/hackpick-logo-dummy.svg"}
+                  alt="Event Logo"
+                  style={{ width: "56px", height: "56px", borderRadius: "14px", objectFit: "cover" }}
+                />
+                <div>
+                  <span
+                    style={{
+                      fontSize: "11px",
+                      fontWeight: 800,
+                      padding: "3px 10px",
+                      borderRadius: "6px",
+                      background: detailsModalEvent === "shepitch_chennai" ? "rgba(192, 38, 211, 0.1)" : "rgba(37, 99, 235, 0.1)",
+                      color: detailsModalEvent === "shepitch_chennai" ? "#C026D3" : "#2563EB",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.5px",
+                    }}
+                  >
+                    {detailsModalEvent === "shepitch_chennai" ? "Chennai Edition 2 • 3 Rounds" : "Deep-Tech Sprint • 4 Rounds"}
+                  </span>
+                  <h3 style={{ fontSize: "clamp(20px, 3vw, 26px)", fontWeight: 900, color: "#0f172a", margin: "6px 0 0 0" }}>
+                    {detailsModalEvent === "shepitch_chennai" ? "ShePitch Chennai Edition 2" : "HackPick 2026"}
+                  </h3>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setDetailsModalEvent(null)}
+                style={{
+                  width: "36px",
+                  height: "36px",
+                  borderRadius: "10px",
+                  border: "1px solid #e2e8f0",
+                  background: "#f8fafc",
+                  color: "#475569",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  flexShrink: 0,
+                }}
+                aria-label="Close details"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+
+            {/* One-by-One Sequential Animated Round Flow */}
+            <h4 style={{ fontSize: "14px", fontWeight: 800, color: "#475569", textTransform: "uppercase", letterSpacing: "0.6px", margin: "0 0 18px 0" }}>
+              Round-by-Round Process Flow
+            </h4>
+
+            <div style={{ position: "relative", paddingLeft: "10px", marginBottom: "28px" }}>
+              {(detailsModalEvent === "shepitch_chennai"
+                ? [
+                    {
+                      num: "ROUND 01",
+                      title: "(SAMPLE PPT) PPT Submission & Video Submission",
+                      desc: "Download our official Sample PPT format and upload your solution deck along with Google Drive or pitch video links.",
+                      policy: "Automatic Participation Certificate for teams not selected to Round 2",
+                      icon: (
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                          <polyline points="14 2 14 8 20 8"></polyline>
+                          <line x1="16" y1="13" x2="8" y2="13"></line>
+                        </svg>
+                      ),
+                    },
+                    {
+                      num: "ROUND 02",
+                      title: "Prototype Submission & Video Explanation (Links)",
+                      desc: "Shortlisted squads submit working prototype repositories or validation builds with video walkthrough links.",
+                      policy: "Appreciation Certificate for teams not moved next",
+                      icon: (
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                          <polyline points="16 18 22 12 16 6"></polyline>
+                          <polyline points="8 6 2 12 8 18"></polyline>
+                        </svg>
+                      ),
+                    },
+                    {
+                      num: "ROUND 03",
+                      title: "Offline Grand Finale — Chennai",
+                      desc: "Live in-person presentation before angel investors, industry executives, and startup incubators in Chennai.",
+                      policy: "Seed Grants, Venture Incubation & Internship Fast-Tracks",
+                      icon: (
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                          <circle cx="12" cy="8" r="6"></circle>
+                          <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
+                        </svg>
+                      ),
+                    },
+                  ]
+                : [
+                    {
+                      num: "ROUND 01",
+                      title: "(SAMPLE PPT) PPT Submission & Video Submission",
+                      desc: "Download our Sample PPT template and upload architecture deck + Drive/Video walkthrough link.",
+                      policy: "Automatic Participation Certificate for teams not selected to Round 2",
+                      icon: (
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                          <polyline points="14 2 14 8 20 8"></polyline>
+                          <line x1="16" y1="13" x2="8" y2="13"></line>
+                        </svg>
+                      ),
+                    },
+                    {
+                      num: "ROUND 02",
+                      title: "Prototype Submission & Video Explanation (Links)",
+                      desc: "Submit live deployed codebase or hardware prototype links with full system demonstration video.",
+                      policy: "Appreciation Certificate for teams not moved next",
+                      icon: (
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                          <polyline points="16 18 22 12 16 6"></polyline>
+                          <polyline points="8 6 2 12 8 18"></polyline>
+                        </svg>
+                      ),
+                    },
+                    {
+                      num: "ROUND 03",
+                      title: "(SAMPLE PPT) Present to Juries",
+                      desc: "Online interactive engineering defense and live system Q&A with senior CTOs and domain architects.",
+                      policy: "Excellence Certificate for teams not moved next",
+                      icon: (
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                          <line x1="8" y1="21" x2="16" y2="21"></line>
+                          <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                      ),
+                    },
+                    {
+                      num: "ROUND 04",
+                      title: "Offline Grand Finale (Best Team, Winner Team)",
+                      desc: "On-ground 36-hour championship sprint honoring Best Team and Winner Team with cash prizes & internships.",
+                      policy: "Best Team & Winner Team Awards + Internship Offers",
+                      icon: (
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                          <circle cx="12" cy="8" r="6"></circle>
+                          <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
+                        </svg>
+                      ),
+                    },
+                  ]
+              ).map((step, sIdx, arr) => (
+                <div
+                  key={step.num}
+                  className="step-animate-in"
+                  style={{
+                    animationDelay: `${sIdx * 100}ms`,
+                    position: "relative",
+                    paddingLeft: "46px",
+                    paddingBottom: sIdx === arr.length - 1 ? "0" : "20px",
+                  }}
+                >
+                  {sIdx < arr.length - 1 && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        left: "16px",
+                        top: "36px",
+                        bottom: "0",
+                        width: "2px",
+                        background: "#cbd5e1",
+                      }}
+                    />
+                  )}
+
+                  <div
+                    style={{
+                      position: "absolute",
+                      left: "0",
+                      top: "2px",
+                      width: "34px",
+                      height: "34px",
+                      borderRadius: "10px",
+                      background: "#0f172a",
+                      color: "#ffffff",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {step.icon}
+                  </div>
+
+                  <div
+                    style={{
+                      padding: "16px 18px",
+                      borderRadius: "14px",
+                      background: "#f8fafc",
+                      border: "1px solid #e2e8f0",
+                    }}
+                  >
+                    <span style={{ fontSize: "11px", fontWeight: 800, color: "#7C3AED", letterSpacing: "0.6px" }}>
+                      {step.num}
+                    </span>
+                    <h5 style={{ fontSize: "15px", fontWeight: 800, color: "#0f172a", margin: "4px 0 6px 0" }}>
+                      {step.title}
+                    </h5>
+                    <p style={{ fontSize: "13px", color: "#475569", margin: "0 0 10px 0", lineHeight: 1.5 }}>
+                      {step.desc}
+                    </p>
+                    <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "11.5px", fontWeight: 700, color: "#059669", background: "rgba(16, 185, 129, 0.1)", padding: "4px 10px", borderRadius: "6px" }}>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                      <span>{step.policy}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Domains & Action Footer */}
+            <div style={{ padding: "18px 20px", borderRadius: "14px", background: "#f8fafc", border: "1px solid #e2e8f0", marginBottom: "22px" }}>
+              <div style={{ fontSize: "12px", fontWeight: 800, color: "#0f172a", textTransform: "uppercase", marginBottom: "10px" }}>
+                Eligible Innovation Sectors
+              </div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                {(detailsModalEvent === "shepitch_chennai" ? SHEPITCH_DOMAINS : HACKPICK_DOMAINS).map((d) => (
+                  <span key={d} style={{ fontSize: "11.5px", fontWeight: 700, padding: "4px 10px", borderRadius: "6px", background: "#ffffff", border: "1px solid #cbd5e1", color: "#334155" }}>
+                    {d}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px", flexWrap: "wrap" }}>
+              <button
+                type="button"
+                onClick={() => setDetailsModalEvent(null)}
+                className="glacier-btn"
+                style={{ padding: "12px 20px", borderRadius: "10px", border: "1.5px solid #cbd5e1", background: "#ffffff", color: "#475569", fontSize: "13.5px", fontWeight: 700, cursor: "pointer" }}
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const target = detailsModalEvent;
+                  setDetailsModalEvent(null);
+                  setSelectedEvent(target);
+                  document.getElementById("event-registration")?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="btn-primary"
+                style={{ padding: "12px 24px", borderRadius: "10px", fontSize: "13.5px", fontWeight: 800, border: "none", cursor: "pointer" }}
+              >
+                Proceed to Register →
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── 3. FLAGSHIP EVENTS COMPARISON CONSOLES (CENTERED 2-CARD GRID, ZERO GAP) ── */}
+      <section style={{ padding: "70px 0 90px" }}>
+        <div className="container" style={{ maxWidth: "1020px" }}>
+          <div className="text-center" style={{ marginBottom: "44px" }}>
             <span className="section-label">FLAGSHIP COMPETITIONS</span>
             <h2 className="section-title">CHOOSE YOUR CHALLENGE ARENA</h2>
           </div>
 
-          <div className="hub-grid-2" style={{ gap: "32px", alignItems: "stretch" }}>
-            {/* ShePitch Box */}
-            <div
-              className="anim-el slide-left del-1"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                background: "linear-gradient(135deg, #1d0f3a 0%, #29124e 100%)",
-                border: selectedEvent === "shepitch" ? "2px solid #C026D3" : "1.5px solid rgba(192,38,211,0.3)",
-                boxShadow: selectedEvent === "shepitch" ? "0 20px 50px rgba(192,38,211,0.25)" : "none",
-                borderRadius: "28px",
-                padding: "40px",
-                color: "white",
-              }}
-            >
-              <div>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-                  <span
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+              gap: "24px",
+              alignItems: "stretch",
+            }}
+          >
+            {activeEditionsList.map((ed) => {
+              const isSp = ed.series.includes("shepitch");
+              const isSelected = selectedEvent === ed.slug;
+              return (
+                <div
+                  key={ed.slug}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    background: isSp
+                      ? "linear-gradient(135deg, #1d0f3a 0%, #29124e 100%)"
+                      : "linear-gradient(135deg, #0e172a 0%, #1e1b4b 100%)",
+                    border: isSelected
+                      ? isSp
+                        ? "2px solid #C026D3"
+                        : "2px solid #3B82F6"
+                      : isSp
+                      ? "1.5px solid rgba(192,38,211,0.3)"
+                      : "1.5px solid rgba(59,130,246,0.3)",
+                    boxShadow: isSelected
+                      ? isSp
+                        ? "0 20px 50px rgba(192,38,211,0.25)"
+                        : "0 20px 50px rgba(59,130,246,0.25)"
+                      : "none",
+                    borderRadius: "28px",
+                    padding: "36px 30px",
+                    color: "white",
+                  }}
+                >
+                  <div>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px", gap: "10px", flexWrap: "wrap" }}>
+                      <span
+                        style={{
+                          background: isSp
+                            ? "linear-gradient(135deg, #C026D3, #7C3AED)"
+                            : "linear-gradient(135deg, #3B82F6, #6366F1)",
+                          padding: "6px 14px",
+                          borderRadius: "100px",
+                          fontSize: "11px",
+                          fontWeight: 800,
+                          letterSpacing: "1px",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        {ed.badgeText}
+                      </span>
+                      <div style={{ textAlign: "right" }}>
+                        <span style={{ fontSize: "28px", fontWeight: 900, color: isSp ? "#f472b6" : "#60a5fa" }}>
+                          ₹{ed.feeAmount}
+                        </span>
+                        <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.7)", display: "block" }}>
+                          {ed.pricingMode === "per_member" ? "per member" : "flat per team"}
+                        </span>
+                      </div>
+                    </div>
+
+                    <h3 style={{ fontSize: "24px", fontWeight: 900, marginBottom: "10px", color: "white" }}>
+                      {ed.title}
+                    </h3>
+
+                    {ed.scheduleNote && (
+                      <div
+                        style={{
+                          display: "inline-block",
+                          fontSize: "11px",
+                          fontWeight: 800,
+                          color: isSp ? "#f5d0fe" : "#bfdbfe",
+                          background: isSp ? "rgba(192, 38, 211, 0.22)" : "rgba(59, 130, 246, 0.22)",
+                          border: isSp ? "1px solid rgba(240, 171, 252, 0.3)" : "1px solid rgba(147, 197, 253, 0.3)",
+                          padding: "4px 10px",
+                          borderRadius: "6px",
+                          marginBottom: "14px",
+                        }}
+                      >
+                        {ed.scheduleNote}
+                      </div>
+                    )}
+
+                    <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "14px", lineHeight: "1.7", marginBottom: "24px" }}>
+                      {ed.description}
+                    </p>
+
+                    <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "28px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "10px", color: "#e2e8f0", fontSize: "14px" }}>
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke={isSp ? "#c084fc" : "#60a5fa"} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                          <circle cx="9" cy="7" r="4"></circle>
+                          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        Squad Size: <strong style={{ color: "white" }}>{ed.teamSizeMin} to {ed.teamSizeMax} Members</strong>
+                      </div>
+                      {ed.tracks && ed.tracks.length > 0 && (
+                        <div style={{ display: "flex", alignItems: "center", gap: "10px", color: "#e2e8f0", fontSize: "14px" }}>
+                          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke={isSp ? "#c084fc" : "#60a5fa"} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                            <polyline points="2 17 12 22 22 17"></polyline>
+                            <polyline points="2 12 12 17 22 12"></polyline>
+                          </svg>
+                          Tracks: <strong style={{ color: "white" }}>{ed.tracks.join(" & ")}</strong>
+                        </div>
+                      )}
+                      <div style={{ display: "flex", alignItems: "center", gap: "10px", color: "#e2e8f0", fontSize: "14px" }}>
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke={isSp ? "#c084fc" : "#60a5fa"} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="12" cy="12" r="10"></circle>
+                          <line x1="2" y1="12" x2="22" y2="12"></line>
+                          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                        </svg>
+                        Domains: <strong style={{ color: "white" }}>{ed.domains?.length || 8} High-Growth Sectors</strong>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedEvent(ed.slug);
+                      document.getElementById("event-registration")?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="btn-primary glacier-btn"
                     style={{
-                      background: "linear-gradient(135deg, #C026D3, #7C3AED)",
-                      padding: "6px 16px",
-                      borderRadius: "100px",
-                      fontSize: "12px",
-                      fontWeight: 800,
-                      letterSpacing: "1px",
-                      textTransform: "uppercase",
+                      width: "100%",
+                      justifyContent: "center",
+                      background: isSelected
+                        ? isSp
+                          ? "linear-gradient(135deg, #c026d3, #7c3aed)"
+                          : "linear-gradient(135deg, #3B82F6, #7C3AED)"
+                        : "rgba(255,255,255,0.15)",
+                      border: "1.5px solid transparent",
+                      padding: "15px",
+                      fontSize: "14px",
                     }}
                   >
-                    WOMEN IN INNOVATION
-                  </span>
-                  <div style={{ textAlign: "right" }}>
-                    <span style={{ fontSize: "32px", fontWeight: 900, color: "#f472b6" }}>₹99</span>
-                    <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", display: "block" }}>per member</span>
-                  </div>
+                    {isSelected ? "Currently Selected" : `Select ${ed.title}`}
+                  </button>
                 </div>
-
-                <h3 style={{ fontSize: "30px", fontWeight: 900, marginBottom: "12px", color: "white" }}>
-                  ShePitch 2026
-                </h3>
-                <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "15px", lineHeight: "1.7", marginBottom: "26px" }}>
-                  A dedicated high-impact launchpad celebrating women-led engineering and entrepreneurial squads. Showcase working prototypes or conceptual blueprints to angel investors.
-                </p>
-
-                <div style={{ display: "flex", flexDirection: "column", gap: "14px", marginBottom: "32px" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "12px", color: "#e2e8f0", fontSize: "14.5px" }}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c084fc" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                      <circle cx="9" cy="7" r="4"></circle>
-                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                    </svg>
-                    Squad Size: <strong style={{ color: "white" }}>3 to 4 Members</strong>
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "12px", color: "#e2e8f0", fontSize: "14.5px" }}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c084fc" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-                      <polyline points="2 17 12 22 22 17"></polyline>
-                      <polyline points="2 12 12 17 22 12"></polyline>
-                    </svg>
-                    Tracks: <strong style={{ color: "white" }}>Project Pitch &amp; Idea Pitch</strong>
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "12px", color: "#e2e8f0", fontSize: "14.5px" }}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c084fc" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="12" cy="12" r="10"></circle>
-                      <line x1="2" y1="12" x2="22" y2="12"></line>
-                      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                    </svg>
-                    Domains: <strong style={{ color: "white" }}>10 High-Growth Sectors</strong>
-                  </div>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setSelectedEvent("shepitch");
-                  document.getElementById("event-registration")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="btn-primary"
-                style={{
-                  width: "100%",
-                  justifyContent: "center",
-                  background: selectedEvent === "shepitch" ? "linear-gradient(135deg, #c026d3, #7c3aed)" : "rgba(255,255,255,0.15)",
-                  border: "none",
-                  padding: "16px",
-                  fontSize: "14px",
-                }}
-              >
-                {selectedEvent === "shepitch" ? "Currently Selected for Registration" : "Select & Register for ShePitch"}
-              </button>
-            </div>
-
-            {/* HackPick Box */}
-            <div
-              className="anim-el slide-right del-2"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                background: "linear-gradient(135deg, #0e172a 0%, #1e1b4b 100%)",
-                border: selectedEvent === "hackpick" ? "2px solid #3B82F6" : "1.5px solid rgba(59,130,246,0.3)",
-                boxShadow: selectedEvent === "hackpick" ? "0 20px 50px rgba(59,130,246,0.25)" : "none",
-                borderRadius: "28px",
-                padding: "40px",
-                color: "white",
-              }}
-            >
-              <div>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-                  <span
-                    style={{
-                      background: "linear-gradient(135deg, #3B82F6, #6366F1)",
-                      padding: "6px 16px",
-                      borderRadius: "100px",
-                      fontSize: "12px",
-                      fontWeight: 800,
-                      letterSpacing: "1px",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    DEEP-TECH SPRINT
-                  </span>
-                  <div style={{ textAlign: "right" }}>
-                    <span style={{ fontSize: "32px", fontWeight: 900, color: "#60a5fa" }}>₹199</span>
-                    <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", display: "block" }}>flat per team</span>
-                  </div>
-                </div>
-
-                <h3 style={{ fontSize: "30px", fontWeight: 900, marginBottom: "12px", color: "white" }}>
-                  HackPick 2026
-                </h3>
-                <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "15px", lineHeight: "1.7", marginBottom: "26px" }}>
-                  A 36-hour rapid engineering marathon. Build deep-tech hardware, autonomous software, and industrial automation tools tackling real-world enterprise briefs.
-                </p>
-
-                <div style={{ display: "flex", flexDirection: "column", gap: "14px", marginBottom: "32px" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "12px", color: "#e2e8f0", fontSize: "14.5px" }}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                      <circle cx="9" cy="7" r="4"></circle>
-                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                    </svg>
-                    Squad Size: <strong style={{ color: "white" }}>2 to 3 Members</strong>
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "12px", color: "#e2e8f0", fontSize: "14.5px" }}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
-                      <line x1="7" y1="7" x2="7.01" y2="7"></line>
-                    </svg>
-                    Pricing Model: <strong style={{ color: "white" }}>Flat ₹199 per entire squad</strong>
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "12px", color: "#e2e8f0", fontSize: "14.5px" }}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
-                      <rect x="9" y="9" width="6" height="6"></rect>
-                      <line x1="9" y1="1" x2="9" y2="4"></line>
-                      <line x1="15" y1="1" x2="15" y2="4"></line>
-                      <line x1="9" y1="20" x2="9" y2="23"></line>
-                      <line x1="15" y1="20" x2="15" y2="23"></line>
-                    </svg>
-                    Domains: <strong style={{ color: "white" }}>8 Deep-Tech Domains</strong>
-                  </div>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setSelectedEvent("hackpick");
-                  document.getElementById("event-registration")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="btn-primary"
-                style={{
-                  width: "100%",
-                  justifyContent: "center",
-                  background: selectedEvent === "hackpick" ? "linear-gradient(135deg, #3B82F6, #7C3AED)" : "rgba(255,255,255,0.15)",
-                  border: "none",
-                  padding: "16px",
-                  fontSize: "14px",
-                }}
-              >
-                {selectedEvent === "hackpick" ? "Currently Selected for Registration" : "Select & Register for HackPick"}
-              </button>
-            </div>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* ── 4. POLISHED REGISTRATION FORM (WITH REAL-TIME VALIDATION & CUSTOM SELECT) ── */}
+      {/* ── 4. POLISHED REGISTRATION FORM (WITH REAL-TIME VALIDATION) ── */}
       <section
         id="event-registration"
         style={{
@@ -724,39 +1355,45 @@ export default function EventsHubPage() {
             </p>
           </div>
 
-          {/* Segmented Event Switcher */}
-          <div className="hub-event-tabs anim-el fade-up">
-            <button
-              type="button"
-              className={`hub-event-tab ${selectedEvent === "shepitch" ? "active-shepitch" : ""}`}
-              onClick={() => setSelectedEvent("shepitch")}
-            >
-              <div className="hub-tab-icon">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 2a7 7 0 0 1 7 7c0 3-2 5.5-5 6.6V18h3v2h-3v2h-2v-2h-3v-2h3v-2.4C7 14.5 5 12 5 9a7 7 0 0 1 7-7z"></path>
-                </svg>
-              </div>
-              <div className="hub-tab-text">
-                <span className="hub-tab-name">ShePitch 2026</span>
-                <span className="hub-tab-meta">3–4 Members • ₹99 / member</span>
-              </div>
-            </button>
-            <button
-              type="button"
-              className={`hub-event-tab ${selectedEvent === "hackpick" ? "active-hackpick" : ""}`}
-              onClick={() => setSelectedEvent("hackpick")}
-            >
-              <div className="hub-tab-icon">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="16 18 22 12 16 6"></polyline>
-                  <polyline points="8 6 2 12 8 18"></polyline>
-                </svg>
-              </div>
-              <div className="hub-tab-text">
-                <span className="hub-tab-name">HackPick 2026</span>
-                <span className="hub-tab-meta">2–3 Members • ₹199 flat squad</span>
-              </div>
-            </button>
+          {/* Dynamic Segmented Event Switcher (Automatically updates with new Admin Active Editions) */}
+          <div className="hub-event-tabs anim-el fade-up" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))", gap: "12px", maxWidth: "880px" }}>
+            {activeEditionsList.map((ed) => {
+              const isSelected = selectedEvent === ed.slug;
+              const isSp = ed.series.includes("shepitch");
+              return (
+                <button
+                  key={ed.slug}
+                  type="button"
+                  className={`hub-event-tab ${isSelected ? (isSp ? "active-shepitch" : "active-hackpick") : ""}`}
+                  onClick={() => setSelectedEvent(ed.slug)}
+                >
+                  <div className="hub-tab-icon">
+                    {isSp ? (
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 2a7 7 0 0 1 7 7c0 3-2 5.5-5 6.6V18h3v2h-3v2h-2v-2h-3v-2h3v-2.4C7 14.5 5 12 5 9a7 7 0 0 1 7-7z"></path>
+                      </svg>
+                    ) : (
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="16 18 22 12 16 6"></polyline>
+                        <polyline points="8 6 2 12 8 18"></polyline>
+                      </svg>
+                    )}
+                  </div>
+                  <div className="hub-tab-text">
+                    <span className="hub-tab-name">{ed.title}</span>
+                    <span className="hub-tab-meta">
+                      {ed.teamSizeMin}–{ed.teamSizeMax} Members • ₹{ed.feeAmount}{ed.pricingMode === "per_member" ? " / member" : " flat squad"}
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          <div style={{ textAlign: "center", marginBottom: "22px" }}>
+            <span style={{ fontSize: "12.5px", color: "#64748b", fontWeight: 600 }}>
+              Note: New editions launched by Ugham Administration appear automatically above for immediate registration.
+            </span>
           </div>
 
           {/* Form Card */}
@@ -798,7 +1435,7 @@ export default function EventsHubPage() {
                   <div className="hub-section-num">1</div>
                   <div>
                     <h3 className="hub-section-title">
-                      {selectedEvent === "shepitch" ? "ShePitch Specifications" : "HackPick Specifications"}
+                      {currentEdition?.title || "Competition"} Specifications
                     </h3>
                     <p className="hub-section-subtitle">
                       Configure your challenge track, squad capacity, and target domain.
@@ -807,7 +1444,7 @@ export default function EventsHubPage() {
                 </div>
 
                 {/* ShePitch Tracks */}
-                {selectedEvent === "shepitch" && (
+                {isShepitch && (
                   <div className="hub-field">
                     <label className="hub-label">
                       Competition Track <span className="req-star">*</span>
@@ -878,7 +1515,7 @@ export default function EventsHubPage() {
                       value={currentTeamSize.toString()}
                       onChange={(val) => {
                         const parsed = parseInt(val, 10);
-                        if (selectedEvent === "shepitch") setShepitchTeamSize(parsed);
+                        if (isShepitch) setShepitchTeamSize(parsed);
                         else setHackpickTeamSize(parsed);
                       }}
                       icon={
@@ -900,7 +1537,7 @@ export default function EventsHubPage() {
                       options={domainOptions}
                       value={currentDomain}
                       onChange={(val) => {
-                        if (selectedEvent === "shepitch") setShepitchDomain(val);
+                        if (isShepitch) setShepitchDomain(val);
                         else setHackpickDomain(val);
                       }}
                       searchable={true}
@@ -915,20 +1552,20 @@ export default function EventsHubPage() {
                   </div>
                 </div>
 
-                {/* Interactive Domain Pills */}
+                {/* Interactive Domain Chips */}
                 <div style={{ marginTop: "18px" }}>
                   <span style={{ fontSize: "11px", fontWeight: 800, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.5px" }}>
                     Or click a domain pill:
                   </span>
                   <div className="hub-domain-chips">
-                    {(selectedEvent === "shepitch" ? SHEPITCH_DOMAINS : HACKPICK_DOMAINS).map((domainName) => {
+                    {(isShepitch ? SHEPITCH_DOMAINS : HACKPICK_DOMAINS).map((domainName) => {
                       const isSelected = currentDomain === domainName;
                       return (
                         <div
                           key={domainName}
                           className={`hub-domain-chip ${isSelected ? "active" : ""}`}
                           onClick={() => {
-                            if (selectedEvent === "shepitch") setShepitchDomain(domainName);
+                            if (isShepitch) setShepitchDomain(domainName);
                             else setHackpickDomain(domainName);
                           }}
                         >
@@ -993,12 +1630,8 @@ export default function EventsHubPage() {
                     <label className="hub-label">
                       College / Institution <span className="req-star">*</span>
                     </label>
-                    <CustomSelect
-                      options={formattedCollegeOptions}
-                      value={collegeName}
-                      onChange={(val) => setCollegeName(val)}
-                      searchable={true}
-                      icon={
+                    <div className="hub-input-wrapper">
+                      <span className="hub-input-icon">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"></path>
                           <path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"></path>
@@ -1008,35 +1641,23 @@ export default function EventsHubPage() {
                           <path d="M10 14h4"></path>
                           <path d="M10 18h4"></path>
                         </svg>
-                      }
-                    />
-
-                    {/* Fallback custom input if "Other" is picked */}
-                    {collegeName === "other" && (
-                      <div className="hub-input-wrapper" style={{ marginTop: "10px" }}>
-                        <span className="hub-input-icon">
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M12 20h9"></path>
-                            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                      </span>
+                      <input
+                        type="text"
+                        className="hub-input with-icon"
+                        placeholder="Type your college / university full name *"
+                        value={collegeName}
+                        onChange={(e) => setCollegeName(e.target.value)}
+                        required
+                      />
+                      {isCollegeValid && (
+                        <span className="hub-valid-tick">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
                           </svg>
                         </span>
-                        <input
-                          type="text"
-                          className="hub-input with-icon"
-                          placeholder="Type your college / institution full name *"
-                          value={customCollegeName}
-                          onChange={(e) => setCustomCollegeName(e.target.value)}
-                          required
-                        />
-                        {customCollegeName.trim().length >= 2 && (
-                          <span className="hub-valid-tick">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
-                              <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                          </span>
-                        )}
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
                 </div>
 
@@ -1414,7 +2035,7 @@ export default function EventsHubPage() {
                 )}
 
                 {/* Member 4 Box (ShePitch 4 members) */}
-                {selectedEvent === "shepitch" && shepitchTeamSize === 4 && (
+                {isShepitch && shepitchTeamSize === 4 && (
                   <div className="hub-member-box">
                     <div className="hub-member-header">
                       <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -1532,9 +2153,10 @@ export default function EventsHubPage() {
                       REGISTRATION CHECKOUT SUMMARY
                     </span>
                     <div style={{ fontSize: "15px", color: "#e2e8f0", marginTop: "4px", fontWeight: 600 }}>
-                      {selectedEvent === "shepitch"
-                        ? `ShePitch (${shepitchTrack}) • ₹99 × ${shepitchTeamSize} members`
-                        : `HackPick • Flat ₹199 per squad (${hackpickTeamSize} members)`}
+                      {currentEdition?.title || "Event"} {isShepitch ? `(${shepitchTrack})` : ""} •{" "}
+                      {currentEdition?.pricingMode === "per_member"
+                        ? `₹${currentEdition.feeAmount} × ${currentTeamSize} members`
+                        : `Flat ₹${currentEdition?.feeAmount ?? 199} per squad (${currentTeamSize} members)`}
                     </div>
                   </div>
 
@@ -1627,8 +2249,54 @@ export default function EventsHubPage() {
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: "10px" }}>
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                   </svg>
-                  PAY ₹{totalAmount} &amp; COMPLETE REGISTRATION
+                  {isRazorpayTestMode
+                    ? `OPEN RAZORPAY TEST CHECKOUT (₹${totalAmount} SIMULATED)`
+                    : `PAY ₹${totalAmount} & COMPLETE REGISTRATION`}
                 </button>
+
+                {isRazorpayTestMode && (
+                  <div
+                    style={{
+                      marginTop: "16px",
+                      padding: "16px 18px",
+                      borderRadius: "14px",
+                      background: "rgba(56, 189, 248, 0.1)",
+                      border: "1px solid rgba(56, 189, 248, 0.28)",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "12px",
+                    }}
+                  >
+                    <div style={{ fontSize: "12.5px", color: "#e0f2fe", lineHeight: 1.55 }}>
+                      <strong style={{ color: "#38bdf8", display: "block", marginBottom: "4px" }}>
+                        Razorpay Test Mode Active (₹0 Real Charge)
+                      </strong>
+                      Razorpay Test Checkout always displays ₹{totalAmount} to mirror live checkout. Inside the popup, enter UPI{" "}
+                      <code style={{ background: "rgba(15, 23, 42, 0.65)", padding: "2px 6px", borderRadius: "5px", color: "#7dd3fc" }}>success@razorpay</code>{" "}
+                      or choose <strong>Netbanking → Success</strong> (no real money is charged).
+                    </div>
+                    <button
+                      type="button"
+                      disabled={!isFormValid || isProcessingPayment}
+                      onClick={handleTestModeSimulate}
+                      className="glacier-btn"
+                      style={{
+                        width: "100%",
+                        padding: "13px 16px",
+                        borderRadius: "12px",
+                        border: "1px solid rgba(56, 189, 248, 0.4)",
+                        background: isFormValid ? "rgba(14, 165, 233, 0.22)" : "rgba(71, 85, 105, 0.35)",
+                        color: "#f0f9ff",
+                        fontWeight: 800,
+                        fontSize: "13.5px",
+                        cursor: isFormValid ? "pointer" : "not-allowed",
+                        opacity: isFormValid ? 1 : 0.5,
+                      }}
+                    >
+                      Complete Test Payment Instantly (Sandbox — ₹0) →
+                    </button>
+                  </div>
+                )}
               </div>
             </form>
           </div>

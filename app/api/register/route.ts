@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { saveRegistration, updateEmailStatus, RegistrationRecord, TeamMember } from "@/lib/db";
 import { sendMemberWelcomeEmail, sendSequentialEmails } from "@/lib/email";
+import { getEventEditions } from "@/lib/editions";
 
 export async function POST(req: NextRequest) {
   try {
@@ -30,30 +31,38 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (eventName === "shepitch") {
-      if (teamSize < 3 || teamSize > 4) {
-        return NextResponse.json(
-          { error: "ShePitch requires 3 to 4 team members." },
-          { status: 400 }
-        );
-      }
+    const editions = await getEventEditions();
+    const matchedEdition = editions.find((e) => e.slug === eventName);
+
+    const isShePitch =
+      matchedEdition?.series === "shepitch_chennai" ||
+      matchedEdition?.series === "shepitch_coimbatore" ||
+      eventName === "shepitch" ||
+      eventName.startsWith("shepitch_");
+
+    const minSize = matchedEdition?.teamSizeMin ?? (isShePitch ? 3 : 2);
+    const maxSize = matchedEdition?.teamSizeMax ?? (isShePitch ? 4 : 3);
+    const pricingMode = matchedEdition?.pricingMode ?? (isShePitch ? "per_member" : "flat_team");
+    const feeAmount = matchedEdition?.feeAmount ?? (isShePitch ? 99 : 199);
+
+    if (teamSize < minSize || teamSize > maxSize) {
+      return NextResponse.json(
+        { error: `${matchedEdition?.title || eventName} requires ${minSize} to ${maxSize} team members.` },
+        { status: 400 }
+      );
+    }
+
+    if (isShePitch) {
       if (!track || (track !== "Project Pitch" && track !== "Idea Pitch")) {
         return NextResponse.json(
           { error: "Please select either Project Pitch or Idea Pitch for ShePitch." },
           { status: 400 }
         );
       }
-    } else if (eventName === "hackpick") {
-      if (teamSize < 2 || teamSize > 3) {
-        return NextResponse.json(
-          { error: "HackPick requires 2 to 3 team members." },
-          { status: 400 }
-        );
-      }
     }
 
     // Pricing calculation
-    const amountPaid = eventName === "shepitch" ? teamSize * 99 : 199;
+    const amountPaid = pricingMode === "per_member" ? teamSize * feeAmount : feeAmount;
 
     // Assemble team members
     const allMembers: TeamMember[] = [
@@ -76,7 +85,7 @@ export async function POST(req: NextRequest) {
     const record: RegistrationRecord = {
       id: regId,
       event_name: eventName,
-      track: eventName === "shepitch" ? track : undefined,
+      track: isShePitch ? track : undefined,
       domain,
       team_name: teamName,
       leader_name: leaderName,

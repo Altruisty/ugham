@@ -15,17 +15,22 @@ export async function GET() {
   try {
     const result = await verifySmtpConnection();
 
+    // Compute today's date in Asia/Kolkata (IST) so Brevo free-tier daily count resets accurately at midnight IST
+    const getIstDateString = (d: Date) =>
+      d.toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
+
     // Query Brevo REST API v3 for live aggregated statistics if API key is provided
     let brevoLiveDelivered: number | null = null;
     const apiKey =
       process.env.BREVO_API_KEY ||
       (process.env.SMTP_PASS?.startsWith("xkeysib-") ? process.env.SMTP_PASS : "");
 
+    const todayStr = getIstDateString(new Date());
+
     if (apiKey) {
       try {
-        const today = new Date().toISOString().split("T")[0];
         const apiRes = await fetch(
-          `https://api.brevo.com/v3/smtp/statistics/aggregatedReport?startDate=${today}&endDate=${today}`,
+          `https://api.brevo.com/v3/smtp/statistics/aggregatedReport?startDate=${todayStr}&endDate=${todayStr}`,
           {
             headers: {
               "api-key": apiKey,
@@ -43,22 +48,27 @@ export async function GET() {
     }
 
     const dispatches = getBrevoDispatches();
-    const todayStr = new Date().toISOString().split("T")[0];
-    const todayDispatches = dispatches.filter(
-      (d: any) => d.timestamp && d.timestamp.startsWith(todayStr)
-    );
+    const todayDispatches = dispatches.filter((d: any) => {
+      if (!d.timestamp) return false;
+      try {
+        return getIstDateString(new Date(d.timestamp)) === todayStr;
+      } catch {
+        return false;
+      }
+    });
 
-    // If live API returned count use it, otherwise use persistent dispatch count (minimum 7 as sent today)
+    // Real-time today's dispatch count (resets cleanly to 0 at midnight IST; no hardcoded minimum)
     const emailsToday =
       brevoLiveDelivered !== null
         ? brevoLiveDelivered
-        : Math.max(7, todayDispatches.length);
+        : todayDispatches.length;
     const dailyLimit = 300;
     const remainingToday = Math.max(0, dailyLimit - emailsToday);
 
     return NextResponse.json({
       ...result,
       emailsToday,
+      todayDateIst: todayStr,
       dailyLimit,
       remainingToday,
       dispatchedEmails: dispatches,

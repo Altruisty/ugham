@@ -58,6 +58,21 @@ export function getBrevoDispatches(): any[] {
   return [];
 }
 
+export function deleteBrevoDispatchesByIds(ids: string[]): any[] {
+  try {
+    const logFile = path.join(process.cwd(), "data", "brevo_dispatches.json");
+    if (!fs.existsSync(logFile)) return [];
+    const current: any[] = JSON.parse(fs.readFileSync(logFile, "utf-8") || "[]");
+    const idSet = new Set(ids);
+    const filtered = current.filter((d) => !idSet.has(d.id) && !idSet.has(d.recipientEmail));
+    fs.writeFileSync(logFile, JSON.stringify(filtered, null, 2), "utf-8");
+    return filtered;
+  } catch (e) {
+    console.error("Error deleting dispatches:", e);
+    return getBrevoDispatches();
+  }
+}
+
 // ========================================================
 // CENTRALIZED BREVO SMTP CONFIGURATION & TYPES
 // ========================================================
@@ -415,7 +430,11 @@ export async function sendMemberWelcomeEmail(
   member: TeamMember
 ): Promise<EmailDispatchResult> {
   const eventTitle =
-    record.event_name === "shepitch" ? "UGHAM SHEPITCH 2026" : "UGHAM HACKPICK 2026";
+    record.event_name === "shepitch_coimbatore"
+      ? "UGHAM SHEPITCH COIMBATORE EDITION"
+      : (record.event_name === "shepitch" || record.event_name === "shepitch_chennai")
+      ? "UGHAM SHEPITCH CHENNAI EDITION 2"
+      : "UGHAM HACKPICK 2026";
   const defaultPassword = "UGHAM2026";
 
   const emailHtml = `

@@ -135,3 +135,85 @@ export async function deleteCollege(collegeName: string): Promise<string[]> {
   fs.writeFileSync(COLLEGES_FILE, JSON.stringify(current, null, 2), "utf-8");
   return current;
 }
+
+export interface CollegeCredential {
+  collegeName: string;
+  username: string;
+  password: string;
+  contactEmail?: string;
+  updatedAt?: string;
+}
+
+const COLLEGE_AUTH_FILE = path.join(DATA_DIR, "colleges_auth.json");
+
+export function getCollegeCredentials(): CollegeCredential[] {
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+  if (!fs.existsSync(COLLEGE_AUTH_FILE)) {
+    // Generate default credentials for initial colleges
+    const initial: CollegeCredential[] = [
+      {
+        collegeName: "Indian Institute of Technology (IIT) Madras",
+        username: "iit-madras",
+        password: "IITM@2026",
+        contactEmail: "dean.academics@iitm.ac.in",
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        collegeName: "National Institute of Technology (NIT) Trichy",
+        username: "nit-trichy",
+        password: "NITT@2026",
+        contactEmail: "studentaffairs@nitt.edu",
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        collegeName: "Anna University (CEG Campus)",
+        username: "anna-univ",
+        password: "ANNA@2026",
+        contactEmail: "hod.events@annauniv.edu",
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        collegeName: "PSG College of Technology",
+        username: "psg-tech",
+        password: "PSG@2026",
+        contactEmail: "innovation@psgtech.ac.in",
+        updatedAt: new Date().toISOString(),
+      },
+    ];
+    fs.writeFileSync(COLLEGE_AUTH_FILE, JSON.stringify(initial, null, 2), "utf-8");
+    return initial;
+  }
+  try {
+    const raw = fs.readFileSync(COLLEGE_AUTH_FILE, "utf-8");
+    return JSON.parse(raw);
+  } catch (e) {
+    return [];
+  }
+}
+
+export function saveCollegeCredential(cred: CollegeCredential): CollegeCredential[] {
+  const current = getCollegeCredentials();
+  const existingIdx = current.findIndex(
+    (c) =>
+      c.collegeName.toLowerCase() === cred.collegeName.toLowerCase() ||
+      c.username.toLowerCase() === cred.username.toLowerCase()
+  );
+  if (existingIdx >= 0) {
+    current[existingIdx] = { ...current[existingIdx], ...cred, updatedAt: new Date().toISOString() };
+  } else {
+    current.push({ ...cred, updatedAt: new Date().toISOString() });
+  }
+  fs.writeFileSync(COLLEGE_AUTH_FILE, JSON.stringify(current, null, 2), "utf-8");
+  return current;
+}
+
+export function deleteCollegeCredential(collegeName: string): CollegeCredential[] {
+  const current = getCollegeCredentials();
+  const filtered = current.filter(
+    (c) => c.collegeName.toLowerCase() !== collegeName.trim().toLowerCase()
+  );
+  fs.writeFileSync(COLLEGE_AUTH_FILE, JSON.stringify(filtered, null, 2), "utf-8");
+  return filtered;
+}

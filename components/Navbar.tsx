@@ -10,6 +10,7 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [portalUser, setPortalUser] = useState<any>(null);
+  const [activePortalTab, setActivePortalTab] = useState<string>("dashboard");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,6 +20,14 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const syncTabFromUrl = () => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const tab = params.get("tab") || "dashboard";
+      setActivePortalTab(tab);
+    }
+  };
+
   const checkAuth = () => {
     try {
       const savedUser = sessionStorage.getItem("ugham_portal_user");
@@ -27,22 +36,30 @@ export default function Navbar() {
       } else {
         setPortalUser(null);
       }
-    } catch (e) {
+    } catch {
       setPortalUser(null);
     }
   };
 
-  // Re-check auth on mount, route changes, or custom auth event
   useEffect(() => {
     checkAuth();
+    syncTabFromUrl();
     setIsOpen(false);
   }, [pathname]);
 
   useEffect(() => {
+    const handleTabEvent = (e: any) => {
+      if (e?.detail) setActivePortalTab(e.detail);
+      else syncTabFromUrl();
+    };
     window.addEventListener("ugham_auth_change", checkAuth);
+    window.addEventListener("ugham_portal_tab_change", handleTabEvent);
+    window.addEventListener("popstate", syncTabFromUrl);
     window.addEventListener("storage", checkAuth);
     return () => {
       window.removeEventListener("ugham_auth_change", checkAuth);
+      window.removeEventListener("ugham_portal_tab_change", handleTabEvent);
+      window.removeEventListener("popstate", syncTabFromUrl);
       window.removeEventListener("storage", checkAuth);
     };
   }, []);
@@ -56,12 +73,30 @@ export default function Navbar() {
     router.push("/login");
   };
 
-  const participantFirstName = portalUser?.name ? portalUser.name.split(" ")[0].toUpperCase() : "PORTAL";
+  const handleStudentTabNav = (tab: string) => {
+    setActivePortalTab(tab);
+    setIsOpen(false);
+    const targetUrl = tab === "dashboard" ? "/portal" : `/portal?tab=${tab}`;
+    if (pathname === "/portal") {
+      window.history.pushState({}, "", targetUrl);
+      window.dispatchEvent(new CustomEvent("ugham_portal_tab_change", { detail: tab }));
+    } else {
+      router.push(targetUrl);
+    }
+  };
+
+  const isStudentMode =
+    Boolean(portalUser) &&
+    !pathname.startsWith("/myadmin") &&
+    !pathname.startsWith("/college-");
 
   return (
     <nav id="navbar" className={isScrolled ? "scrolled" : ""}>
       <div className="nav-inner">
-        <Link href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
+        <Link
+          href={isStudentMode ? "/portal" : "/"}
+          style={{ display: "flex", alignItems: "center", textDecoration: "none" }}
+        >
           <img
             src="/assets/img/logo.png"
             alt="Ugham"
@@ -69,95 +104,122 @@ export default function Navbar() {
           />
         </Link>
 
-        <ul className={`nav-links ${isOpen ? "open" : ""}`} id="navLinks">
-          <li>
-            <Link href="/" className={pathname === "/" ? "active-link" : ""}>
-              HOME
-            </Link>
-          </li>
-          <li>
-            <Link href="/about" className={pathname === "/about" ? "active-link" : ""}>
-              ABOUT US
-            </Link>
-          </li>
-          <li>
-            <Link href="/events-hub" className={pathname === "/events-hub" ? "active-link" : ""}>
-              EVENTS HUB
-            </Link>
-          </li>
-
-          {/* DYNAMIC: When logged in as participant, show MY EVENTS */}
-          {portalUser && (
+        {isStudentMode ? (
+          <ul className={`nav-links ${isOpen ? "open" : ""}`} id="navLinks">
+            <li>
+              <a
+                href="/portal"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleStudentTabNav("dashboard");
+                }}
+                className={pathname === "/portal" && activePortalTab === "dashboard" ? "active-link" : ""}
+              >
+                DASHBOARD
+              </a>
+            </li>
+            <li>
+              <a
+                href="/portal?tab=my-events"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleStudentTabNav("my-events");
+                }}
+                className={pathname === "/portal" && activePortalTab === "my-events" ? "active-link" : ""}
+              >
+                MY EVENTS
+              </a>
+            </li>
+            <li>
+              <a
+                href="/portal?tab=current-events"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleStudentTabNav("current-events");
+                }}
+                className={pathname === "/portal" && activePortalTab === "current-events" ? "active-link" : ""}
+              >
+                CURRENT EVENTS
+              </a>
+            </li>
+            <li>
+              <a
+                href="/portal?tab=past-events"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleStudentTabNav("past-events");
+                }}
+                className={pathname === "/portal" && activePortalTab === "past-events" ? "active-link" : ""}
+              >
+                PAST EVENTS
+              </a>
+            </li>
+            <li>
+              <a
+                href="/portal?tab=certificates"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleStudentTabNav("certificates");
+                }}
+                className={pathname === "/portal" && activePortalTab === "certificates" ? "active-link" : ""}
+              >
+                CERTIFICATES
+              </a>
+            </li>
             <li>
               <Link
-                href="/portal"
-                className={pathname === "/portal" ? "active-link" : ""}
-                style={{
-                  color: "#7C3AED",
-                  fontWeight: 800,
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "6px",
-                }}
+                href="/events-hub"
+                className={pathname === "/events-hub" ? "active-link" : ""}
+                onClick={() => setIsOpen(false)}
               >
-                <span
-                  style={{
-                    width: "6px",
-                    height: "6px",
-                    borderRadius: "50%",
-                    background: "#10b981",
-                  }}
-                ></span>
-                <span>MY EVENTS</span>
+                EVENTS HUB
               </Link>
             </li>
-          )}
-
-          <li>
-            <Link href="/collaboration" className={pathname === "/collaboration" ? "active-link" : ""}>
-              COLLABORATION
-            </Link>
-          </li>
-          <li>
-            <Link href="/awards" className={pathname === "/awards" ? "active-link" : ""}>
-              AWARDS
-            </Link>
-          </li>
-          <li>
-            <Link href="/contact" className={pathname === "/contact" ? "active-link" : ""}>
-              CONTACT
-            </Link>
-          </li>
-
-          {/* ALWAYS SHOW LOGIN BUTTON IN NAVBAR (NO ADMIN DESK) */}
-          <li>
-            <Link href="/login" className={`nav-login ${pathname === "/login" ? "active-link" : ""}`}>
-              LOGIN
-            </Link>
-          </li>
-
-          {/* Mobile Drawer Logout Shortcut */}
-          {portalUser && (
-            <li className="mobile-only" style={{ marginTop: "10px" }}>
+            <li>
               <button
                 type="button"
                 onClick={handleLogout}
-                style={{
-                  background: "transparent",
-                  border: "1px solid #cbd5e1",
-                  borderRadius: "8px",
-                  padding: "8px 16px",
-                  color: "#64748b",
-                  fontSize: "12px",
-                  fontWeight: 700,
-                  cursor: "pointer",
-                }}
+                className="nav-login"
+                style={{ cursor: "pointer", border: "none", fontFamily: "inherit" }}
               >
-                Sign Out of {portalUser.email}
+                LOGOUT
               </button>
             </li>
-          )}
-        </ul>
+          </ul>
+        ) : (
+          <ul className={`nav-links ${isOpen ? "open" : ""}`} id="navLinks">
+            <li>
+              <Link href="/" className={pathname === "/" ? "active-link" : ""}>
+                HOME
+              </Link>
+            </li>
+            <li>
+              <Link href="/about" className={pathname === "/about" ? "active-link" : ""}>
+                ABOUT US
+              </Link>
+            </li>
+            <li>
+              <Link href="/events-hub" className={pathname === "/events-hub" ? "active-link" : ""}>
+                EVENTS HUB
+              </Link>
+            </li>
+            <li>
+              <Link href="/collaboration" className={pathname === "/collaboration" ? "active-link" : ""}>
+                COLLABORATION
+              </Link>
+            </li>
+            <li>
+              <Link href="/contact" className={pathname === "/contact" ? "active-link" : ""}>
+                CONTACT
+              </Link>
+            </li>
+            <li>
+              <Link href="/login" className={`nav-login ${pathname === "/login" ? "active-link" : ""}`}>
+                LOGIN
+              </Link>
+            </li>
+          </ul>
+        )}
 
         <button
           className="menu-toggle"

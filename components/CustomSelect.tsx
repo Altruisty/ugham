@@ -17,6 +17,7 @@ interface CustomSelectProps {
   icon?: ReactNode;
   searchable?: boolean;
   disabled?: boolean;
+  compact?: boolean;
   className?: string;
 }
 
@@ -28,6 +29,7 @@ export default function CustomSelect({
   icon,
   searchable = false,
   disabled = false,
+  compact = false,
   className = "",
 }: CustomSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -91,20 +93,20 @@ export default function CustomSelect({
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          height: "52px",
-          padding: icon ? "14px 18px 14px 48px" : "14px 18px",
-          border: isOpen ? "1.5px solid #7C3AED" : "1.5px solid #e2e8f0",
-          borderRadius: "14px",
-          background: "#f8fafc",
+          height: compact ? "40px" : "52px",
+          padding: icon ? (compact ? "8px 12px 8px 36px" : "14px 18px 14px 48px") : (compact ? "8px 12px" : "14px 18px"),
+          border: isOpen ? "1.5px solid #0f172a" : "1.5px solid #cbd5e1",
+          borderRadius: compact ? "10px" : "14px",
+          background: compact ? "#ffffff" : "#f8fafc",
           fontFamily: "inherit",
-          fontSize: "15px",
+          fontSize: compact ? "13px" : "15px",
           fontWeight: 600,
           color: selectedOption ? "#0f172a" : "#94a3b8",
           boxShadow: isOpen
-            ? "0 0 0 4px rgba(124, 58, 237, 0.14), 0 2px 8px rgba(124, 58, 237, 0.08)"
-            : "0 1px 3px rgba(0, 0, 0, 0.02)",
+            ? "0 0 0 3px rgba(15, 23, 42, 0.08), 0 4px 12px rgba(15, 23, 42, 0.06)"
+            : "0 1px 2px rgba(0, 0, 0, 0.02)",
           cursor: disabled ? "not-allowed" : "pointer",
-          transition: "all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1)",
+          transition: "all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1)",
           textAlign: "left",
           position: "relative",
         }}

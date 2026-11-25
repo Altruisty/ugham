@@ -1,9 +1,9 @@
 [
   {
-    "id": "UGH-TEST-MWUNJU97",
-    "event_name": "shepitch",
+    "id": "UGH-TEST-SP01",
+    "event_name": "shepitch_chennai",
     "track": "Project Pitch",
-    "domain": "AI & DEEP TECH",
+    "domain": "AI",
     "team_name": "NovaInnovators",
     "leader_name": "Test Participant",
     "leader_email": "test@ugham.com",
@@ -13,7 +13,7 @@
     "department": "Computer Science & Engineering",
     "team_size": 3,
     "amount_paid": 297,
-    "payment_id": "pay_test_1795522186987",
+    "payment_id": "pay_test_iitm_sp01",
     "members": [
       {
         "name": "Test Participant",
@@ -33,6 +33,314 @@
       }
     ],
     "email_status": "sent",
-    "created_at": "2026-11-24T12:00:00.000Z"
+    "round_status": "Round 2 (Prototype & Video Explanation)",
+    "internship_selected": true,
+    "internship_reason": "Selected for Venture Engineering Internship based on live AI pipeline architecture.",
+    "jury_feedback": "Strong AI architecture and clear commercial roadmap. Proceed with working prototype video.",
+    "round_submissions": {
+      "round1": {
+        "pptLink": "https://drive.google.com/file/d/shepitch-novainnovators-r1-ppt",
+        "videoLink": "https://youtu.be/novainnovators-r1-pitch",
+        "submittedAt": "2026-11-23T15:20:00.000Z"
+      },
+      "round2": {
+        "prototypeLink": "https://github.com/novainnovators/shepitch-ai-prototype",
+        "videoLink": "https://drive.google.com/file/d/novainnovators-r2-demo-video",
+        "submittedAt": "2026-11-24T18:10:00.000Z"
+      }
+    },
+    "is_past_event": false,
+    "certificate_issued": false,
+    "created_at": "2026-11-23T10:30:00.000Z",
+    "certificate_title": "ShePitch Chennai Edition 2 — Official Certificate",
+    "certificate_issued_at": ""
+  },
+  {
+    "id": "UGH-TEST-HP02",
+    "event_name": "hackpick",
+    "track": "Deep-Tech Sprint",
+    "domain": "CYBER SECURITY",
+    "team_name": "QuantumForge",
+    "leader_name": "Test Participant",
+    "leader_email": "test@ugham.com",
+    "mobile": "+91 98765 43210",
+    "college_name": "Indian Institute of Technology (IIT) Madras",
+    "year_of_study": "3rd Year",
+    "department": "Computer Science & Engineering",
+    "team_size": 3,
+    "amount_paid": 199,
+    "payment_id": "pay_test_iitm_hp02",
+    "members": [
+      {
+        "name": "Test Participant",
+        "email": "test@ugham.com",
+        "phone": "+91 98765 43210",
+        "role": "Leader"
+      },
+      {
+        "name": "Vikram Menon",
+        "email": "vikram@ugham.com",
+        "role": "Member"
+      },
+      {
+        "name": "Kavya Iyer",
+        "email": "kavya@ugham.com",
+        "role": "Member"
+      }
+    ],
+    "email_status": "sent",
+    "round_status": "Round 3 (Present to Juries)",
+    "internship_selected": false,
+    "jury_feedback": "Impressive zero-trust packet inspection demo. Cleared Round 2 prototype review.",
+    "is_past_event": false,
+    "certificate_issued": false,
+    "created_at": "2026-11-23T14:15:00.000Z"
+  },
+  {
+    "id": "UGH-TEST-SP03",
+    "event_name": "shepitch_chennai",
+    "track": "Idea Pitch",
+    "domain": "HEALTHCARE",
+    "team_name": "EcoPulse Squad",
+    "leader_name": "Meera Krishnan",
+    "leader_email": "meera@ugham.com",
+    "mobile": "+91 94432 11890",
+    "college_name": "National Institute of Technology (NIT) Trichy",
+    "year_of_study": "Final Year",
+    "department": "Biomedical Engineering",
+    "team_size": 4,
+    "amount_paid": 396,
+    "payment_id": "pay_test_nitt_sp03",
+    "members": [
+      {
+        "name": "Meera Krishnan",
+        "email": "meera@ugham.com",
+        "phone": "+91 94432 11890",
+        "role": "Leader"
+      },
+      {
+        "name": "Sneha Rao",
+        "email": "sneha@ugham.com",
+        "role": "Member"
+      },
+      {
+        "name": "Ananya Das",
+        "email": "ananya@ugham.com",
+        "role": "Member"
+      },
+      {
+        "name": "Roshni Verma",
+        "email": "roshni@ugham.com",
+        "role": "Member"
+      }
+    ],
+    "email_status": "sent",
+    "round_status": "Round 1 - Not Selected (Participation Certificate)",
+    "internship_selected": false,
+    "jury_feedback": "Good clinical problem statement, but market validation and unit economics need deeper field interviews before scaling.",
+    "is_past_event": false,
+    "certificate_issued": true,
+    "certificate_title": "Automatic Participation Certificate — Round 1",
+    "certificate_issued_at": "2026-11-24T12:00:00.000Z",
+    "created_at": "2026-11-24T09:20:00.000Z"
+  },
+  {
+    "id": "UGH-TEST-HP04",
+    "event_name": "hackpick",
+    "track": "Deep-Tech Sprint",
+    "domain": "IOT",
+    "team_name": "VoltGrid Labs",
+    "leader_name": "Arjun Verma",
+    "leader_email": "arjun@ugham.com",
+    "mobile": "+91 98401 77652",
+    "college_name": "National Institute of Technology (NIT) Trichy",
+    "year_of_study": "2nd Year",
+    "department": "Electrical & Electronics Engineering",
+    "team_size": 2,
+    "amount_paid": 199,
+    "payment_id": "pay_test_nitt_hp04",
+    "members": [
+      {
+        "name": "Arjun Verma",
+        "email": "arjun@ugham.com",
+        "phone": "+91 98401 77652",
+        "role": "Leader"
+      },
+      {
+        "name": "Siddharth Bose",
+        "email": "siddharth@ugham.com",
+        "role": "Member"
+      }
+    ],
+    "email_status": "sent",
+    "round_status": "Round 2 (Prototype & Video Explanation)",
+    "internship_selected": false,
+    "jury_feedback": "Hardware telemetry sensor calibration verified. Submit final live edge latency metrics in Round 2.",
+    "is_past_event": false,
+    "certificate_issued": false,
+    "created_at": "2026-11-24T11:45:00.000Z"
+  },
+  {
+    "id": "UGH-TEST-SP05",
+    "event_name": "shepitch_chennai",
+    "track": "Project Pitch",
+    "domain": "FINTECH",
+    "team_name": "FinBridge Tech",
+    "leader_name": "Divya Sundaram",
+    "leader_email": "divya@ugham.com",
+    "mobile": "+91 97890 33214",
+    "college_name": "Anna University (CEG Campus)",
+    "year_of_study": "3rd Year",
+    "department": "Information Technology",
+    "team_size": 3,
+    "amount_paid": 297,
+    "payment_id": "pay_test_ceg_sp05",
+    "members": [
+      {
+        "name": "Divya Sundaram",
+        "email": "divya@ugham.com",
+        "phone": "+91 97890 33214",
+        "role": "Leader"
+      },
+      {
+        "name": "Harini Raj",
+        "email": "harini@ugham.com",
+        "role": "Member"
+      },
+      {
+        "name": "Keerthana S",
+        "email": "keerthana@ugham.com",
+        "role": "Member"
+      }
+    ],
+    "email_status": "sent",
+    "round_status": "Round 3 / 4 (Offline Grand Finale)",
+    "internship_selected": true,
+    "jury_feedback": "Top finalist in FinTech track. Exceptional UPI fraud detection latency and clean architecture.",
+    "is_past_event": false,
+    "certificate_issued": false,
+    "created_at": "2026-11-24T16:10:00.000Z"
+  },
+  {
+    "id": "UGH-TEST-HP06",
+    "event_name": "hackpick",
+    "track": "Deep-Tech Sprint",
+    "domain": "AGRI TECH",
+    "team_name": "AgriSense AI",
+    "leader_name": "Karthik Raja",
+    "leader_email": "karthik@ugham.com",
+    "mobile": "+91 99445 66120",
+    "college_name": "PSG College of Technology",
+    "year_of_study": "Final Year",
+    "department": "Robotics & Automation",
+    "team_size": 3,
+    "amount_paid": 199,
+    "payment_id": "pay_test_psg_hp06",
+    "members": [
+      {
+        "name": "Karthik Raja",
+        "email": "karthik@ugham.com",
+        "phone": "+91 99445 66120",
+        "role": "Leader"
+      },
+      {
+        "name": "Nithya Shree",
+        "email": "nithya@ugham.com",
+        "role": "Member"
+      },
+      {
+        "name": "Praveen Kumar",
+        "email": "praveen@ugham.com",
+        "role": "Member"
+      }
+    ],
+    "email_status": "sent",
+    "round_status": "Round 1 (PPT & Video Submission)",
+    "internship_selected": false,
+    "jury_feedback": "Round 1 submission under initial technical screening.",
+    "is_past_event": false,
+    "certificate_issued": false,
+    "created_at": "2026-11-25T08:40:00.000Z"
+  },
+  {
+    "id": "UGH-TEST-PAST01",
+    "event_name": "shepitch_chennai",
+    "track": "Project Pitch",
+    "domain": "SAAS",
+    "team_name": "NovaSpark (Season 1)",
+    "leader_name": "Test Participant",
+    "leader_email": "test@ugham.com",
+    "mobile": "+91 98765 43210",
+    "college_name": "Indian Institute of Technology (IIT) Madras",
+    "year_of_study": "2nd Year",
+    "department": "Computer Science & Engineering",
+    "team_size": 3,
+    "amount_paid": 297,
+    "payment_id": "pay_past_iitm_sp01",
+    "members": [
+      {
+        "name": "Test Participant",
+        "email": "test@ugham.com",
+        "phone": "+91 98765 43210",
+        "role": "Leader"
+      },
+      {
+        "name": "Riya Menon",
+        "email": "riya@ugham.com",
+        "role": "Member"
+      },
+      {
+        "name": "Devika Nair",
+        "email": "devika@ugham.com",
+        "role": "Member"
+      }
+    ],
+    "email_status": "sent",
+    "round_status": "Round 3 / 4 (Offline Grand Finale)",
+    "internship_selected": false,
+    "jury_feedback": "Finalist squad from Chennai Edition 1. Recognized for scalable SaaS architecture.",
+    "is_past_event": false,
+    "certificate_issued": false,
+    "certificate_title": "Certificate of Excellence — Grand Finalist",
+    "certificate_issued_at": "",
+    "created_at": "2026-01-12T09:00:00.000Z"
+  },
+  {
+    "id": "UGH-TEST-PAST02",
+    "event_name": "hackpick",
+    "track": "Deep-Tech Sprint",
+    "domain": "CLOUD",
+    "team_name": "CodeVortex 2025",
+    "leader_name": "Test Participant",
+    "leader_email": "test@ugham.com",
+    "mobile": "+91 98765 43210",
+    "college_name": "Indian Institute of Technology (IIT) Madras",
+    "year_of_study": "2nd Year",
+    "department": "Computer Science & Engineering",
+    "team_size": 2,
+    "amount_paid": 199,
+    "payment_id": "pay_past_iitm_hp02",
+    "members": [
+      {
+        "name": "Test Participant",
+        "email": "test@ugham.com",
+        "phone": "+91 98765 43210",
+        "role": "Leader"
+      },
+      {
+        "name": "Karan Mehta",
+        "email": "karan@ugham.com",
+        "role": "Member"
+      }
+    ],
+    "email_status": "sent",
+    "round_status": "Round 2 - Not Selected (Appreciation Certificate)",
+    "internship_selected": false,
+    "jury_feedback": "Clean cloud orchestration demo in Round 2 sprint evaluation.",
+    "is_past_event": true,
+    "certificate_issued": true,
+    "certificate_title": "Certificate of Appreciation — Round 2 Qualifier",
+    "certificate_issued_at": "2026-03-20T14:30:00.000Z",
+    "created_at": "2026-03-01T11:30:00.000Z"
   }
 ]

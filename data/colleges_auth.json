@@ -1,0 +1,23 @@
+[
+  {
+    "collegeName": "National Institute of Technology (NIT) Trichy",
+    "username": "nit-trichy",
+    "password": "NITT@2026",
+    "contactEmail": "studentaffairs@nitt.edu",
+    "updatedAt": "2026-11-25T04:50:00.000Z"
+  },
+  {
+    "collegeName": "Anna University (CEG Campus)",
+    "username": "anna-univ",
+    "password": "ANNA@2026",
+    "contactEmail": "hod.events@annauniv.edu",
+    "updatedAt": "2026-11-25T04:50:00.000Z"
+  },
+  {
+    "collegeName": "PSG College of Technology",
+    "username": "psg-tech",
+    "password": "PSG@2026",
+    "contactEmail": "innovation@psgtech.ac.in",
+    "updatedAt": "2026-11-25T04:50:00.000Z"
+  }
+]

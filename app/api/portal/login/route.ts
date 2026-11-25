@@ -83,7 +83,7 @@ export async function POST(req: NextRequest) {
           success: false,
           notRegistered: true,
           error: "Kindly register for any one of the events.",
-          message: "No squad registration found for this email address. Please register for ShePitch 2026 or HackPick 2026 to activate your member access pass.",
+          message: "No squad registration found for this email address. Please register for ShePitch Chennai Edition 2, ShePitch Coimbatore Edition, or HackPick 2026 to activate your member access pass.",
         },
         { status: 404 }
       );

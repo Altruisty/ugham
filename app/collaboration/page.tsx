@@ -20,7 +20,7 @@ export default function CollaborationPage() {
             </p>
             <div className="split-hero-buttons anim-el slide-right del-2">
               <a href="#mentor" className="btn-primary-solid">
-                Join as Mentor &rarr;
+                Join with Us &rarr;
               </a>
               <Link href="/contact" className="btn-secondary-outline">
                 Partner With Us
@@ -109,61 +109,6 @@ export default function CollaborationPage() {
               </div>
               <h4>Mentors</h4>
               <p>Guide the next generation with your domain expertise</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* WHY PARTNER WITH UGHAM (Zigzag Books) */}
-      <div className="section-flow" style={{ padding: "80px 0", position: "relative" }}>
-        <div className="container" style={{ position: "relative", zIndex: 1, maxWidth: "800px" }}>
-          <div className="text-center anim-el fade-up" style={{ marginBottom: "48px" }}>
-            <h2 className="section-title">WHY PARTNER WITH UGHAM</h2>
-          </div>
-          <div className="zigzag-books anim-el swing-in del-1">
-            <div className="book-card">
-              <div className="book-cover">
-                <div className="book-cover-content">
-                  <i className="fa-solid fa-users-viewfinder"></i>
-                  <h4>Access Talent</h4>
-                </div>
-              </div>
-              <div className="book-inside">
-                <p>Direct access to high-potential student innovators and talent scouting opportunities.</p>
-              </div>
-            </div>
-            <div className="book-card">
-              <div className="book-cover">
-                <div className="book-cover-content">
-                  <i className="fa-solid fa-bullhorn"></i>
-                  <h4>Brand Visibility</h4>
-                </div>
-              </div>
-              <div className="book-inside">
-                <p>Enhance your brand visibility across active student innovation platforms.</p>
-              </div>
-            </div>
-            <div className="book-card">
-              <div className="book-cover">
-                <div className="book-cover-content">
-                  <i className="fa-solid fa-lightbulb"></i>
-                  <h4>Early Access</h4>
-                </div>
-              </div>
-              <div className="book-inside">
-                <p>Early access to breakthrough products, startup ventures, and new technologies.</p>
-              </div>
-            </div>
-            <div className="book-card">
-              <div className="book-cover">
-                <div className="book-cover-content">
-                  <i className="fa-solid fa-handshake-angle"></i>
-                  <h4>Advisory Roles</h4>
-                </div>
-              </div>
-              <div className="book-inside">
-                <p>Long-term advisory and meaningful collaboration opportunities with founders.</p>
-              </div>
             </div>
           </div>
         </div>

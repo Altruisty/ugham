@@ -381,6 +381,26 @@ export default function LoginPage() {
               New participant? <span style={{ color: "var(--primary)", fontWeight: 700 }}>Register for an Event &rarr;</span>
             </Link>
           </div>
+          <div>
+            <Link
+              href="/college-login"
+              style={{
+                color: "#7C3AED",
+                fontSize: "13px",
+                textDecoration: "none",
+                fontWeight: 700,
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+                background: "rgba(124, 58, 237, 0.08)",
+                border: "1px solid rgba(124, 58, 237, 0.15)",
+                padding: "6px 14px",
+                borderRadius: "8px",
+              }}
+            >
+              <span>🏛 College / Institution Login Portal &rarr;</span>
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -453,7 +473,7 @@ export default function LoginPage() {
               No active squad registration was found for{" "}
               <strong style={{ color: "#0f172a", wordBreak: "break-all" }}>{unregisteredEmail}</strong>.
               <br />
-              Please register your team for <strong>ShePitch 2026</strong> or <strong>HackPick 2026</strong> to generate your participant portal credentials and access competition rounds.
+              Please register your team for <strong>ShePitch Chennai Edition 2</strong>, <strong>ShePitch Coimbatore Edition</strong>, or <strong>HackPick 2026</strong> to generate your participant portal credentials and access competition rounds.
             </p>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>

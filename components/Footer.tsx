@@ -47,11 +47,6 @@ export default function Footer() {
                   Collaboration
                 </Link>
               </li>
-              <li>
-                <Link href="/awards" style={{ color: "var(--text)", textDecoration: "none", fontSize: "15px", fontWeight: 500 }}>
-                  Awards
-                </Link>
-              </li>
             </ul>
           </div>
           <div>
