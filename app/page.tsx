@@ -1,7 +1,7 @@
 import Link from "next/link";
 import OrbitCanvas from "@/components/OrbitCanvas";
-import WorksCanvas from "@/components/WorksCanvas";
 import BentoTilt from "@/components/BentoTilt";
+import HowUghamWorks from "@/components/HowUghamWorks";
 
 export default function HomePage() {
   return (
@@ -173,59 +173,8 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* HOW UGHAM WORKS (GlowBeam + Side Canvas) */}
-      <section style={{ padding: "100px 0", background: "rgba(255,255,255,0.4)", position: "relative", overflow: "hidden" }}>
-        <div className="holo-bg" style={{ opacity: 0.3 }}></div>
-        <div className="container" style={{ position: "relative", zIndex: 1 }}>
-          <div className="text-center anim-el slide-down" style={{ marginBottom: "40px" }}>
-            <h2 className="section-title">HOW UGHAM WORKS</h2>
-            <p style={{ color: "var(--muted)", marginTop: "12px", fontSize: "17px" }}>
-              Your innovation journey follows a structured path
-            </p>
-          </div>
-          <div className="works-split">
-            <div className="glow-beam-wrap anim-el blur-in del-1">
-              <div className="glow-beam-line"></div>
-              <div className="glow-beam-node">
-                <div className="glow-beam-dot">1</div>
-                <div className="glow-beam-info">
-                  <h4>Learn</h4>
-                  <p>Master core concepts, explore problem spaces, and develop the innovation mindset.</p>
-                </div>
-              </div>
-              <div className="glow-beam-node">
-                <div className="glow-beam-dot">2</div>
-                <div className="glow-beam-info">
-                  <h4>Ideate</h4>
-                  <p>Transform observations into actionable ideas through structured brainstorming.</p>
-                </div>
-              </div>
-              <div className="glow-beam-node">
-                <div className="glow-beam-dot">3</div>
-                <div className="glow-beam-info">
-                  <h4>Build</h4>
-                  <p>Turn validated ideas into working prototypes with expert mentorship.</p>
-                </div>
-              </div>
-              <div className="glow-beam-node">
-                <div className="glow-beam-dot">4</div>
-                <div className="glow-beam-info">
-                  <h4>Scale</h4>
-                  <p>Develop prototypes into scalable solutions with business modeling.</p>
-                </div>
-              </div>
-              <div className="glow-beam-node">
-                <div className="glow-beam-dot">5</div>
-                <div className="glow-beam-info">
-                  <h4>Launch</h4>
-                  <p>Deploy your innovation with ecosystem support and growth acceleration.</p>
-                </div>
-              </div>
-            </div>
-            <WorksCanvas />
-          </div>
-        </div>
-      </section>
+      {/* HOW UGHAM WORKS (6-Stage Connected Ecosystem) */}
+      <HowUghamWorks />
 
       {/* TEAM BANNER */}
       <div className="anim-el scale-up" style={{ position: "relative", zIndex: 1 }}>

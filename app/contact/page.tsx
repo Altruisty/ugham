@@ -6,6 +6,7 @@ import Link from "next/link";
 export default function ContactPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [showFloatBtn, setShowFloatBtn] = useState(true);
   const formRef = useRef<HTMLDivElement | null>(null);
 
@@ -28,23 +29,30 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitting(true);
+    setSubmitError("");
 
     const form = e.currentTarget;
     const formData = new FormData(form);
-    const SCRIPT_URL =
-      "https://script.google.com/macros/s/AKfycbxTIk7_bfbH3OETWd-KEQgWlYxd3DrS7-nmFSG4zCDuSdAXxDrZijmA8HrulgjW8Z0cFA/exec";
+    const payload = {
+      name: String(formData.get("name") || "").trim(),
+      email: String(formData.get("email") || "").trim(),
+      phone: String(formData.get("phone") || "").trim(),
+      reason: String(formData.get("reason") || "").trim(),
+    };
 
     try {
-      await fetch(SCRIPT_URL, {
+      const res = await fetch("/api/contact", {
         method: "POST",
-        body: formData,
-        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Failed to submit inquiry. Please try again.");
+      }
       setSubmitted(true);
-    } catch (err) {
-      console.error(err);
-      // Fallback UI
-      setSubmitted(true);
+    } catch (err: any) {
+      setSubmitError(err.message || "Failed to send your inquiry. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -293,6 +301,23 @@ export default function ContactPage() {
                     <i className="fa-solid fa-chevron-down select-icon"></i>
                   </div>
                 </div>
+
+                {submitError && (
+                  <div
+                    style={{
+                      marginTop: "16px",
+                      padding: "12px 16px",
+                      borderRadius: "10px",
+                      background: "rgba(239, 68, 68, 0.1)",
+                      border: "1px solid rgba(239, 68, 68, 0.3)",
+                      color: "#dc2626",
+                      fontSize: "13.5px",
+                      fontWeight: 700,
+                    }}
+                  >
+                    {submitError}
+                  </div>
+                )}
 
                 <button
                   type="submit"

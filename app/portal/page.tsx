@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import type { EventEditionRecord } from "@/lib/editions";
+import CustomSelect from "@/components/CustomSelect";
 
 interface RoundSubmissions {
   round1?: { pptLink?: string; videoLink?: string; submittedAt?: string };
@@ -48,7 +49,7 @@ interface PortalUser {
   registrations: RegisteredEvent[];
 }
 
-type PortalTab = "dashboard" | "my-events" | "current-events" | "past-events" | "certificates";
+type PortalTab = "dashboard" | "my-events" | "certificates";
 
 const LOGO_GRADIENT = "linear-gradient(135deg, #7C3AED 0%, #C026D3 100%)";
 
@@ -81,6 +82,7 @@ export default function ParticipantPortalPage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<PortalTab>("dashboard");
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+  const [showRoundsPanel, setShowRoundsPanel] = useState(true);
   const [editions, setEditions] = useState<EventEditionRecord[]>([]);
 
   // Deliverable submission modal
@@ -103,9 +105,11 @@ export default function ParticipantPortalPage() {
     const syncTab = () => {
       if (typeof window !== "undefined") {
         const params = new URLSearchParams(window.location.search);
-        const tab = (params.get("tab") || "dashboard") as PortalTab;
-        if (["dashboard", "my-events", "current-events", "past-events", "certificates"].includes(tab)) {
-          setActiveTab(tab);
+        const tab = params.get("tab") || "dashboard";
+        if (tab === "my-events" || tab === "past-events") {
+          setActiveTab("my-events");
+        } else if (tab === "certificates") {
+          setActiveTab("certificates");
         } else {
           setActiveTab("dashboard");
         }
@@ -114,8 +118,12 @@ export default function ParticipantPortalPage() {
     syncTab();
 
     const handleTabEvent = (e: any) => {
-      if (e?.detail && ["dashboard", "my-events", "current-events", "past-events", "certificates"].includes(e.detail)) {
-        setActiveTab(e.detail);
+      if (e?.detail === "my-events" || e?.detail === "past-events") {
+        setActiveTab("my-events");
+      } else if (e?.detail === "certificates") {
+        setActiveTab("certificates");
+      } else if (e?.detail === "dashboard" || e?.detail === "current-events") {
+        setActiveTab("dashboard");
       } else {
         syncTab();
       }
@@ -171,6 +179,14 @@ export default function ParticipantPortalPage() {
     } finally {
       setLoading(false);
     }
+    const onAuthChange = () => {
+      try {
+        const refreshed = sessionStorage.getItem("ugham_portal_user");
+        if (refreshed) setUser(JSON.parse(refreshed));
+      } catch {}
+    };
+    window.addEventListener("ugham_auth_change", onAuthChange);
+    return () => window.removeEventListener("ugham_auth_change", onAuthChange);
   }, [router]);
 
   const switchPortalTab = (tab: PortalTab) => {
@@ -277,8 +293,6 @@ export default function ParticipantPortalPage() {
   const currentSelectedEvent =
     activeRegistrations.find((r) => r.id === selectedEventId) || activeRegistrations[0] || null;
 
-  const activeCatalogEditions = editions.filter((e) => e.status === "active");
-
   return (
     <main
       style={{
@@ -294,217 +308,173 @@ export default function ParticipantPortalPage() {
     >
       <div style={{ maxWidth: "1100px", margin: "0 auto", position: "relative", zIndex: 1 }}>
         {/* ═══════════════════════════════════════════════════════════════ */}
-        {/* VIEW 1: DASHBOARD (WHATSAPP + WELCOME BOX + SUMMARY)           */}
+        {/* VIEW 1: HOME (SPLIT HERO WELCOME BOX + SUMMARY)                */}
         {/* ═══════════════════════════════════════════════════════════════ */}
         {activeTab === "dashboard" && (
-          <div className="step-animate-in" style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-            {/* Official WhatsApp Community Box */}
+          <div className="step-animate-in" style={{ display: "flex", flexDirection: "column", gap: "26px" }}>
+            {/* Expanded Hero Welcome Box with Right-Side Visual Panel */}
             <div
               style={{
-                background: "linear-gradient(135deg, #064e3b 0%, #065f46 65%, #047857 100%)",
-                borderRadius: "20px",
-                border: "1.5px solid #10b981",
-                padding: "24px 28px",
+                background: "linear-gradient(135deg, #1e1b4b 0%, #0f172a 60%, #170e36 100%)",
+                borderRadius: "26px",
+                padding: "clamp(28px, 4.5vw, 46px)",
+                minHeight: "360px",
                 color: "#ffffff",
-                boxShadow: "0 12px 32px rgba(16, 185, 129, 0.18)",
+                boxShadow: "0 20px 50px rgba(15, 23, 42, 0.16)",
+                position: "relative",
+                overflow: "hidden",
+                border: "1px solid rgba(167, 139, 250, 0.2)",
               }}
             >
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: "18px",
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap" }}>
-                  <div
-                    style={{
-                      width: "48px",
-                      height: "48px",
-                      borderRadius: "14px",
-                      background: "#25D366",
-                      color: "#ffffff",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                    }}
-                  >
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-                    </svg>
-                  </div>
+              <div className="portal-welcome-hero-grid">
+                {/* Left: Student Identity, CTA & Metrics */}
+                <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", gap: "22px" }}>
                   <div>
                     <span
                       style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "6px",
+                        padding: "5px 13px",
+                        borderRadius: "999px",
+                        background: "rgba(16, 185, 129, 0.18)",
+                        border: "1px solid rgba(52, 211, 153, 0.28)",
+                        color: "#34d399",
                         fontSize: "11px",
                         fontWeight: 800,
-                        letterSpacing: "0.6px",
-                        textTransform: "uppercase",
-                        color: "#6ee7b7",
-                        display: "block",
-                        marginBottom: "4px",
+                        letterSpacing: "0.7px",
+                        marginBottom: "14px",
                       }}
                     >
-                      OFFICIAL PARTICIPANT CHANNEL
+                      VERIFIED STUDENT PORTAL
                     </span>
-                    <h2 style={{ fontSize: "19px", fontWeight: 900, margin: "0 0 4px 0", color: "#ffffff" }}>
-                      Event WhatsApp Community
-                    </h2>
-                    <p style={{ color: "#d1fae5", fontSize: "13.5px", margin: 0 }}>
-                      Receive live round updates, sample PPT announcements, and jury schedules.
+                    <h1 style={{ fontSize: "clamp(26px, 4vw, 38px)", fontWeight: 900, margin: "0 0 10px 0", lineHeight: 1.15 }}>
+                      Welcome, {user.name}
+                    </h1>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "10px 14px", color: "#cbd5e1", fontSize: "14px", marginBottom: "14px" }}>
+                      <span>{user.college}</span>
+                      <span>•</span>
+                      <span>{user.department} ({user.yearOfStudy})</span>
+                    </div>
+                    <p style={{ color: "rgba(226, 232, 240, 0.85)", fontSize: "14.5px", lineHeight: 1.65, maxWidth: "520px", margin: 0 }}>
+                      Track your live competition rounds, submit prototype and pitch deliverables, join event communities, and download verified certificates from one executive workspace.
                     </p>
                   </div>
-                </div>
 
-                <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-                  {activeRegistrations.length === 0 ? (
-                    <a
-                      href="https://chat.whatsapp.com/invite/ugham-community"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                  <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                    <button
+                      type="button"
+                      onClick={() => switchPortalTab("my-events")}
                       className="glacier-btn"
                       style={{
-                        padding: "10px 18px",
-                        borderRadius: "10px",
-                        background: "#ffffff",
-                        border: "1.5px solid #e2e8f0",
-                        color: "#065f46",
-                        fontSize: "13px",
+                        padding: "12px 24px",
+                        borderRadius: "12px",
+                        background: LOGO_GRADIENT,
+                        color: "#ffffff",
+                        border: "1.5px solid transparent",
+                        fontSize: "13.5px",
                         fontWeight: 800,
-                        textDecoration: "none",
+                        cursor: "pointer",
+                        boxShadow: "0 8px 24px rgba(124, 58, 237, 0.35)",
                       }}
                     >
-                      Join Ugham Community →
-                    </a>
-                  ) : (
-                    activeRegistrations.map((r, i) => {
-                      const matchedEd = editions.find((e) => e.slug === r.event_name);
-                      const isChennai = r.event_name.includes("shepitch");
-                      const groupTitle = matchedEd ? `${matchedEd.title} Group` : isChennai ? "ShePitch Group" : "HackPick Group";
-                      const groupLink =
-                        matchedEd?.whatsappLink ||
-                        (isChennai
-                          ? "https://chat.whatsapp.com/invite/ugham-shepitch-chennai"
-                          : "https://chat.whatsapp.com/invite/ugham-hackpick-2026");
-                      return (
-                        <a
-                          key={i}
-                          href={groupLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="glacier-btn"
-                          style={{
-                            padding: "10px 16px",
-                            borderRadius: "10px",
-                            background: "#ffffff",
-                            border: "1.5px solid #e2e8f0",
-                            color: "#065f46",
-                            fontSize: "13px",
-                            fontWeight: 800,
-                            textDecoration: "none",
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: "6px",
-                          }}
-                        >
-                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#25D366" strokeWidth="2.5">
-                            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-                          </svg>
-                          <span>Join {groupTitle}</span>
-                        </a>
-                      );
-                    })
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* Welcome Box */}
-            <div
-              style={{
-                background: "linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%)",
-                borderRadius: "24px",
-                padding: "32px",
-                color: "#ffffff",
-                boxShadow: "0 16px 40px rgba(15, 23, 42, 0.14)",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: "18px",
-                }}
-              >
-                <div>
-                  <span
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: "6px",
-                      padding: "4px 12px",
-                      borderRadius: "6px",
-                      background: "rgba(16, 185, 129, 0.18)",
-                      color: "#34d399",
-                      fontSize: "11px",
-                      fontWeight: 800,
-                      letterSpacing: "0.6px",
-                      marginBottom: "10px",
-                    }}
-                  >
-                    VERIFIED STUDENT PORTAL
-                  </span>
-                  <h1 style={{ fontSize: "clamp(22px, 3.5vw, 32px)", fontWeight: 900, margin: "0 0 8px 0" }}>
-                    Welcome, {user.name}
-                  </h1>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "16px", color: "#cbd5e1", fontSize: "13.5px" }}>
-                    <span>{user.college}</span>
-                    <span>•</span>
-                    <span>{user.department} ({user.yearOfStudy})</span>
+                      View My Events Flow →
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => switchPortalTab("certificates")}
+                      className="glacier-btn"
+                      style={{
+                        padding: "12px 20px",
+                        borderRadius: "12px",
+                        background: "rgba(255, 255, 255, 0.1)",
+                        border: "1.5px solid rgba(255, 255, 255, 0.24)",
+                        color: "#ffffff",
+                        fontSize: "13.5px",
+                        fontWeight: 800,
+                        cursor: "pointer",
+                      }}
+                    >
+                      Certificates ({certificateRecords.length})
+                    </button>
                   </div>
                 </div>
 
-                <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-                  <button
-                    type="button"
-                    onClick={() => switchPortalTab("my-events")}
-                    className="glacier-btn"
+                {/* Right: Premium Stat & Arena Highlights Grid */}
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                    gap: "12px",
+                  }}
+                >
+                  <div
                     style={{
-                      padding: "11px 22px",
-                      borderRadius: "10px",
-                      background: LOGO_GRADIENT,
-                      color: "#ffffff",
-                      border: "1.5px solid transparent",
-                      fontSize: "13px",
-                      fontWeight: 800,
-                      cursor: "pointer",
-                      boxShadow: "0 6px 20px rgba(124, 58, 237, 0.3)",
+                      padding: "16px 18px",
+                      borderRadius: "16px",
+                      background: "rgba(255, 255, 255, 0.08)",
+                      border: "1px solid rgba(255, 255, 255, 0.14)",
                     }}
                   >
-                    View My Events Flow →
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => switchPortalTab("certificates")}
-                    className="glacier-btn"
+                    <span style={{ fontSize: "10.5px", fontWeight: 800, color: "#a5b4fc", textTransform: "uppercase", letterSpacing: "0.6px", display: "block", marginBottom: "6px" }}>
+                      Competition Track
+                    </span>
+                    <strong style={{ fontSize: "16px", color: "#ffffff", display: "block", lineHeight: 1.3 }}>
+                      {(user as any).preferredDomain || activeRegistrations[0]?.domain || "Innovation Arena"}
+                    </strong>
+                    <span style={{ fontSize: "12px", color: "#cbd5e1" }}>Live Portal Synced</span>
+                  </div>
+
+                  <div
                     style={{
-                      padding: "11px 18px",
-                      borderRadius: "10px",
-                      background: LOGO_GRADIENT,
-                      border: "1.5px solid rgba(255, 255, 255, 0.2)",
-                      color: "#ffffff",
-                      fontSize: "13px",
-                      fontWeight: 800,
-                      cursor: "pointer",
+                      padding: "16px 18px",
+                      borderRadius: "16px",
+                      background: "rgba(16, 185, 129, 0.12)",
+                      border: "1px solid rgba(52, 211, 153, 0.25)",
                     }}
                   >
-                    Certificates ({certificateRecords.length})
-                  </button>
+                    <span style={{ fontSize: "10.5px", fontWeight: 800, color: "#6ee7b7", textTransform: "uppercase", letterSpacing: "0.6px", display: "block", marginBottom: "6px" }}>
+                      Current Stage
+                    </span>
+                    <strong style={{ fontSize: "15.5px", color: "#ffffff", display: "block", lineHeight: 1.3 }}>
+                      {activeRegistrations[0]?.round_status || "Round 1 Active"}
+                    </strong>
+                    <span style={{ fontSize: "12px", color: "#a7f3d0" }}>Squad Verified</span>
+                  </div>
+
+                  <div
+                    style={{
+                      padding: "16px 18px",
+                      borderRadius: "16px",
+                      background: "rgba(124, 58, 237, 0.16)",
+                      border: "1px solid rgba(192, 132, 252, 0.28)",
+                    }}
+                  >
+                    <span style={{ fontSize: "10.5px", fontWeight: 800, color: "#e9d5ff", textTransform: "uppercase", letterSpacing: "0.6px", display: "block", marginBottom: "6px" }}>
+                      Portal Passkey
+                    </span>
+                    <strong style={{ fontSize: "16px", color: "#ffffff", display: "block" }}>
+                      UGHAM2026
+                    </strong>
+                    <span style={{ fontSize: "12px", color: "#ddd6fe" }}>Single Sign-On</span>
+                  </div>
+
+                  <div
+                    style={{
+                      padding: "16px 18px",
+                      borderRadius: "16px",
+                      background: "rgba(255, 255, 255, 0.08)",
+                      border: "1px solid rgba(255, 255, 255, 0.14)",
+                    }}
+                  >
+                    <span style={{ fontSize: "10.5px", fontWeight: 800, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.6px", display: "block", marginBottom: "6px" }}>
+                      Deliverables &amp; Juries
+                    </span>
+                    <strong style={{ fontSize: "15.5px", color: "#ffffff", display: "block", lineHeight: 1.3 }}>
+                      Direct Submissions
+                    </strong>
+                    <span style={{ fontSize: "12px", color: "#cbd5e1" }}>Manage in My Events</span>
+                  </div>
                 </div>
               </div>
 
@@ -512,11 +482,11 @@ export default function ParticipantPortalPage() {
               <div
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
                   gap: "16px",
-                  marginTop: "26px",
+                  marginTop: "28px",
                   paddingTop: "22px",
-                  borderTop: "1px solid rgba(255, 255, 255, 0.12)",
+                  borderTop: "1px solid rgba(255, 255, 255, 0.14)",
                 }}
               >
                 <div>
@@ -648,61 +618,69 @@ export default function ParticipantPortalPage() {
                 <p style={{ color: "#64748b", fontSize: "14px", maxWidth: "420px", margin: "0 auto 20px" }}>
                   Explore open flagship challenges to register a new squad.
                 </p>
-                <button
-                  type="button"
-                  onClick={() => switchPortalTab("current-events")}
+                <Link
+                  href="/events-hub#event-registration"
                   className="btn-primary glacier-btn"
-                  style={{ padding: "12px 26px", borderRadius: "10px" }}
+                  style={{ padding: "12px 26px", borderRadius: "10px", textDecoration: "none", display: "inline-block" }}
                 >
-                  Browse Current Events →
-                </button>
+                  Browse Events Hub →
+                </Link>
               </div>
             ) : (
               <>
-                {/* Per-Event Selection Buttons (Using Ugham Logo Color) */}
-                <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-                  {activeRegistrations.map((reg) => {
-                    const isSelected = currentSelectedEvent?.id === reg.id;
-                    return (
-                      <button
-                        key={reg.id}
-                        type="button"
-                        onClick={() => setSelectedEventId(reg.id)}
-                        className="glacier-btn"
-                        style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          gap: "10px",
-                          padding: "12px 18px",
-                          borderRadius: "12px",
-                          border: isSelected ? "1.5px solid #7C3AED" : "1.5px solid #e2e8f0",
-                          background: isSelected ? LOGO_GRADIENT : "#ffffff",
-                          color: isSelected ? "#ffffff" : "#334155",
-                          fontSize: "13.5px",
-                          fontWeight: 800,
-                          cursor: "pointer",
-                          boxShadow: isSelected ? "0 8px 20px rgba(124, 58, 237, 0.25)" : "none",
-                        }}
-                      >
-                        <span>{getEventDisplayTitle(reg.event_name, editions)}</span>
-                        <span
-                          style={{
-                            fontSize: "11px",
-                            padding: "2px 8px",
-                            borderRadius: "6px",
-                            background: isSelected ? "rgba(255,255,255,0.22)" : "#f1f5f9",
-                            color: isSelected ? "#ffffff" : "#64748b",
-                          }}
-                        >
-                          {reg.team_name}
-                        </span>
-                      </button>
-                    );
-                  })}
+                {/* Current Event Selector Dropdown + Show/Close Control */}
+                <div
+                  style={{
+                    background: "#ffffff",
+                    borderRadius: "18px",
+                    border: "1.5px solid #e2e8f0",
+                    padding: "16px 20px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    flexWrap: "wrap",
+                    gap: "14px",
+                  }}
+                >
+                  <div style={{ flex: "1 1 280px", minWidth: 0 }}>
+                    <label style={{ fontSize: "11px", fontWeight: 800, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.5px", display: "block", marginBottom: "6px" }}>
+                      Select Active Registered Event ({activeRegistrations.length})
+                    </label>
+                    <CustomSelect
+                      options={activeRegistrations.map((reg) => ({
+                        value: reg.id,
+                        label: `${getEventDisplayTitle(reg.event_name, editions)} — Team ${reg.team_name} (${reg.round_status || "Round 1 Active"})`,
+                      }))}
+                      value={currentSelectedEvent?.id || ""}
+                      onChange={(val) => {
+                        setSelectedEventId(val);
+                        setShowRoundsPanel(true);
+                      }}
+                    />
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setShowRoundsPanel((prev) => !prev)}
+                    className="glacier-btn"
+                    style={{
+                      padding: "11px 18px",
+                      borderRadius: "10px",
+                      border: "1.5px solid #cbd5e1",
+                      background: showRoundsPanel ? "#f8fafc" : LOGO_GRADIENT,
+                      color: showRoundsPanel ? "#0f172a" : "#ffffff",
+                      fontSize: "12.5px",
+                      fontWeight: 800,
+                      cursor: "pointer",
+                      alignSelf: "flex-end",
+                    }}
+                  >
+                    {showRoundsPanel ? "Hide Rounds Flow ▲" : "Open Rounds Flow ▾"}
+                  </button>
                 </div>
 
-                {/* Single Selected Event Vertical Process Line */}
-                {currentSelectedEvent && (() => {
+                {/* Single Selected Event Vertical Process Line (Closeable) */}
+                {showRoundsPanel && currentSelectedEvent && (() => {
                   const reg = currentSelectedEvent;
                   const isShePitch = reg.event_name.includes("shepitch");
                   const eventTitle = getEventDisplayTitle(reg.event_name, editions);
@@ -862,6 +840,42 @@ export default function ParticipantPortalPage() {
                         </div>
 
                         <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+                          {(() => {
+                            const matchedEd = editions.find((e) => e.slug === reg.event_name);
+                            const isChennai = reg.event_name.includes("shepitch");
+                            const groupLink =
+                              matchedEd?.whatsappLink ||
+                              (isChennai
+                                ? "https://chat.whatsapp.com/invite/ugham-shepitch-chennai"
+                                : "https://chat.whatsapp.com/invite/ugham-hackpick-2026");
+                            return (
+                              <a
+                                href={groupLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="glacier-btn"
+                                style={{
+                                  padding: "7px 14px",
+                                  borderRadius: "8px",
+                                  background: "#065f46",
+                                  border: "1px solid #10b981",
+                                  color: "#ffffff",
+                                  fontSize: "12px",
+                                  fontWeight: 800,
+                                  textDecoration: "none",
+                                  display: "inline-flex",
+                                  alignItems: "center",
+                                  gap: "6px",
+                                }}
+                              >
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6ee7b7" strokeWidth="2.4">
+                                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                                </svg>
+                                <span>Join WhatsApp Group →</span>
+                              </a>
+                            );
+                          })()}
+
                           {reg.internship_selected && (
                             <span
                               style={{
@@ -889,6 +903,24 @@ export default function ParticipantPortalPage() {
                           >
                             {reg.round_status || "Round 1 Active"}
                           </span>
+                          <button
+                            type="button"
+                            onClick={() => setShowRoundsPanel(false)}
+                            aria-label="Close Event Rounds Box"
+                            className="glacier-btn"
+                            style={{
+                              padding: "6px 12px",
+                              borderRadius: "8px",
+                              background: "#f1f5f9",
+                              border: "1px solid #cbd5e1",
+                              color: "#475569",
+                              fontSize: "12px",
+                              fontWeight: 800,
+                              cursor: "pointer",
+                            }}
+                          >
+                            × Close
+                          </button>
                         </div>
                       </div>
 
@@ -1225,282 +1257,167 @@ export default function ParticipantPortalPage() {
                 })()}
               </>
             )}
-          </div>
-        )}
 
-        {/* ═══════════════════════════════════════════════════════════════ */}
-        {/* VIEW 3: CURRENT EVENTS (DYNAMIC EDITIONS + APPLY)               */}
-        {/* ═══════════════════════════════════════════════════════════════ */}
-        {activeTab === "current-events" && (
-          <div className="step-animate-in" style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-            <div>
-              <h2 style={{ fontSize: "24px", fontWeight: 900, color: "#0f172a", margin: "0 0 6px 0" }}>
-                Current Open Competitions
-              </h2>
-              <p style={{ color: "#64748b", fontSize: "14px", margin: 0 }}>
-                Review active editions accepting registrations and apply directly with your squad.
-              </p>
-            </div>
+            {/* Past Events Scrollable Archive inside My Events */}
+            <div
+              style={{
+                background: "#ffffff",
+                borderRadius: "24px",
+                border: "1.5px solid #e2e8f0",
+                padding: "clamp(20px, 3.5vw, 30px)",
+                marginTop: "6px",
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px", marginBottom: "18px" }}>
+                <div>
+                  <h3 style={{ fontSize: "20px", fontWeight: 900, color: "#0f172a", margin: "0 0 4px 0" }}>
+                    Past Events Archive ({pastRegistrations.length})
+                  </h3>
+                  <p style={{ color: "#64748b", fontSize: "13px", margin: 0 }}>
+                    Swipe or scroll horizontally to review completed events, final standings, and certificates.
+                  </p>
+                </div>
+              </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))", gap: "22px" }}>
-              {(activeCatalogEditions.length > 0
-                ? activeCatalogEditions
-                : [
-                    {
-                      slug: "shepitch_chennai",
-                      badgeText: "CHENNAI EDITION 2",
-                      title: "ShePitch Chennai Edition 2",
-                      description:
-                        "Women-led startup and prototype pitch challenge across Project Pitch and Idea Pitch tracks. 3 rounds ending in Chennai Offline Finale.",
-                      pricingMode: "per_member" as const,
-                      feeAmount: 99,
-                      teamSizeMin: 3,
-                      teamSizeMax: 4,
-                      domains: [],
-                    },
-                    {
-                      slug: "hackpick",
-                      badgeText: "DEEP-TECH SPRINT",
-                      title: "HackPick 2026",
-                      description:
-                        "36-hour engineering hackathon spanning AI, Cybersecurity, IoT, Cloud, and FinTech. 4 evaluation stages culminating in Offline Finale.",
-                      pricingMode: "flat_team" as const,
-                      feeAmount: 199,
-                      teamSizeMin: 2,
-                      teamSizeMax: 3,
-                      domains: [],
-                    },
-                  ]
-              ).map((ed) => (
+              {pastRegistrations.length === 0 ? (
                 <div
-                  key={ed.slug}
-                  className="glacier-card"
                   style={{
-                    background: "#ffffff",
-                    borderRadius: "20px",
-                    border: "1.5px solid #e2e8f0",
-                    padding: "28px",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
+                    background: "#f8fafc",
+                    borderRadius: "14px",
+                    border: "1px dashed #cbd5e1",
+                    padding: "36px 20px",
+                    textAlign: "center",
+                    color: "#64748b",
+                    fontSize: "13.5px",
                   }}
                 >
-                  <div>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", gap: "8px", flexWrap: "wrap" }}>
-                      <span style={{ fontSize: "11px", fontWeight: 800, padding: "4px 10px", borderRadius: "6px", background: "rgba(124, 58, 237, 0.1)", color: "#7C3AED" }}>
-                        {ed.badgeText}
-                      </span>
-                      <strong style={{ fontSize: "20px", color: "#0f172a" }}>
-                        ₹{ed.feeAmount} {ed.pricingMode === "per_member" ? "/ member" : "flat"}
-                      </strong>
-                    </div>
-                    <h3 style={{ fontSize: "20px", fontWeight: 900, color: "#0f172a", margin: "0 0 8px 0" }}>
-                      {ed.title}
-                    </h3>
-                    <p style={{ fontSize: "13.5px", color: "#475569", lineHeight: 1.6, margin: "0 0 18px 0" }}>
-                      {ed.description}
-                    </p>
-                    <div style={{ fontSize: "12.5px", color: "#64748b", display: "flex", flexDirection: "column", gap: "6px", marginBottom: "22px" }}>
-                      <div>Squad Size: <strong style={{ color: "#0f172a" }}>{ed.teamSizeMin}–{ed.teamSizeMax} Members</strong></div>
-                      <div>Domains: <strong style={{ color: "#0f172a" }}>{ed.domains?.length || 8} High-Growth Sectors</strong></div>
-                      <div>
-                        Status:{" "}
-                        <strong style={{ color: (ed as any).registrationClosed ? "#dc2626" : "#059669" }}>
-                          {(ed as any).registrationClosed ? "Registrations Stopped" : "Open for Applications"}
-                        </strong>
-                      </div>
-                    </div>
-                  </div>
-
-                  {(ed as any).registrationClosed ? (
-                    <button
-                      type="button"
-                      disabled
-                      style={{
-                        width: "100%",
-                        display: "inline-flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        padding: "12px",
-                        borderRadius: "10px",
-                        fontSize: "13.5px",
-                        fontWeight: 800,
-                        background: "#f1f5f9",
-                        color: "#64748b",
-                        border: "1.5px solid #cbd5e1",
-                        cursor: "not-allowed",
-                      }}
-                    >
-                      Registrations Closed
-                    </button>
-                  ) : (
-                    <Link
-                      href={`/events-hub?event=${encodeURIComponent(ed.slug)}#event-registration`}
-                      className="glacier-btn"
-                      style={{
-                        width: "100%",
-                        display: "inline-flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        padding: "12px",
-                        borderRadius: "10px",
-                        fontSize: "13.5px",
-                        fontWeight: 800,
-                        textDecoration: "none",
-                        background: LOGO_GRADIENT,
-                        color: "#ffffff",
-                        border: "1.5px solid transparent",
-                        boxShadow: "0 6px 18px rgba(124, 58, 237, 0.25)",
-                      }}
-                    >
-                      Apply for {ed.title} →
-                    </Link>
-                  )}
+                  No completed past events recorded yet.
                 </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* ═══════════════════════════════════════════════════════════════ */}
-        {/* VIEW 4: PAST EVENTS (CLEAN ALIGNMENT, CONCISE, CLEAR GAPS)     */}
-        {/* ═══════════════════════════════════════════════════════════════ */}
-        {activeTab === "past-events" && (
-          <div className="step-animate-in" style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-            <div>
-              <h2 style={{ fontSize: "24px", fontWeight: 900, color: "#0f172a", margin: "0 0 6px 0" }}>
-                Past Events Archive
-              </h2>
-              <p style={{ color: "#64748b", fontSize: "14px", margin: 0 }}>
-                Completed events, final round standings, and issued outcome status.
-              </p>
-            </div>
-
-            {pastRegistrations.length === 0 ? (
-              <div
-                style={{
-                  background: "#ffffff",
-                  borderRadius: "20px",
-                  border: "1.5px solid #e2e8f0",
-                  padding: "60px 24px",
-                  textAlign: "center",
-                  color: "#64748b",
-                  fontSize: "14px",
-                }}
-              >
-                No completed past events recorded yet.
-              </div>
-            ) : (
-              <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-                {pastRegistrations.map((ev, idx) => (
-                  <div
-                    key={ev.id}
-                    className="glacier-card step-animate-in"
-                    style={{
-                      animationDelay: `${idx * 90}ms`,
-                      background: "#ffffff",
-                      borderRadius: "18px",
-                      border: "1.5px solid #e2e8f0",
-                      padding: "26px 28px",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "16px",
-                    }}
-                  >
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "12px" }}>
-                      <div>
-                        <span style={{ fontSize: "11px", fontWeight: 800, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.5px" }}>
-                          {new Date(ev.created_at).toLocaleDateString("en-IN", { month: "short", year: "numeric" })} • {ev.domain}
-                        </span>
-                        <h3 style={{ fontSize: "19px", fontWeight: 900, color: "#0f172a", margin: "4px 0 0 0" }}>
-                          {getEventDisplayTitle(ev.event_name, editions)}
-                        </h3>
-                      </div>
-
-                      <span
-                        style={{
-                          padding: "5px 12px",
-                          borderRadius: "8px",
-                          background: "#f1f5f9",
-                          border: "1px solid #cbd5e1",
-                          color: "#0f172a",
-                          fontSize: "12px",
-                          fontWeight: 800,
-                        }}
-                      >
-                        Completed
-                      </span>
-                    </div>
-
+              ) : (
+                <div
+                  className="hide-scrollbar"
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: "18px",
+                    overflowX: "auto",
+                    scrollSnapType: "x mandatory",
+                    paddingBottom: "4px",
+                    WebkitOverflowScrolling: "touch",
+                  }}
+                >
+                  {pastRegistrations.map((ev, idx) => (
                     <div
+                      key={ev.id}
+                      className="glacier-card"
                       style={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-                        gap: "16px",
-                        padding: "16px",
-                        borderRadius: "12px",
+                        flex: "0 0 min(380px, 85vw)",
+                        scrollSnapAlign: "start",
                         background: "#f8fafc",
-                        border: "1px solid #e2e8f0",
+                        borderRadius: "18px",
+                        border: "1.5px solid #e2e8f0",
+                        padding: "20px 22px",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                        gap: "12px",
                       }}
                     >
-                      <div>
-                        <span style={{ fontSize: "11px", color: "#64748b", fontWeight: 700, display: "block" }}>Squad Name</span>
-                        <strong style={{ fontSize: "14px", color: "#0f172a" }}>{ev.team_name}</strong>
-                      </div>
-                      <div>
-                        <span style={{ fontSize: "11px", color: "#64748b", fontWeight: 700, display: "block" }}>Final Outcome</span>
-                        <strong style={{ fontSize: "14px", color: "#0f172a" }}>{ev.round_status || "Participated"}</strong>
-                      </div>
-                      <div>
-                        <span style={{ fontSize: "11px", color: "#64748b", fontWeight: 700, display: "block" }}>Internship Status</span>
-                        <strong style={{ fontSize: "14px", color: ev.internship_selected ? "#059669" : "#475569" }}>
-                          {ev.internship_selected ? "Selected" : "Completed"}
-                        </strong>
-                      </div>
-                    </div>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "10px" }}>
+                        <div>
+                          <span style={{ fontSize: "11px", fontWeight: 800, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                            #{idx + 1} • {new Date(ev.created_at).toLocaleDateString("en-IN", { month: "short", year: "numeric" })} • {ev.domain}
+                          </span>
+                          <h4 style={{ fontSize: "17px", fontWeight: 900, color: "#0f172a", margin: "4px 0 0 0" }}>
+                            {getEventDisplayTitle(ev.event_name, editions)}
+                          </h4>
+                        </div>
 
-                    {ev.jury_feedback && (
-                      <div style={{ fontSize: "13.5px", color: "#475569", lineHeight: 1.5 }}>
-                        <strong style={{ color: "#0f172a" }}>Jury Note:</strong> {ev.jury_feedback}
-                      </div>
-                    )}
-
-                    {ev.internship_reason && (
-                      <div style={{ fontSize: "13.5px", color: "#475569", lineHeight: 1.5 }}>
-                        <strong style={{ color: "#0f172a" }}>Internship Note:</strong> {ev.internship_reason}
-                      </div>
-                    )}
-
-                    {ev.certificate_issued && (
-                      <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                        <button
-                          type="button"
-                          onClick={() => switchPortalTab("certificates")}
-                          className="glacier-btn"
+                        <span
                           style={{
-                            padding: "9px 18px",
+                            padding: "4px 10px",
                             borderRadius: "8px",
-                            border: "1.5px solid transparent",
-                            background: LOGO_GRADIENT,
-                            color: "#ffffff",
-                            fontSize: "12.5px",
+                            background: "#ffffff",
+                            border: "1px solid #cbd5e1",
+                            color: "#0f172a",
+                            fontSize: "11.5px",
                             fontWeight: 800,
-                            cursor: "pointer",
                           }}
                         >
-                          View Issued Certificate →
-                        </button>
+                          Completed
+                        </span>
                       </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
+
+                      <div
+                        style={{
+                          display: "grid",
+                          gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+                          gap: "12px",
+                          padding: "12px 14px",
+                          borderRadius: "10px",
+                          background: "#ffffff",
+                          border: "1px solid #e2e8f0",
+                        }}
+                      >
+                        <div>
+                          <span style={{ fontSize: "11px", color: "#64748b", fontWeight: 700, display: "block" }}>Squad Name</span>
+                          <strong style={{ fontSize: "13.5px", color: "#0f172a" }}>{ev.team_name}</strong>
+                        </div>
+                        <div>
+                          <span style={{ fontSize: "11px", color: "#64748b", fontWeight: 700, display: "block" }}>Final Outcome</span>
+                          <strong style={{ fontSize: "13.5px", color: "#0f172a" }}>{ev.round_status || "Participated"}</strong>
+                        </div>
+                        <div>
+                          <span style={{ fontSize: "11px", color: "#64748b", fontWeight: 700, display: "block" }}>Internship Status</span>
+                          <strong style={{ fontSize: "13.5px", color: ev.internship_selected ? "#059669" : "#475569" }}>
+                            {ev.internship_selected ? "Selected" : "Completed"}
+                          </strong>
+                        </div>
+                      </div>
+
+                      {ev.jury_feedback && (
+                        <div style={{ fontSize: "13px", color: "#475569", lineHeight: 1.5 }}>
+                          <strong style={{ color: "#0f172a" }}>Jury Note:</strong> {ev.jury_feedback}
+                        </div>
+                      )}
+
+                      {ev.internship_reason && (
+                        <div style={{ fontSize: "13px", color: "#475569", lineHeight: 1.5 }}>
+                          <strong style={{ color: "#0f172a" }}>Internship Note:</strong> {ev.internship_reason}
+                        </div>
+                      )}
+
+                      {ev.certificate_issued && (
+                        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                          <button
+                            type="button"
+                            onClick={() => switchPortalTab("certificates")}
+                            className="glacier-btn"
+                            style={{
+                              padding: "8px 16px",
+                              borderRadius: "8px",
+                              border: "1.5px solid transparent",
+                              background: LOGO_GRADIENT,
+                              color: "#ffffff",
+                              fontSize: "12px",
+                              fontWeight: 800,
+                              cursor: "pointer",
+                            }}
+                          >
+                            View Issued Certificate →
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         )}
 
         {/* ═══════════════════════════════════════════════════════════════ */}
-        {/* VIEW 5: CERTIFICATES (ADMIN-ISSUED CREDENTIALS)                */}
+        {/* VIEW 3: CERTIFICATES (ADMIN-ISSUED CREDENTIALS)                */}
         {/* ═══════════════════════════════════════════════════════════════ */}
         {activeTab === "certificates" && (
           <div className="step-animate-in" style={{ display: "flex", flexDirection: "column", gap: "24px" }}>

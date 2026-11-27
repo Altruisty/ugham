@@ -1181,25 +1181,24 @@ export default function EventsHubPage() {
       {/* ── 3. FLAGSHIP EVENTS COMPARISON CONSOLES (CENTERED 2-CARD GRID, ZERO GAP) ── */}
       <section style={{ padding: "70px 0 90px" }}>
         <div className="container" style={{ maxWidth: "1020px" }}>
-          <div className="text-center" style={{ marginBottom: "44px" }}>
+          <div className="text-center" style={{ marginBottom: "38px" }}>
             <span className="section-label">FLAGSHIP COMPETITIONS</span>
             <h2 className="section-title">CHOOSE YOUR CHALLENGE ARENA</h2>
+            {activeEditionsList.length > 2 && (
+              <p style={{ color: "var(--muted)", fontSize: "13.5px", marginTop: "8px" }}>
+                Scroll horizontally to view additional active challenge editions →
+              </p>
+            )}
           </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-              gap: "24px",
-              alignItems: "stretch",
-            }}
-          >
+          <div className="hub-arena-scroll-track hide-scrollbar">
             {activeEditionsList.map((ed) => {
               const isSp = ed.series.includes("shepitch");
               const isSelected = selectedEvent === ed.slug;
               return (
                 <div
                   key={ed.slug}
+                  className="hub-arena-card"
                   style={{
                     display: "flex",
                     flexDirection: "column",
@@ -1218,14 +1217,14 @@ export default function EventsHubPage() {
                       ? isSp
                         ? "0 20px 50px rgba(192,38,211,0.25)"
                         : "0 20px 50px rgba(59,130,246,0.25)"
-                      : "none",
+                      : "0 12px 30px rgba(15, 23, 42, 0.14)",
                     borderRadius: "28px",
-                    padding: "36px 30px",
+                    padding: "34px 28px",
                     color: "white",
                   }}
                 >
                   <div>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px", gap: "10px", flexWrap: "wrap" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "18px", gap: "12px" }}>
                       <span
                         style={{
                           background: isSp
@@ -1235,17 +1234,17 @@ export default function EventsHubPage() {
                           borderRadius: "100px",
                           fontSize: "11px",
                           fontWeight: 800,
-                          letterSpacing: "1px",
+                          letterSpacing: "0.8px",
                           textTransform: "uppercase",
                         }}
                       >
                         {ed.badgeText}
                       </span>
-                      <div style={{ textAlign: "right" }}>
-                        <span style={{ fontSize: "28px", fontWeight: 900, color: isSp ? "#f472b6" : "#60a5fa" }}>
+                      <div style={{ textAlign: "right", flexShrink: 0 }}>
+                        <span style={{ fontSize: "28px", fontWeight: 900, color: isSp ? "#f472b6" : "#60a5fa", lineHeight: 1 }}>
                           ₹{ed.feeAmount}
                         </span>
-                        <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.7)", display: "block" }}>
+                        <span style={{ fontSize: "11.5px", color: "rgba(255,255,255,0.72)", display: "block", marginTop: "3px" }}>
                           {ed.pricingMode === "per_member" ? "per member" : "flat per team"}
                         </span>
                       </div>
@@ -2230,26 +2229,54 @@ export default function EventsHubPage() {
                 ) : !isFormValid ? (
                   <div
                     style={{
-                      background: "rgba(255,255,255,0.06)",
-                      padding: "12px 18px",
-                      borderRadius: "12px",
+                      background: "rgba(255, 255, 255, 0.06)",
+                      border: "1px solid rgba(250, 204, 21, 0.28)",
+                      padding: "16px 18px",
+                      borderRadius: "14px",
                       fontSize: "13px",
-                      color: "#cbd5e1",
+                      color: "#e2e8f0",
                       marginBottom: "20px",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "10px",
                     }}
                   >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#facc15" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                    </svg>
-                    <span>
-                      Please complete all required fields to unlock checkout (Pending:{" "}
-                      <strong style={{ color: "#f472b6" }}>{validationErrors.slice(0, 3).join(", ")}</strong>
-                      {validationErrors.length > 3 ? ` +${validationErrors.length - 3} more` : ""})
-                    </span>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px", fontWeight: 800, color: "#fde047" }}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#facc15" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                      </svg>
+                      <span>Complete these required fields to unlock checkout ({validationErrors.length} pending):</span>
+                    </div>
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(auto-fit, minmax(195px, 1fr))",
+                        gap: "8px 16px",
+                      }}
+                    >
+                      {validationErrors.map((errItem) => (
+                        <div
+                          key={errItem}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "8px",
+                            fontSize: "12.5px",
+                            fontWeight: 700,
+                            color: "#f9a8d4",
+                          }}
+                        >
+                          <span
+                            style={{
+                              width: "6px",
+                              height: "6px",
+                              borderRadius: "50%",
+                              background: "#f472b6",
+                              flexShrink: 0,
+                            }}
+                          />
+                          <span>{errItem}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 ) : (
                   <div

@@ -7,6 +7,7 @@ import { RegistrationRecord } from "@/lib/db";
 import CustomSelect from "@/components/CustomSelect";
 import AnimatedCheckbox from "@/components/AnimatedCheckbox";
 import type { EventEditionRecord } from "@/lib/editions";
+import type { SupportQueryRecord } from "@/lib/support";
 
 const LOGO_GRADIENT = "linear-gradient(135deg, #7C3AED 0%, #C026D3 100%)";
 
@@ -171,7 +172,7 @@ export default function MyAdminPage() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterEvent, setFilterEvent] = useState<"all" | "shepitch" | "shepitch_chennai" | "shepitch_coimbatore" | "hackpick">("all");
-  const [activeTab, setActiveTab] = useState<"overview" | "registrations" | "payments" | "colleges" | "teams" | "editions" | "warning" | "brevo-db" | "emails-sent">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "registrations" | "payments" | "colleges" | "teams" | "editions" | "support-queries" | "warning" | "brevo-db" | "emails-sent">("overview");
   const [paymentsFilterEvent, setPaymentsFilterEvent] = useState<"all" | "shepitch" | "shepitch_chennai" | "shepitch_coimbatore" | "hackpick">("all");
   const [paymentsSearchQuery, setPaymentsSearchQuery] = useState("");
   const [resendingId, setResendingId] = useState<string | null>(null);
@@ -259,7 +260,17 @@ export default function MyAdminPage() {
   const [collegesPage, setCollegesPage] = useState(1);
   const [credentialsPage, setCredentialsPage] = useState(1);
   const [emailsPage, setEmailsPage] = useState(1);
+  const [supportPage, setSupportPage] = useState(1);
   const PAGE_SIZE = 5;
+
+  // Support Queries Management
+  const [supportQueries, setSupportQueries] = useState<SupportQueryRecord[]>([]);
+  const [supportSubTab, setSupportSubTab] = useState<"open" | "solved">("open");
+  const [updatingTicketId, setUpdatingTicketId] = useState<string | null>(null);
+  const openSupportCount = useMemo(
+    () => supportQueries.filter((q) => q.status === "open").length,
+    [supportQueries]
+  );
 
   // Database Connection State
   const [dbStatus, setDbStatus] = useState<{
@@ -453,6 +464,38 @@ export default function MyAdminPage() {
       }
     } catch (err) {
       console.error("Error fetching event editions:", err);
+    }
+  };
+
+  // Fetch Student Support Queries
+  const fetchSupportQueries = async () => {
+    try {
+      const res = await fetch("/api/support-queries");
+      const data = await res.json();
+      if (data.success && Array.isArray(data.queries)) {
+        setSupportQueries(data.queries);
+      }
+    } catch (err) {
+      console.error("Error fetching support queries:", err);
+    }
+  };
+
+  const handleUpdateSupportStatus = async (id: string, status: "open" | "solved") => {
+    setUpdatingTicketId(id);
+    try {
+      const res = await fetch("/api/support-queries", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, status }),
+      });
+      const data = await res.json();
+      if (data.success && Array.isArray(data.queries)) {
+        setSupportQueries(data.queries);
+      }
+    } catch (err) {
+      console.error("Error updating support ticket status:", err);
+    } finally {
+      setUpdatingTicketId(null);
     }
   };
 
@@ -754,6 +797,7 @@ export default function MyAdminPage() {
     fetchCollegeCredentials();
     fetchSmtpStatus();
     fetchEditions();
+    fetchSupportQueries();
   }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -1618,6 +1662,26 @@ export default function MyAdminPage() {
                 </span>
               </button>
 
+              {/* Menu 6B: Support Query Desk */}
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveTab("support-queries");
+                  fetchSupportQueries();
+                }}
+                className={`admin-nav-item ${activeTab === "support-queries" ? "active" : ""}`}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                  <span>Support Query</span>
+                </div>
+                <span className="admin-nav-badge">
+                  {openSupportCount}
+                </span>
+              </button>
+
               {/* Menu 7: Warning (Protected Deletion Zone) */}
               <button
                 type="button"
@@ -1812,6 +1876,20 @@ export default function MyAdminPage() {
                   </span>
                 </button>
 
+                {/* 6B. Support Query */}
+                <button
+                  type="button"
+                  onClick={() => { setActiveTab("support-queries"); fetchSupportQueries(); setMobileMenuOpen(false); }}
+                  className={`admin-speed-dial-pill ${activeTab === "support-queries" ? "active" : ""}`}
+                  style={{ animationDelay: "0.08s" }}
+                >
+                  <span className="speed-dial-label">Support Query</span>
+                  <span className="speed-dial-badge">{openSupportCount}</span>
+                  <span className="speed-dial-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                  </span>
+                </button>
+
                 {/* 7. Warning Zone */}
                 <button
                   type="button"
@@ -1876,6 +1954,7 @@ export default function MyAdminPage() {
                   {activeTab === "colleges" && "Colleges & Institutional Portals"}
                   {activeTab === "teams" && "Teams Round Control & Collected Links"}
                   {activeTab === "editions" && "Event Editions & Version Lifecycle"}
+                  {activeTab === "support-queries" && "Support Query Desk & Ticket Resolution"}
                   {activeTab === "warning" && "Warning: Record Deletion Center"}
                   {activeTab === "brevo-db" && "Brevo Mail & Database Infrastructure"}
                   {activeTab === "emails-sent" && "Outgoing Emails Dispatch Monitor"}
@@ -1887,6 +1966,7 @@ export default function MyAdminPage() {
                   {activeTab === "colleges" && "College-wise registered teams, student rosters, college payments, and manual portal credentials."}
                   {activeTab === "teams" && "Update round-wise team statuses live per event and review all round link submissions."}
                   {activeTab === "editions" && "Launch upcoming ShePitch & HackPick editions live to students and browse stored past versions."}
+                  {activeTab === "support-queries" && "Review participant support tickets one by one and mark resolved queries as Solved."}
                   {activeTab === "warning" && "Selectively delete registered teams, colleges, or email transmission logs with authorization verification."}
                   {activeTab === "brevo-db" && "Brevo relay health, custom domain transmission status, and PostgreSQL sync."}
                   {activeTab === "emails-sent" && "Track outgoing member credential emails, delivery states, and instant resend retry."}
@@ -7466,6 +7546,220 @@ export default function MyAdminPage() {
                 </div>
               </div>
             )}
+
+            {/* ── TAB 7B: SUPPORT QUERY DESK (OPEN & SOLVED TICKETS) ── */}
+            {activeTab === "support-queries" && (() => {
+              const openTickets = supportQueries.filter((q) => q.status === "open");
+              const solvedTickets = supportQueries.filter((q) => q.status === "solved");
+              const activeTicketsList = supportSubTab === "open" ? openTickets : solvedTickets;
+              const safeSupportPage = Math.min(supportPage, Math.max(1, Math.ceil(activeTicketsList.length / PAGE_SIZE)));
+              const pagedTickets = activeTicketsList.slice(
+                (safeSupportPage - 1) * PAGE_SIZE,
+                safeSupportPage * PAGE_SIZE
+              );
+
+              return (
+                <div style={{ display: "flex", flexDirection: "column", gap: "22px" }}>
+                  {/* Sub-tabs: Open Tickets / Solved Tickets */}
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      flexWrap: "wrap",
+                      gap: "12px",
+                    }}
+                  >
+                    <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSupportSubTab("open");
+                          setSupportPage(1);
+                        }}
+                        className="glacier-btn"
+                        style={{
+                          padding: "10px 18px",
+                          borderRadius: "10px",
+                          border: supportSubTab === "open" ? "1.5px solid #7C3AED" : "1.5px solid #e2e8f0",
+                          background: supportSubTab === "open" ? LOGO_GRADIENT : "#ffffff",
+                          color: supportSubTab === "open" ? "#ffffff" : "#334155",
+                          fontSize: "13px",
+                          fontWeight: 800,
+                          cursor: "pointer",
+                        }}
+                      >
+                        Open Queries ({openTickets.length})
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSupportSubTab("solved");
+                          setSupportPage(1);
+                        }}
+                        className="glacier-btn"
+                        style={{
+                          padding: "10px 18px",
+                          borderRadius: "10px",
+                          border: supportSubTab === "solved" ? "1.5px solid #7C3AED" : "1.5px solid #e2e8f0",
+                          background: supportSubTab === "solved" ? LOGO_GRADIENT : "#ffffff",
+                          color: supportSubTab === "solved" ? "#ffffff" : "#334155",
+                          fontSize: "13px",
+                          fontWeight: 800,
+                          cursor: "pointer",
+                        }}
+                      >
+                        Solved Tickets ({solvedTickets.length})
+                      </button>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => fetchSupportQueries()}
+                      className="glacier-btn"
+                      style={{
+                        padding: "9px 15px",
+                        borderRadius: "10px",
+                        border: "1px solid #e2e8f0",
+                        background: "#ffffff",
+                        color: "#334155",
+                        fontSize: "12.5px",
+                        fontWeight: 700,
+                        cursor: "pointer",
+                      }}
+                    >
+                      ↻ Refresh Tickets
+                    </button>
+                  </div>
+
+                  {/* Ticket List */}
+                  {activeTicketsList.length === 0 ? (
+                    <div
+                      style={{
+                        background: "#ffffff",
+                        borderRadius: "20px",
+                        border: "1.5px dashed #cbd5e1",
+                        padding: "60px 24px",
+                        textAlign: "center",
+                        color: "#64748b",
+                        fontSize: "14px",
+                      }}
+                    >
+                      {supportSubTab === "open"
+                        ? "No open participant support queries right now."
+                        : "No solved support tickets archived yet."}
+                    </div>
+                  ) : (
+                    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                      {pagedTickets.map((ticket) => (
+                        <div
+                          key={ticket.id}
+                          className="glacier-card"
+                          style={{
+                            background: "#ffffff",
+                            borderRadius: "20px",
+                            border: ticket.status === "solved" ? "1.5px solid #a7f3d0" : "1.5px solid #e2e8f0",
+                            padding: "22px 24px",
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "14px",
+                          }}
+                        >
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "12px" }}>
+                            <div>
+                              <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", marginBottom: "6px" }}>
+                                <code style={{ fontSize: "11.5px", fontWeight: 800, color: "#7C3AED", background: "#f5f3ff", padding: "3px 8px", borderRadius: "6px" }}>
+                                  {ticket.id}
+                                </code>
+                                <span style={{ fontSize: "11px", fontWeight: 800, color: "#475569", background: "#f1f5f9", padding: "3px 9px", borderRadius: "6px", border: "1px solid #e2e8f0" }}>
+                                  {ticket.category}
+                                </span>
+                                <span
+                                  style={{
+                                    fontSize: "11px",
+                                    fontWeight: 800,
+                                    padding: "3px 9px",
+                                    borderRadius: "6px",
+                                    background: ticket.status === "solved" ? "#ecfdf5" : "#fef3c7",
+                                    color: ticket.status === "solved" ? "#059669" : "#b45309",
+                                    border: ticket.status === "solved" ? "1px solid #a7f3d0" : "1px solid #fde68a",
+                                    textTransform: "uppercase",
+                                  }}
+                                >
+                                  {ticket.status}
+                                </span>
+                              </div>
+                              <h3 style={{ fontSize: "18px", fontWeight: 900, color: "#0f172a", margin: 0 }}>
+                                {ticket.title}
+                              </h3>
+                            </div>
+
+                            {ticket.status === "open" ? (
+                              <button
+                                type="button"
+                                disabled={updatingTicketId === ticket.id}
+                                onClick={() => handleUpdateSupportStatus(ticket.id, "solved")}
+                                className="glacier-btn"
+                                style={{
+                                  padding: "9px 18px",
+                                  borderRadius: "10px",
+                                  border: "1.5px solid transparent",
+                                  background: LOGO_GRADIENT,
+                                  color: "#ffffff",
+                                  fontSize: "12.5px",
+                                  fontWeight: 800,
+                                  cursor: updatingTicketId === ticket.id ? "wait" : "pointer",
+                                  flexShrink: 0,
+                                }}
+                              >
+                                {updatingTicketId === ticket.id ? "Updating..." : "Solved ✓"}
+                              </button>
+                            ) : (
+                              <span style={{ fontSize: "12px", fontWeight: 700, color: "#059669" }}>
+                                ✓ Resolved {ticket.solvedAt ? `on ${new Date(ticket.solvedAt).toLocaleDateString("en-IN")}` : ""}
+                              </span>
+                            )}
+                          </div>
+
+                          <div
+                            style={{
+                              padding: "14px 16px",
+                              borderRadius: "12px",
+                              background: "#f8fafc",
+                              border: "1px solid #e2e8f0",
+                              fontSize: "14px",
+                              color: "#334155",
+                              lineHeight: 1.6,
+                              whiteSpace: "pre-wrap",
+                            }}
+                          >
+                            {ticket.message}
+                          </div>
+
+                          <div style={{ display: "flex", flexWrap: "wrap", gap: "10px 18px", fontSize: "12.5px", color: "#64748b" }}>
+                            <span>Student: <strong style={{ color: "#0f172a" }}>{ticket.userName}</strong></span>
+                            <span>Email: <strong style={{ color: "#0f172a" }}>{ticket.userEmail}</strong></span>
+                            {ticket.collegeName && (
+                              <span>College: <strong style={{ color: "#0f172a" }}>{ticket.collegeName}</strong></span>
+                            )}
+                            <span>Submitted: <strong style={{ color: "#475569" }}>{new Date(ticket.createdAt).toLocaleString("en-IN")}</strong></span>
+                          </div>
+                        </div>
+                      ))}
+
+                      <TablePagination
+                        currentPage={safeSupportPage}
+                        totalItems={activeTicketsList.length}
+                        pageSize={PAGE_SIZE}
+                        onPageChange={setSupportPage}
+                        itemName={supportSubTab === "open" ? "open queries" : "solved tickets"}
+                      />
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
 
             {/* ── TAB 8: WARNING (SELECTIVE DELETION WITH PASSWORD del@123) ── */}
             {activeTab === "warning" && (() => {

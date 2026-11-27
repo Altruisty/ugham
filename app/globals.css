@@ -155,7 +155,24 @@ footer { background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(245,24
   transform: none !important;
 }
 
-/* GLOBAL STRICT OVERRIDES: NO TRANSLATE/SCALE ON BUTTON HOVER, NO UNDERLINES */
+/* GLOBAL STRICT OVERRIDES: NO TRANSLATE/SCALE ON BUTTON HOVER, NO UNDERLINES, HIDDEN SCROLLBARS */
+html,
+body,
+*,
+.hide-scrollbar {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar,
+.hide-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
 a, a:hover, a:active, a:focus {
   text-decoration: none !important;
 }
@@ -4469,5 +4486,527 @@ div:not(#registration-form):has(+ .cta-contact-strip),
 
   .admin-college-team-amount {
     text-align: left !important;
+  }
+}
+
+/* ── HOW UGHAM WORKS: 6-STAGE CONNECTED ECOSYSTEM ── */
+.ugham-works-section {
+  padding: 96px 0;
+  background: linear-gradient(180deg, rgba(248, 250, 255, 0.85) 0%, rgba(255, 255, 255, 0.95) 55%, rgba(245, 243, 255, 0.72) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.ugham-works-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(124, 58, 237, 0.08);
+  border: 1px solid rgba(124, 58, 237, 0.22);
+  color: #6d28d9;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+}
+
+.ugham-works-eyebrow-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb 0%, #c026d3 100%);
+  box-shadow: 0 0 8px rgba(124, 58, 237, 0.5);
+}
+
+/* Interactive Top Stepper Strip */
+.ugham-works-stepper {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+  max-width: 920px;
+  margin: 0 auto 38px;
+  padding: 12px 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1.5px solid #e2e8f0;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+}
+
+.ugham-works-stepper-track {
+  position: absolute;
+  left: 36px;
+  right: 36px;
+  top: 50%;
+  height: 2px;
+  background: #e2e8f0;
+  transform: translateY(-50%);
+  z-index: 0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.ugham-works-stepper-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2563eb 0%, #7c3aed 55%, #c026d3 100%);
+  transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ugham-stepper-node {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1.5px solid #e2e8f0;
+  background: #ffffff;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.ugham-stepper-node:hover {
+  background: linear-gradient(135deg, #f0f4ff 0%, #eef2ff 55%, #f3e8ff 100%);
+  border-color: rgba(124, 58, 237, 0.38);
+  color: #1e1b4b;
+  transform: none;
+}
+
+.ugham-stepper-node.active.tone-blue {
+  background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+  border-color: transparent;
+  color: #ffffff;
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.32);
+}
+
+.ugham-stepper-node.active.tone-purple {
+  background: linear-gradient(135deg, #7c3aed 0%, #c026d3 100%);
+  border-color: transparent;
+  color: #ffffff;
+  box-shadow: 0 6px 18px rgba(124, 58, 237, 0.32);
+}
+
+.ugham-stepper-num {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 900;
+  font-size: 11px;
+  opacity: 0.9;
+}
+
+.ugham-stepper-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 3x2 Connected Card Grid */
+.ugham-works-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.ugham-works-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 26px 24px 22px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(16px);
+  border: 1.5px solid #e2e8f0;
+  box-shadow: 0 8px 26px rgba(15, 23, 42, 0.045);
+  cursor: pointer;
+  overflow: hidden;
+  transition: background 0.32s ease, border-color 0.32s ease, box-shadow 0.32s ease;
+}
+
+.ugham-works-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.ugham-works-card.tone-blue::before {
+  background: radial-gradient(circle at 85% 15%, rgba(37, 99, 235, 0.09), transparent 62%);
+}
+
+.ugham-works-card.tone-purple::before {
+  background: radial-gradient(circle at 85% 15%, rgba(168, 85, 247, 0.1), transparent 62%);
+}
+
+.ugham-works-card:hover::before,
+.ugham-works-card.is-focused::before {
+  opacity: 1;
+}
+
+.ugham-works-card.tone-blue:hover,
+.ugham-works-card.tone-blue.is-focused {
+  background: linear-gradient(160deg, #ffffff 0%, #eff6ff 100%);
+  border-color: rgba(37, 99, 235, 0.42);
+  box-shadow: 0 14px 36px rgba(37, 99, 235, 0.12);
+  transform: none;
+}
+
+.ugham-works-card.tone-purple:hover,
+.ugham-works-card.tone-purple.is-focused {
+  background: linear-gradient(160deg, #ffffff 0%, #faf5ff 100%);
+  border-color: rgba(124, 58, 237, 0.42);
+  box-shadow: 0 14px 36px rgba(124, 58, 237, 0.12);
+  transform: none;
+}
+
+.ugham-works-card-top {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.ugham-step-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 14px;
+  border-radius: 999px;
+  color: #ffffff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+}
+
+.ugham-step-pill.tone-blue {
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.28);
+}
+
+.ugham-step-pill.tone-purple {
+  background: linear-gradient(135deg, #7c3aed 0%, #a21caf 100%);
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.28);
+}
+
+.ugham-step-stage-tag {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: #64748b;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 4px 10px;
+  border-radius: 8px;
+}
+
+/* Sculpted Icon Core */
+.ugham-works-icon-wrap {
+  position: relative;
+  z-index: 1;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ugham-works-icon-wrap.tone-blue {
+  background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%);
+  color: #1e3a8a;
+  border: 1px solid rgba(37, 99, 235, 0.2);
+}
+
+.ugham-works-icon-wrap.tone-purple {
+  background: linear-gradient(135deg, #f3e8ff 0%, #fdf4ff 100%);
+  color: #4c1d95;
+  border: 1px solid rgba(124, 58, 237, 0.2);
+}
+
+.ugham-works-card:hover .ugham-works-icon-wrap.tone-blue,
+.ugham-works-card.is-focused .ugham-works-icon-wrap.tone-blue {
+  background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+  color: #ffffff;
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.28);
+}
+
+.ugham-works-card:hover .ugham-works-icon-wrap.tone-purple,
+.ugham-works-card.is-focused .ugham-works-icon-wrap.tone-purple {
+  background: linear-gradient(135deg, #7c3aed 0%, #c026d3 100%);
+  color: #ffffff;
+  box-shadow: 0 10px 24px rgba(124, 58, 237, 0.28);
+}
+
+.ugham-works-icon-core {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ugham-works-card-title {
+  position: relative;
+  z-index: 1;
+  font-family: 'Outfit', sans-serif;
+  font-size: 19px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.3;
+  margin: 0 0 8px 0;
+}
+
+.ugham-works-card-desc {
+  position: relative;
+  z-index: 1;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: #475569;
+  margin: 0 0 22px 0;
+  flex: 1;
+}
+
+.ugham-works-card-footer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(226, 232, 240, 0.85);
+}
+
+.ugham-mini-bars {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 5px;
+  flex: 1;
+}
+
+.ugham-mini-bar {
+  height: 4px;
+  border-radius: 4px;
+  background: #e2e8f0;
+  transition: background 0.3s ease;
+}
+
+.ugham-mini-bar.filled.tone-blue {
+  background: linear-gradient(90deg, #2563eb 0%, #4f46e5 100%);
+}
+
+.ugham-mini-bar.filled.tone-purple {
+  background: linear-gradient(90deg, #7c3aed 0%, #c026d3 100%);
+}
+
+.ugham-works-flow-arrow {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.ugham-works-card.tone-blue:hover .ugham-works-flow-arrow,
+.ugham-works-card.tone-blue.is-focused .ugham-works-flow-arrow {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.ugham-works-card.tone-purple:hover .ugham-works-flow-arrow,
+.ugham-works-card.tone-purple.is-focused .ugham-works-flow-arrow {
+  background: #7c3aed;
+  color: #ffffff;
+}
+
+@media (max-width: 1024px) {
+  .ugham-works-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .ugham-works-stepper {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .ugham-works-stepper-track {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .ugham-works-section {
+    padding: 68px 0;
+  }
+
+  .ugham-works-stepper {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 10px;
+    gap: 6px;
+    margin-bottom: 24px;
+  }
+
+  .ugham-works-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .ugham-works-card {
+    padding: 20px 18px 18px;
+    border-radius: 18px;
+  }
+}
+
+/* ── NAVBAR PROFILE ICON, RIGHT-SIDE PROFILE DRAWER & PORTAL HOME HERO ── */
+.nav-student-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-profile-icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid #e2e8f0;
+  background: #ffffff;
+  color: #334155;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.06);
+}
+
+.ugham-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: flex-end;
+}
+
+@keyframes slideDrawerRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.ugham-profile-drawer {
+  width: min(390px, 100vw);
+  height: 100%;
+  background: #ffffff;
+  border-left: 1px solid #e2e8f0;
+  box-shadow: -16px 0 50px rgba(15, 23, 42, 0.18);
+  display: flex;
+  flex-direction: column;
+  animation: slideDrawerRight 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.ugham-profile-drawer-head {
+  padding: 20px 22px;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ugham-profile-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7C3AED 0%, #C026D3 100%);
+  color: #ffffff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 6px 16px rgba(124, 58, 237, 0.25);
+}
+
+.ugham-drawer-nav-item {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #0f172a;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.portal-welcome-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 28px;
+  align-items: center;
+}
+
+.hub-arena-scroll-track {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 6px 2px 10px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.hub-arena-card {
+  flex: 0 0 calc(50% - 12px);
+  scroll-snap-align: start;
+  box-sizing: border-box;
+}
+
+@media (max-width: 860px) {
+  .portal-welcome-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .hub-arena-card {
+    flex: 0 0 88%;
+  }
+}
+
+@media (max-width: 991px) {
+  .nav-student-actions {
+    width: 100%;
+    justify-content: center;
+    padding-top: 6px;
   }
 }
